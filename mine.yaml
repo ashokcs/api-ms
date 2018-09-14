@@ -1,0 +1,89 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Mine API"
+basePath: "/CI"
+schemes:
+- "https"
+paths:
+  /users/send/selfie:
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Selfie"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlUsers}/users/send/selfie"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+
+definitions:
+  ResponseStatus:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        description: "The HTTP code"
+      message:
+        type: "string"
+        description: "A description message"
+  Selfie:
+    type: "object"
+    properties:
+      image:
+        type: "string"
+        description: "Image Base 64"
