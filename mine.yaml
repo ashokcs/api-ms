@@ -71,6 +71,17 @@ paths:
         httpMethod: "POST"
         type: "http"
 
+securityDefinitions:
+  MineAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    x-amazon-apigateway-authtype: "cognito_user_pools"
+    x-amazon-apigateway-authorizer:
+      providerARNs:
+      - "arn:aws:cognito-idp:us-east-1:271902360581:userpool/us-east-1_jhaytbPSF"
+      type: "cognito_user_pools"
+
 definitions:
   ResponseStatus:
     type: "object"
