@@ -387,7 +387,7 @@ paths:
       security:
         - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
+        uri: "http://${stageVariables.urlUsers}/v1/accounts/{accountId}/payment"
         requestParameters:
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
