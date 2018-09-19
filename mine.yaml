@@ -221,7 +221,7 @@ paths:
             Access-Control-Allow-Headers:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.url}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         requestParameters:
           integration.request.querystring.userId: method.request.querystring.userId
         responses:
@@ -270,7 +270,7 @@ paths:
             Access-Control-Allow-Headers:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.url}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         responses:
           default:
             statusCode: "200"
@@ -320,7 +320,7 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         responses:
           200:
             statusCode: "200"
@@ -387,7 +387,7 @@ paths:
       security:
         - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/accounts/{accountId}/payment"
+        uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
         requestParameters:
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
