@@ -347,7 +347,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: accountId
           in: path
@@ -380,7 +380,7 @@ paths:
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
         requestParameters:
-          integration.request.path.documentType: "method.request.path.documentType"
+          integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
             statusCode: "200"
