@@ -42,6 +42,14 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
         400:
           description: "400 response"
           schema:
@@ -50,10 +58,7 @@ paths:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
+
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
@@ -68,10 +73,12 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
           400:
             statusCode: "400"
-          500:
-            statusCode: "500"
           401:
             statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.querystring.latitude: "method.request.querystring.latitude"
@@ -80,22 +87,22 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
-  /users/send/selfie:
+  /v1/account-mgm/users/validation/{documentType}:
     post:
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "access-token"
-        in: "header"
+      - name: "documentType"
+        in: "path"
         required: true
         type: "string"
       - in: "body"
         name: "request"
         required: true
         schema:
-          $ref: "#/definitions/Selfie"
+          $ref: "#/definitions/Validation"
       responses:
         200:
           description: "200 response"
@@ -118,12 +125,18 @@ paths:
           description: "401 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
         500:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/users/send/selfie"
+        uri: "http://${stageVariables.urlUsers}/v1/account-mgm/users/validation/{documentType}"
+        requestParameters:
+          integration.request.path.documentType: "method.request.path.documentType"
         responses:
           200:
             statusCode: "200"
@@ -136,14 +149,14 @@ paths:
             statusCode: "400"
           401:
             statusCode: "401"
+          422:
+            statusCode: "422"
           500:
             statusCode: "500"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  /customer-management/notification/notificationList:
+  /customer-management/notification:
     get:
       consumes:
       - "application/json"
@@ -152,7 +165,8 @@ paths:
       parameters:
       - name: userId
         in: query
-        type: integer
+        type: string
+        format: uuid
       responses:
         200:
           description: "200 response"
@@ -268,7 +282,6 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "OPTIONS"
         type: "http"
-  /customer-management/notification/notificationCashIn:
     post:
       consumes:
       - "application/json"
@@ -307,7 +320,7 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/customer-management/notification/notificationCashIn"
+        uri: "http://${stageVariables.urlUsers}/v1/customer-management/notification"
         responses:
           200:
             statusCode: "200"
@@ -346,17 +359,27 @@ definitions:
       message:
         type: "string"
         description: "A description message"
-  Selfie:
+  Validation:
     type: "object"
     properties:
-      image:
+      phone:
         type: "string"
-        description: "Image Base 64"
+        description: "Phone miner"
+      face:
+        type: "string"
+        description: "Person face image"
+      back:
+        type: "string"
+        description: "Image back of the document"
+      front:
+        type: "string"
+        description: "Image front of the document"
   Notification:
     type: "object"
     properties:
       userId:
-        type: "integer"
+        type: "string"
+        format: "uuid"
         description: "User identifier"
       amount:
         type: "double"
@@ -377,3 +400,5 @@ definitions:
         type: "string"
         description: "Event that send the message/push"
       deviceToken:
+        type: "string"
+        description: "deviceToken"
