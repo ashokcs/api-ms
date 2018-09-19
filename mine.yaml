@@ -349,6 +349,10 @@ paths:
       produces:
         - application/json
       parameters:
+        - name: "access-token"
+          in: "header"
+          required: true
+          type: "string"
         - name: accountId
           in: path
           description: accountId
@@ -389,6 +393,7 @@ paths:
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
         requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
