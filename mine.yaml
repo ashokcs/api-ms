@@ -444,6 +444,8 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+      security:
+        - MineAuth: []
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlPaymentIntegration}/v1/integration/{merchantId}/banks"
         requestParameters:
