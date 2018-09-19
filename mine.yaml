@@ -610,7 +610,7 @@ definitions:
       banks:
         type: array
         items:
-          $ref: '#/definitions/Bank'
+          $ref: '#/definitions/BankParent'
       paymentId:
         type: string
       paymentUrl:
@@ -622,13 +622,24 @@ definitions:
       transferUrl:
         type: string
     title: Response
-  Bank:
+  BankParent:
     type: object
     properties:
       banks:
         type: array
         items:
           $ref: '#/definitions/Bank'
+      id:
+        type: string
+      minAmount:
+        type: number
+        format: double
+      name:
+        type: string
+    title: Bank
+  Bank:
+    type: object
+    properties:
       id:
         type: string
       minAmount:
