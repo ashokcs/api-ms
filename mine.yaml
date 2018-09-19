@@ -221,7 +221,7 @@ paths:
             Access-Control-Allow-Headers:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.url}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         requestParameters:
           integration.request.querystring.userId: method.request.querystring.userId
         responses:
@@ -270,7 +270,7 @@ paths:
             Access-Control-Allow-Headers:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.url}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         responses:
           default:
             statusCode: "200"
@@ -320,7 +320,7 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         responses:
           200:
             statusCode: "200"
@@ -366,6 +366,15 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
         '201':
           description: Created
         '401':
