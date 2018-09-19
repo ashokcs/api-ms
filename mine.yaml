@@ -444,7 +444,7 @@ definitions:
         format: "uuid"
         description: "User identifier"
       amount:
-        type: "double"
+        type: "number"
         description: "amount of the transaction"
       notificationType:
         type: "string"
