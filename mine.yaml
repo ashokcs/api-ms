@@ -366,6 +366,15 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
         '201':
           description: Created
         '401':
