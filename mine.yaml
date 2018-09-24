@@ -580,7 +580,7 @@ paths:
             schema:
               $ref: "#/definitions/Empty"
         x-amazon-apigateway-integration:
-          uri: "http://18.211.73.99:8031/v1/integration/notify"
+          uri: "http://${stageVariables.urlNotificationPaymentKhipu}/v1/integration/notify"
           responses:
             default:
               statusCode: "200"
@@ -826,17 +826,17 @@ definitions:
       name:
         type: string
     title: Bank
+  Empty:
+    type: "object"
+    title: "Empty Schema"
   RequestNotificationModel:
-        type: "object"
-        required:
-        - "api_version"
-        - "notification_token"
-        properties:
-          api_version:
-            type: "string"
-          notification_token:
-            type: "string"
-        title: "Request Notification Model"
-    Empty:
-        type: "object"
-        title: "Empty Schema"
+    type: "object"
+    required:
+    - "api_version"
+    - "notification_token"
+    properties:
+      api_version:
+        type: "string"
+      notification_token:
+        type: "string"
+    title: "Request Notification Model"
