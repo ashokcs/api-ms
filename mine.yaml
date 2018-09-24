@@ -580,7 +580,7 @@ paths:
             schema:
               $ref: "#/definitions/Empty"
         x-amazon-apigateway-integration:
-          uri: "http://${stageVariables.urlNotificationPayment}/v1/integration/notify"
+          uri: "http://${stageVariables.urlPaymentIntegration}/v1/integration/notify"
           responses:
             default:
               statusCode: "200"
