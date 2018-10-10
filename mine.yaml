@@ -380,10 +380,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: userId
-        in: query
-        type: string
-        format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         200:
           description: "200 response"
@@ -437,10 +437,12 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
+      security:
+      - MineAuth: []
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         requestParameters:
-          integration.request.querystring.userId: method.request.querystring.userId
+          integration.request.header.access-token: "method.request.header.access-token"
         responses:
           200:
             statusCode: "200"
@@ -537,7 +539,7 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/internal"
         responses:
           200:
             statusCode: "200"
