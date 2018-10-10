@@ -58,9 +58,6 @@ paths:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
-
-      security:
-      - MineAuth: []
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlCatalogs}/get/pointCashIn"
         responses:
@@ -87,10 +84,8 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
-  /v1/account-management/users/validation/{documentType}:
+  /v1/account-mgm/users/validation/{documentType}:
     post:
-      tags:
-      - onboarding
       consumes:
       - "application/json"
       produces:
@@ -136,224 +131,9 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/validation/{documentType}"
+        uri: "http://${stageVariables.urlUsers}/v1/account-mgm/users/validation/{documentType}"
         requestParameters:
           integration.request.path.documentType: "method.request.path.documentType"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "http"
-  /v1/account-management/users/confirmation/{id}:
-    put:
-      tags:
-      - onboarding
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      - name: "id"
-        in: "path"
-        required: true
-        type: "string"
-        format: "uuid"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/confirmation/{id}"
-        requestParameters:
-          integration.request.path.id: "method.request.path.id"
-          integration.request.header.access-token: "method.request.header.access-token"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "PUT"
-        type: "http"
-  /v1/account-management/users/signed:
-    post:
-      tags:
-      - onboarding
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/signed"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "http"
-  /v1/device-management/devices:
-    post:
-      tags:
-      - device-management
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "request"
-        required: true
-        schema:
-          $ref: "#/definitions/Device"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/device-management/devices"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
         responses:
           200:
             statusCode: "200"
@@ -437,10 +217,12 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
+      security:
+      - MineAuth: []
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         requestParameters:
-          integration.request.querystring.userId: method.request.querystring.userId
+          integration.request.header.access-token: "method.request.header.access-token"
         responses:
           200:
             statusCode: "200"
@@ -536,8 +318,10 @@ paths:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
+      security:
+      - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/internal"
         responses:
           200:
             statusCode: "200"
@@ -566,10 +350,6 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: "access-token"
-          in: "header"
-          required: true
-          type: "string"
         - name: accountId
           in: path
           description: accountId
@@ -610,7 +390,6 @@ paths:
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
         requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
@@ -630,220 +409,6 @@ paths:
             statusCode: "500"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
-        type: "http"
-  /v1/integration/notify:
-      post:
-        consumes:
-        - "application/x-www-form-urlencoded"
-        produces:
-        - "application/json"
-        parameters:
-        - name: "Content-Type"
-          in: "header"
-          required: true
-          type: "string"
-        - in: "body"
-          name: "RequestNotificationModel"
-          required: true
-          schema:
-            $ref: "#/definitions/RequestNotificationModel"
-        responses:
-          200:
-            description: "200 response"
-            schema:
-              $ref: "#/definitions/Empty"
-        x-amazon-apigateway-integration:
-          uri: "http://${stageVariables.urlPaymentIntegration}/v1/integration/notify"
-          responses:
-            default:
-              statusCode: "200"
-          passthroughBehavior: "when_no_match"
-          httpMethod: "POST"
-          type: "http_proxy"
-  '/v1/integration/{merchantId}/banks':
-    get:
-      tags:
-        - integration-payment
-      summary: getBanks
-      operationId: getBanksUsingGET
-      produces:
-        - application/json
-      parameters:
-        - name: merchantId
-          in: path
-          description: merchantId
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Response'
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-      security:
-        - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentIntegration}/v1/integration/{merchantId}/banks"
-        requestParameters:
-          integration.request.path.merchantId: "method.request.path.merchantId"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
-        type: "http"
-  /v1/account-management/accounts:
-    get:
-      tags:
-      - account-api-controller
-      summary: myAccounts
-      operationId: myAccountsUsingGET
-      produces:
-      - application/json
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/MyAccountsResponse'
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlAccounts}/v1/account-management/accounts"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
-        type: "http"
-  '/v1/account-management/accounts/{accountId}':
-    get:
-      tags:
-      - account-api-controller
-      summary: load
-      operationId: loadUsingGET
-      produces:
-      - application/json
-      parameters:
-      - name: accountId
-        in: path
-        description: accountId
-        required: true
-        type: string
-        format: uuid
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Account'
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlAccounts}/v1/account-management/accounts/{accountId}"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.accountId: "method.request.path.accountId"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
         type: "http"
 securityDefinitions:
   MineAuth:
@@ -978,95 +543,3 @@ definitions:
           - IN
           - OUT
     title: PaymentOrder
-  Response:
-    type: object
-    properties:
-      appUrl:
-        type: string
-      banks:
-        type: array
-        items:
-          $ref: '#/definitions/BankParent'
-      paymentId:
-        type: string
-      paymentUrl:
-        type: string
-      readyForTerminal:
-        type: boolean
-      simplifiedTransferUrl:
-        type: string
-      transferUrl:
-        type: string
-    title: Response
-  BankParent:
-    type: object
-    properties:
-      banks:
-        type: array
-        items:
-          $ref: '#/definitions/Bank'
-      id:
-        type: string
-      minAmount:
-        type: number
-        format: double
-      name:
-        type: string
-    title: Bank
-  Bank:
-    type: object
-    properties:
-      id:
-        type: string
-      minAmount:
-        type: number
-        format: double
-      name:
-        type: string
-    title: Bank
-  Empty:
-    type: "object"
-    title: "Empty Schema"
-  RequestNotificationModel:
-    type: "object"
-    required:
-    - "api_version"
-    - "notification_token"
-    properties:
-      api_version:
-        type: "string"
-      notification_token:
-        type: "string"
-    title: "Request Notification Model"
-  Account:
-    type: object
-    properties:
-      balanceAmount:
-        type: number
-      balanceCurrency:
-        type: string
-      id:
-        type: string
-        format: uuid
-      userId:
-        type: string
-        format: uuid
-    title: Account
-  MyAccountsResponse:
-    type: object
-    properties:
-      accounts:
-        type: array
-        items:
-          $ref: '#/definitions/Account'
-    title: MyAccountsResponse
-  Device:
-    type: object
-    properties:
-      notificationId:
-        type: string
-      deviceType:
-        type: string
-        enum:
-        - IOS
-        - ANDROID
