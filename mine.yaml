@@ -380,10 +380,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: userId
-        in: query
-        type: string
-        format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         200:
           description: "200 response"
