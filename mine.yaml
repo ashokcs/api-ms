@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Mine API"
-basePath: "/CI"
+basePath: "/DEV"
 schemes:
 - "https"
 paths:
@@ -1072,3 +1072,8 @@ definitions:
         enum:
         - IOS
         - ANDROID
+  Currency:
+    type: string
+    enum:
+    - CLP
+    - PEN
