@@ -997,6 +997,72 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
+  '/v1/account-management/accounts/{accountId}/transaction':
+    get:
+      tags:
+      - transaction-api
+      summary: list
+      operationId: listUsingGET
+      produces:
+      - application/json
+      parameters:
+      - name: accountId
+        in: path
+        description: accountId
+        required: true
+        type: string
+        format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TransactionListResource'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlTransactions}/v1/account-management/accounts/{accountId}/transaction"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.path.accountId: "method.request.path.accountId"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
 securityDefinitions:
   MineAuth:
     type: "apiKey"
@@ -1234,3 +1300,55 @@ definitions:
     enum:
     - CLP
     - PEN
+  CounterParty:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      merchantId:
+        type: string
+        format: uuid
+      name:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: CounterParty
+  AccountTransaction:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+      balance_amount:
+        type: number
+      balance_currency:
+        type: string
+      completed:
+        type: string
+        format: date-time
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+        format: uuid
+      state:
+        type: string
+      to:
+        $ref: '#/definitions/CounterParty'
+      type:
+        type: string
+    title: AccountTransaction
+  TransactionListResource:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/AccountTransaction'
+    title: TransactionListResource
