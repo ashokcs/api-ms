@@ -630,7 +630,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  '/v1/accounts/{accountId}/payment':
+  '/v1/sales-services/accounts/{accountId}/payment':
     post:
       tags:
         - payment-api
@@ -683,7 +683,7 @@ paths:
       security:
         - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentOrder}/v1/accounts/{accountId}/payment"
+        uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{accountId}/payment"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.path.accountId: "method.request.path.accountId"
