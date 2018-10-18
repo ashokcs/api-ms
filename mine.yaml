@@ -764,6 +764,10 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       - in: "body"
         name: "request"
         required: true
