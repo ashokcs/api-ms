@@ -797,6 +797,8 @@ paths:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/configuration"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
         responses:
           200:
             statusCode: "200"
