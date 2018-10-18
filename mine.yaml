@@ -1326,6 +1326,79 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
+  /v1/account-management/users/requests:
+    post:
+      tags:
+      - transference-request
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/Transference"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/requests"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
 securityDefinitions:
   MineAuth:
     type: "apiKey"
@@ -1659,3 +1732,12 @@ definitions:
         type: string
       currency:
         $ref: '#/definitions/Currency'
+  Transference:
+    type: object
+    properties:
+      phone:
+        type: string
+      message:
+        type: string
+      amount:
+        type: number
