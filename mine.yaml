@@ -893,6 +893,123 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
+  '/v1/customer-management/notification/{messageId}':
+    put:
+      tags:
+        - notification-controller
+      summary: updateNotificationUserById
+      operationId: updateNotificationUserByIdUsingPUT
+      consumes:
+        - application/json
+      parameters:
+        - name: messageId
+          in: path
+          description: messageId
+          required: true
+          type: string
+          format: uuid
+        - name: "access-token"
+          in: "header"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '201':
+          description: Created
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '403':
+          description: Forbidden
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '404':
+          description: Not Found
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/{messageId}"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.path.messageId: "method.request.path.messageId"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          401:
+            statusCode: "401"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          500:
+            statusCode: "500"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PUT"
+        type: "http"
   '/v1/sales-services/accounts/{accountId}/payment':
     post:
       tags:
