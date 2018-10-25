@@ -87,7 +87,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
-  /v1/account-management/users/validation/{documentType}:
+  /v1/account-management/users/anon:
     post:
       tags:
       - onboarding
@@ -96,8 +96,73 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "documentType"
-        in: "path"
+      - in: "body"
+        name: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/UserCreate"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+  /v1/account-management/users/anon/{userId}:
+    put:
+      tags:
+      - onboarding
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
         required: true
         type: "string"
       - in: "body"
@@ -136,9 +201,9 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/validation/{documentType}"
+        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon/{userId}"
         requestParameters:
-          integration.request.path.documentType: "method.request.path.documentType"
+          integration.request.path.userId: "method.request.path.userId"
         responses:
           200:
             statusCode: "200"
@@ -156,7 +221,7 @@ paths:
           500:
             statusCode: "500"
         passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
+        httpMethod: "PUT"
         type: "http"
   /v1/account-management/users/confirmation/{id}:
     put:
@@ -814,22 +879,22 @@ paths:
   '/v1/customer-management/notification/{messageId}':
     put:
       tags:
-        - notification-controller
+      - notification-controller
       summary: updateNotificationUserById
       operationId: updateNotificationUserByIdUsingPUT
       consumes:
-        - application/json
+      - application/json
       parameters:
-        - name: messageId
-          in: path
-          description: messageId
-          required: true
-          type: string
-          format: uuid
-        - name: "access-token"
-          in: "header"
-          required: true
-          type: "string"
+      - name: messageId
+        in: path
+        description: messageId
+        required: true
+        type: string
+        format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -1458,9 +1523,14 @@ definitions:
   Validation:
     type: "object"
     properties:
-      phone:
+      documentType:
         type: "string"
-        description: "Phone miner"
+        description: "document type"
+        enum:
+        - CHILE_OLD_ID
+        - CHILE_NEW_ID
+        - PASSPORT
+        - PERU_OLD_ID
       face:
         type: "string"
         description: "Person face image"
@@ -1776,3 +1846,8 @@ definitions:
         type: string
       amount:
         type: number
+  UserCreate:
+    type: object
+    properties:
+      email:
+        type: string
