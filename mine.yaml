@@ -855,6 +855,8 @@ paths:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
+      security:
+      - MineAuth: []
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/configuration"
         requestParameters:
