@@ -1622,6 +1622,9 @@ definitions:
       front:
         type: "string"
         description: "Image front of the document"
+      angle:
+        type: "string"
+        description: "rotate angle of back and front image"
   Notification:
     type: "object"
     properties:
