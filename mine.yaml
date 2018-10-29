@@ -1566,10 +1566,10 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  /v1/account-management/users/policies/password:
+  /v1/account-management/users/anon/policies/password:
     get:
       tags:
-      - parameters-request
+      - onboarding
       produces:
       - "application/json"
       parameters:
@@ -1610,7 +1610,7 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/policies/password"
+        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon/policies/password"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
         responses:
@@ -2065,5 +2065,13 @@ definitions:
   PasswordPattern:
     type: object
     properties:
-      regex:
+      regexLowerLetter:
+        type: string
+      regexUpperLetter:
+        type: string
+      regexNumber:
+        type: string
+      regexSpecialCharacter:
+        type: string
+      regexMinLength:
         type: string
