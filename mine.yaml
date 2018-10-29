@@ -2065,5 +2065,13 @@ definitions:
   PasswordPattern:
     type: object
     properties:
-      regex:
+      regexLowerLetter:
+        type: string
+      regexUpperLetter:
+        type: string
+      regexNumber:
+        type: string
+      regexSpecialCharacter:
+        type: string
+      regexMinLength:
         type: string
