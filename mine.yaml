@@ -1569,7 +1569,7 @@ paths:
   /v1/account-management/users/anon/policies/password:
     get:
       tags:
-      - parameters-request
+      - onboarding
       produces:
       - "application/json"
       parameters:
