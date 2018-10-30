@@ -1217,6 +1217,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '422':
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/ResponseStatus'
       deprecated: false
       security:
       - MineAuth: []
