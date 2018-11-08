@@ -912,14 +912,12 @@ paths:
           description: "400 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
         500:
           description: "500 response"
           schema:
             $ref: "#/definitions/ResponseStatus"
+        422:
+          description: Unprocessable Entity
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
@@ -940,6 +938,9 @@ paths:
             statusCode: "401"
           500:
             statusCode: "500"
+          422:
+            statusCode: "422"
+            description: Unprocessable Entity
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
