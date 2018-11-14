@@ -87,146 +87,11 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
-  /v1/account-management/users/anon:
+  # START USERS-MS
+  /v1/device-management/devices:
     post:
       tags:
-      - onboarding
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "request"
-        required: true
-        schema:
-          $ref: "#/definitions/UserCreate"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "http"
-  /v1/account-management/users/anon/{userId}:
-    put:
-      tags:
-      - onboarding
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "path"
-        name: "userId"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "request"
-        required: true
-        schema:
-          $ref: "#/definitions/Validation"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon/{userId}"
-        requestParameters:
-          integration.request.path.userId: "method.request.path.userId"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "PUT"
-        type: "http"
-  /v1/account-management/users/confirmation/{id}:
-    put:
-      tags:
-      - onboarding
+      - device-management
       consumes:
       - "application/json"
       produces:
@@ -236,11 +101,11 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: "id"
-        in: "path"
+      - in: "body"
+        name: "request"
         required: true
-        type: "string"
-        format: "uuid"
+        schema:
+          $ref: "#/definitions/Device"
       responses:
         200:
           description: "200 response"
@@ -274,76 +139,7 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/confirmation/{id}"
-        requestParameters:
-          integration.request.path.id: "method.request.path.id"
-          integration.request.header.access-token: "method.request.header.access-token"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "PUT"
-        type: "http"
-  /v1/account-management/users/signed:
-    post:
-      tags:
-      - onboarding
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/signed"
+        uri: "http://${stageVariables.urlUsers}/v1/device-management/devices"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
         responses:
@@ -438,6 +234,400 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
+  # END USERS-MS
+  # START ONBOARDING-MS
+  /v1/onboarding/authorization/{id}/create:
+    post:
+      tags:
+      - onboarding
+      summary: authCreateUser
+      operationId: authCreateUserUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - "application/json"
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: userAuthData
+        description: userAuthData
+        required: true
+        schema:
+          $ref: '#/definitions/UserAuthData'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/onboarding/authorization/{id}/create"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.querystring.latitude: "method.request.querystring.latitude"
+          integration.request.querystring.longitude: "method.request.querystring.longitude"
+          integration.request.querystring.quantity: "method.request.querystring.quantity"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+
+  /v1/onboarding/confirm/{id}:
+    put:
+      tags:
+      - onboarding
+      summary: confirmUser
+      operationId: confirmUserUsingPUT
+      consumes:
+      - application/json
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: confirmData
+        description: confirmData
+        required: true
+        schema:
+          $ref: '#/definitions/ConfirmData'
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/onboarding/confirm/{id}"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.querystring.latitude: "method.request.querystring.latitude"
+          integration.request.querystring.longitude: "method.request.querystring.longitude"
+          integration.request.querystring.quantity: "method.request.querystring.quantity"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PUT"
+        type: "http"
+
+  /v1/onboarding/create:
+    post:
+      tags:
+      - onboarding
+      summary: createUser
+      operationId: createUserUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: createData
+        description: createData
+        required: true
+        schema:
+          $ref: '#/definitions/CreateData'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/onboarding/create"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.querystring.latitude: "method.request.querystring.latitude"
+          integration.request.querystring.longitude: "method.request.querystring.longitude"
+          integration.request.querystring.quantity: "method.request.querystring.quantity"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+
+  /v1/onboarding/sign/{id}:
+    put:
+      tags:
+      - onboarding
+      summary: signUser
+      operationId: signUserUsingPUT
+      consumes:
+      - application/json
+      produces:
+      - "application/json"
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/onboarding/sign/{id}"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.querystring.latitude: "method.request.querystring.latitude"
+          integration.request.querystring.longitude: "method.request.querystring.longitude"
+          integration.request.querystring.quantity: "method.request.querystring.quantity"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.userId"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PUT"
+        type: "http"
+
+  /v1/onboarding/validate/{id}:
+    put:
+      tags:
+      - onboarding
+      summary: validateUser
+      operationId: validateUserUsingPUT
+      consumes:
+      - application/json
+      produces:
+      - "application/json"
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: validationData
+        description: validationData
+        required: true
+        schema:
+          $ref: '#/definitions/ValidationData'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/onboarding/validate/{id}"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.querystring.latitude: "method.request.querystring.latitude"
+          integration.request.querystring.longitude: "method.request.querystring.longitude"
+          integration.request.querystring.quantity: "method.request.querystring.quantity"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PUT"
+        type: "http"
+  # END ONBOARDING-MS
+
   /v1/payment-management/transfers:
     post:
       tags:
@@ -576,79 +766,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  /v1/device-management/devices:
-    post:
-      tags:
-      - device-management
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "request"
-        required: true
-        schema:
-          $ref: "#/definitions/Device"
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        422:
-          description: "422 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/device-management/devices"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          422:
-            statusCode: "422"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "http"
+
   /customer-management/notification:
     get:
       consumes:
@@ -1679,7 +1797,8 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  /v1/account-management/users/anon/policies/password:
+  #START IDENTITY PROVIDER MS
+  /v1/provider/users/policies/password:
     get:
       tags:
       - onboarding
@@ -1716,7 +1835,7 @@ paths:
           schema:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUsers}/v1/account-management/users/anon/policies/password"
+        uri: "http://${stageVariables.urlIdentityProvider}/v1/provider/users/policies/password"
         responses:
           200:
             statusCode: "200"
@@ -1736,6 +1855,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
+  #END IDENTITY PROVIDER MS
 
   /v1/account-management/users/logout:
     post:
@@ -2179,3 +2299,112 @@ definitions:
         type: string
       regexMinLength:
         type: string
+  ConfirmData:
+    type: object
+    properties:
+      address:
+        type: string
+      code:
+        type: string
+      password:
+        type: string
+      profession:
+        type: string
+    title: ConfirmData
+  CreateData:
+    type: object
+    properties:
+      email:
+        type: string
+    title: CreateData
+  CredentialResponseDTO:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      idToken:
+        type: string
+    title: CredentialResponseDTO
+  IdentityResponseDTO:
+    type: object
+    properties:
+      address:
+        type: string
+      birthdayDate:
+        type: string
+      document:
+        type: string
+      documentType:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+    title: IdentityResponseDTO
+  MinerDTO:
+    type: object
+    properties:
+      address:
+        type: string
+      birthdayDate:
+        type: string
+      document:
+        type: string
+      documentType:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      idIdentityProvider:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      phone:
+        type: string
+      profession:
+        type: string
+      state:
+        type: string
+        enum:
+        - PENDING
+        - VALIDATED
+        - CONFIRMED
+        - SIGNED
+    title: MinerDTO
+  UserAuthData:
+    type: object
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    title: UserAuthData
+  ValidationData:
+    type: object
+    properties:
+      angle:
+        type: string
+      back:
+        type: string
+      documentType:
+        type: string
+        enum:
+        - CHILE_OLD_ID
+        - CHILE_NEW_ID
+        - PASSPORT
+        - PERU_OLD_ID
+      face:
+        type: string
+      front:
+        type: string
+    title: ValidationData
