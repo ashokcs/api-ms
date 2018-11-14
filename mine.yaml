@@ -308,10 +308,7 @@ paths:
           500:
             statusCode: "500"
         requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.querystring.latitude: "method.request.querystring.latitude"
-          integration.request.querystring.longitude: "method.request.querystring.longitude"
-          integration.request.querystring.quantity: "method.request.querystring.quantity"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
@@ -388,10 +385,7 @@ paths:
           500:
             statusCode: "500"
         requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.querystring.latitude: "method.request.querystring.latitude"
-          integration.request.querystring.longitude: "method.request.querystring.longitude"
-          integration.request.querystring.quantity: "method.request.querystring.quantity"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "PUT"
         type: "http"
@@ -461,11 +455,6 @@ paths:
             statusCode: "422"
           500:
             statusCode: "500"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.querystring.latitude: "method.request.querystring.latitude"
-          integration.request.querystring.longitude: "method.request.querystring.longitude"
-          integration.request.querystring.quantity: "method.request.querystring.quantity"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
@@ -487,6 +476,10 @@ paths:
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         200:
           description: "200 response"
@@ -539,10 +532,8 @@ paths:
             statusCode: "500"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.querystring.latitude: "method.request.querystring.latitude"
-          integration.request.querystring.longitude: "method.request.querystring.longitude"
-          integration.request.querystring.quantity: "method.request.querystring.quantity"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.userId"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "PUT"
         type: "http"
@@ -619,10 +610,7 @@ paths:
           500:
             statusCode: "500"
         requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.querystring.latitude: "method.request.querystring.latitude"
-          integration.request.querystring.longitude: "method.request.querystring.longitude"
-          integration.request.querystring.quantity: "method.request.querystring.quantity"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "PUT"
         type: "http"
