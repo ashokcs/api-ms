@@ -84,6 +84,7 @@ paths:
           integration.request.querystring.latitude: "method.request.querystring.latitude"
           integration.request.querystring.longitude: "method.request.querystring.longitude"
           integration.request.querystring.quantity: "method.request.querystring.quantity"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
@@ -142,6 +143,7 @@ paths:
         uri: "http://${stageVariables.urlUsers}/v1/device-management/devices"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -215,6 +217,7 @@ paths:
         uri: "http://${stageVariables.urlUsers}/v1/account-management/users/contacts/filters"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -532,7 +535,7 @@ paths:
             statusCode: "500"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.header.x-mine-user-id: "context.authorizer.claims.userId"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "PUT"
@@ -670,6 +673,7 @@ paths:
         uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfers"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -737,6 +741,7 @@ paths:
         uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfers/requests"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -825,6 +830,7 @@ paths:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -927,6 +933,7 @@ paths:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/configuration"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -1030,6 +1037,7 @@ paths:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/configuration"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -1125,6 +1133,7 @@ paths:
         uri: "http://${stageVariables.urlUserExperience}/v1/account-management/accounts/{accountId}/movement-history"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
@@ -1242,6 +1251,7 @@ paths:
         uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/{messageId}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.messageId: "method.request.path.messageId"
         responses:
           200:
@@ -1335,6 +1345,7 @@ paths:
         uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{accountId}/payment"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
@@ -1411,6 +1422,7 @@ paths:
         uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{accountId}/payment/{paymentId}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.accountId: "method.request.path.accountId"
           integration.request.path.paymentId: "method.request.path.paymentId"
         responses:
@@ -1561,6 +1573,7 @@ paths:
         uri: "http://${stageVariables.urlAccounts}/v1/account-management/accounts"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -1626,6 +1639,7 @@ paths:
         uri: "http://${stageVariables.urlAccounts}/v1/account-management/accounts/{accountId}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
@@ -1692,6 +1706,7 @@ paths:
         uri: "http://${stageVariables.urlTransactions}/v1/account-management/accounts/{accountId}/transaction"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.path.accountId: "method.request.path.accountId"
         responses:
           200:
@@ -1766,6 +1781,7 @@ paths:
         uri: "http://${stageVariables.urlUsers}/v1/account-management/users/requests"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
@@ -1890,6 +1906,7 @@ paths:
         uri: "http://${stageVariables.urlUsers}/v1/account-management/users/logout"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
             statusCode: "200"
