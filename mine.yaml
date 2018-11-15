@@ -1056,7 +1056,7 @@ paths:
             statusCode: "422"
             description: Unprocessable Entity
         passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
+        httpMethod: "PUT"
         type: "http"
   /v1/customer-management/notification-seeeting/{userId}/configuration:
     post:
