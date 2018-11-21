@@ -1173,7 +1173,7 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlUserExperience}/v1/account-management/accounts/{accountId}/movement-history"
+        uri: "http://${stageVariables.urlMovementHistoryAdapter}/v1/account-management/accounts/{accountId}/movement-history"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
@@ -1978,7 +1978,7 @@ securityDefinitions:
     x-amazon-apigateway-authtype: "cognito_user_pools"
     x-amazon-apigateway-authorizer:
       providerARNs:
-      - "arn:aws:cognito-idp:us-east-1:271902360581:userpool/us-east-1_vjpVXPIhZ"
+      - "arn:aws:cognito-idp:us-east-1:271902360581:userpool/us-east-1_oBqMQWBUh"
       type: "cognito_user_pools"
 
 definitions:
