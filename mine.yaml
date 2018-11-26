@@ -3298,7 +3298,7 @@ definitions:
       firstNameReceiver:
         type: string
       lastNameReceiver:
-        type: stringv
+        type: string
       readStatus:
         type: string
       requestedDate:
