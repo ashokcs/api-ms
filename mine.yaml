@@ -682,7 +682,7 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
         passthroughBehavior: "when_no_match"
-        httpMethod: "PUT"
+        httpMethod: "POST"
         type: "http"
 
   # END IDENTITY-PROVIDER
