@@ -898,7 +898,7 @@ paths:
         httpMethod: "OPTIONS"
         type: "http"
   /v1/payment-management/transfer-request/{requestId}:
-    post:
+    patch:
       consumes:
       - "application/json"
       produces:
@@ -914,66 +914,6 @@ paths:
         required: true
         type: string
         format: uuid
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfer-request/{requestId}"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "http"
-    patch:
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
       - in: "body"
         name: "request"
         required: true
@@ -1012,6 +952,7 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.requestId: "method.request.path.requestId"
         responses:
           200:
             statusCode: "200"
@@ -1027,7 +968,7 @@ paths:
           500:
             statusCode: "500"
         passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
+        httpMethod: "PATCH"
         type: "http"
     get:
       consumes:
@@ -1039,6 +980,12 @@ paths:
         in: "header"
         required: true
         type: "string"
+      - name: requestId
+        in: path
+        description: requestId
+        required: true
+        type: string
+        format: uuid
       responses:
         200:
           description: "200 response"
@@ -1099,6 +1046,7 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.requestId: "method.request.path.requestId"
         responses:
           200:
             statusCode: "200"
@@ -1156,6 +1104,74 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         passthroughBehavior: "when_no_match"
         httpMethod: "OPTIONS"
+        type: "http"
+  /v1/payment-management/transfer-request/{requestId}/forward:
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
+      - name: requestId
+        in: path
+        description: requestId
+        required: true
+        type: string
+        format: uuid
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfer-request/{requestId}/forward"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.path.requestId: "method.request.path.requestId"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
         type: "http"
   /v1/payment-management/transfer-requested:
     get:
@@ -1252,215 +1268,6 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
           500:
             statusCode: "500"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
-        type: "http"
-    options:
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification/configuration"
-        responses:
-          default:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "OPTIONS"
-        type: "http"
-  /v1/payment-management/transfer-requested/{requestId}/request:
-    put:
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      - name: requestId
-        in: path
-        description: requestId
-        required: true
-        type: string
-        format: uuid
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfer-request/{requestId}/request"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.requestId: "method.request.path.requestId"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-          401:
-            statusCode: "401"
-          500:
-            statusCode: "500"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "PUT"
-        type: "http"
-    get:
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "access-token"
-        in: "header"
-        required: true
-        type: "string"
-      - name: requestId
-        in: path
-        description: requestId
-        required: true
-        type: string
-        format: uuid
-      responses:
-        200:
-          description: "200 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        400:
-          description: "400 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        401:
-          description: "401 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-        500:
-          description: "500 response"
-          schema:
-            $ref: "#/definitions/ResponseStatus"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-      security:
-      - MineAuth: []
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlTransfers}/v1/payment-management/transfer-request/{requestId}/request"
-        requestParameters:
-          integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-        responses:
-          200:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          400:
-            statusCode: "400"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          401:
-            statusCode: "401"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          500:
-            statusCode: "500"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-          423:
-            statusCode: "423"
             responseParameters:
               method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
               method.response.header.X-Requested-With: "'*'"
@@ -3068,7 +2875,7 @@ definitions:
       firstNameReceiver:
         type: string
       lastNameReceiver:
-        type: stringv
+        type: string
       readStatus:
         type: string
       requestedDate:
