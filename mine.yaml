@@ -2506,10 +2506,10 @@ paths:
         required: true
         type: "string"
       responses:
-        '200':
-          description: OK
+        200:
+          description: "200 response"
           schema:
-            $ref: '#/definitions/Account'
+            $ref: "#/definitions/ResponseStatus"
           headers:
             X-Requested-With:
               type: "string"
@@ -2519,12 +2519,22 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
       deprecated: false
       security:
       - MineAuth: []
