@@ -2185,7 +2185,6 @@ paths:
         httpMethod: "PATCH"
         type: "http"
 
-# FIN DE NOTIFICATION
   /v1/account-management/accounts/{accountId}/movement-history:
     get:
       consumes:
@@ -2798,6 +2797,457 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
+  # Final
+  /v1/account-management/me/accounts/{id}/rules:
+    get:
+      tags:
+      - user-account-api-controller
+      summary: getRules
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+
+  /v1/account-management/me/accounts/{id}/rules/{type}:
+    patch:
+      tags:
+      - user-account-api-controller
+      summary: changeState
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: ruleData
+        description: ruleData
+        required: true
+        schema:
+          $ref: '#/definitions/RuleInputData'
+      - name: type
+        in: path
+        description: type
+        required: true
+        type: string
+        enum:
+        - SCHEDULED_SAVINGS
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules/{type}"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+          integration.request.path.type: "method.request.path.type"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PATCH"
+        type: "http"
+
+  /v1/account-management/me/accounts/{id}/rules/{type}/items:
+    get:
+      tags:
+      - user-account-api-controller
+      summary: getRuleItems
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - name: type
+        in: path
+        description: type
+        required: true
+        type: string
+        enum:
+        - SCHEDULED_SAVINGS
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules/{type}/items"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+          integration.request.path.type: "method.request.path.type"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "http"
+
+    post:
+      tags:
+      - user-account-api-controller
+      summary: saveItem
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: item
+        description: item
+        required: true
+        schema:
+          $ref: '#/definitions/ItemAccountRuleData'
+      - name: type
+        in: path
+        description: type
+        required: true
+        type: string
+        enum:
+        - SCHEDULED_SAVINGS
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules/{type}/items"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+          integration.request.path.type: "method.request.path.type"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+
+    patch:
+      tags:
+      - user-account-api-controller
+      summary: updateItems
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - in: body
+        name: items
+        description: items
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/ItemAccountRuleBatchData'
+      - name: type
+        in: path
+        description: type
+        required: true
+        type: string
+        enum:
+        - SCHEDULED_SAVINGS
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules/{type}/items"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+          integration.request.path.type: "method.request.path.type"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PATCH"
+        type: "http"
+
+  /v1/account-management/me/accounts/{id}/rules/{type}/items/{itemId}:
+    delete:
+      tags:
+      - user-account-api-controller
+      summary: deleteItem
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        type: string
+        format: uuid
+      - name: itemId
+        in: path
+        description: itemId
+        required: true
+        type: string
+        format: uuid
+      - name: type
+        in: path
+        description: type
+        required: true
+        type: string
+        enum:
+        - SCHEDULED_SAVINGS
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+      security:
+      - MineAuth: []
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}/rules/{type}/items/{itemId}"
+        requestParameters:
+          integration.request.header.access-token: "method.request.header.access-token"
+          integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
+          integration.request.path.id: "method.request.path.id"
+          integration.request.path.type: "method.request.path.type"
+          integration.request.path.itemId: "method.request.path.itemId"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "DELETE"
+        type: "http"
+
+  #Inicio
 
   '/v1/account-management/me/accounts/{accountId}':
     get:
@@ -4142,3 +4592,35 @@ definitions:
       value:
         type: string
     title: ItemAccountConfigData
+  RuleInputData:
+    type: object
+    properties:
+      status:
+        type: boolean
+    title: RuleInputData
+  ItemAccountRuleData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+    title: ItemAccountRuleData
+  ItemAccountRuleBatchData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+      id:
+        type: string
+        format: uuid
+    title: ItemAccountRuleBatchData
+
