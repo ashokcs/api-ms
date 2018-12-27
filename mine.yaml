@@ -1874,7 +1874,7 @@ paths:
         httpMethod: "POST"
         type: "http"
 
-  /v1/customer-management/notification_setting/me/accounts/{accountId}/configuration:
+  /v1/customer-management/notification_setting/me/accounts/{id}/configuration:
     get:
       tags:
       - configuration-controller
@@ -1882,12 +1882,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         200:
           description: "200 response"
@@ -1915,10 +1919,10 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{accountId}/configuration"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{id}/configuration"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
           200:
@@ -1941,7 +1945,7 @@ paths:
         httpMethod: "GET"
         type: "http"
 
-  /v1/customer-management/notification_setting/me/accounts/{accountId}/configuration/{type}:
+  /v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}:
     patch:
       tags:
       - configuration-controller
@@ -1951,12 +1955,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       - in: body
         name: ruleData
         description: ruleData
@@ -1997,10 +2005,10 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{accountId}/configuration/{type}"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
           integration.request.path.type: "method.request.path.type"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
@@ -2024,7 +2032,7 @@ paths:
         httpMethod: "PATCH"
         type: "http"
 
-  /v1/customer-management/notification_setting/me/accounts/{accountId}/configuration/{type}/items:
+  /v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}/items:
     get:
       tags:
       - configuration-controller
@@ -2034,12 +2042,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       - name: type
         in: path
         description: type
@@ -2074,10 +2086,10 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{accountId}/configuration/{type}/items"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}/items"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
           integration.request.path.type: "method.request.path.type"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
@@ -2110,12 +2122,16 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       - in: body
         name: items
         description: items
@@ -2158,10 +2174,10 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{accountId}/configuration/{type}/items"
+        uri: "http://${stageVariables.urlNotification}/v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}/items"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
           integration.request.path.type: "method.request.path.type"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
         responses:
@@ -2185,7 +2201,7 @@ paths:
         httpMethod: "PATCH"
         type: "http"
 
-  /v1/account-management/accounts/{accountId}/movement-history:
+  /v1/account-management/accounts/{id}/movement-history:
     get:
       consumes:
       - "application/json"
@@ -2193,7 +2209,7 @@ paths:
       - "application/json"
       parameters:
       - in: "path"
-        name: "accountId"
+        name: "id"
         required: true
         type: "string"
         format: "uuid"
@@ -2257,11 +2273,11 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlMovementHistoryAdapter}/v1/account-management/accounts/{accountId}/movement-history"
+        uri: "http://${stageVariables.urlMovementHistoryAdapter}/v1/account-management/accounts/{id}/movement-history"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
@@ -2412,7 +2428,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "PUT"
         type: "http"
-  '/v1/sales-services/accounts/{accountId}/payment':
+  /v1/sales-services/accounts/{id}/payment:
     post:
       tags:
       - payment-api
@@ -2427,9 +2443,9 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -2469,11 +2485,11 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{accountId}/payment"
+        uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{id}/payment"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
@@ -2493,7 +2509,7 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
         type: "http"
-  '/v1/sales-services/accounts/{accountId}/payment/{paymentId}':
+  '/v1/sales-services/accounts/{id}/payment/{paymentId}':
     put:
       tags:
       - payment-api
@@ -2508,9 +2524,9 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -2546,11 +2562,11 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{accountId}/payment/{paymentId}"
+        uri: "http://${stageVariables.urlPaymentOrder}/v1/sales-services/accounts/{id}/payment/{paymentId}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.accountId"
           integration.request.path.paymentId: "method.request.path.paymentId"
         responses:
           200:
@@ -2812,6 +2828,10 @@ paths:
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -2877,6 +2897,10 @@ paths:
         required: true
         type: string
         format: uuid
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       - in: body
         name: ruleData
         description: ruleData
@@ -2961,6 +2985,10 @@ paths:
         type: string
         enum:
         - SCHEDULED_SAVINGS
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -3039,6 +3067,10 @@ paths:
         type: string
         enum:
         - SCHEDULED_SAVINGS
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -3119,6 +3151,10 @@ paths:
         type: string
         enum:
         - SCHEDULED_SAVINGS
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -3196,6 +3232,10 @@ paths:
         type: string
         enum:
         - SCHEDULED_SAVINGS
+      - name: "access-token"
+        in: "header"
+        required: true
+        type: "string"
       responses:
         '200':
           description: OK
@@ -3249,7 +3289,7 @@ paths:
 
   #Inicio
 
-  '/v1/account-management/me/accounts/{accountId}':
+  /v1/account-management/me/accounts/{id}:
     get:
       tags:
       - account-api-controller
@@ -3258,9 +3298,9 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -3302,11 +3342,11 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{accountId}"
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
@@ -3483,7 +3523,7 @@ paths:
         httpMethod: "DELETE"
         type: "http"
 
-  '/v1/account-management/accounts/{accountId}/transaction':
+  /v1/account-management/accounts/{id}/transaction:
     get:
       tags:
       - transaction-api
@@ -3492,9 +3532,9 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -3526,11 +3566,11 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlTransactions}/v1/account-management/accounts/{accountId}/transaction"
+        uri: "http://${stageVariables.urlTransactions}/v1/account-management/accounts/{id}/transaction"
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
