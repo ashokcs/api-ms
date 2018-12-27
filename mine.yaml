@@ -3038,7 +3038,6 @@ paths:
         passthroughBehavior: "when_no_match"
         httpMethod: "GET"
         type: "http"
-
     post:
       tags:
       - user-account-api-controller
@@ -3072,10 +3071,10 @@ paths:
         required: true
         type: "string"
       responses:
-        '200':
-          description: OK
+        200:
+          description: "200 response"
           schema:
-            $ref: '#/definitions/MyAccountsResponse'
+            $ref: "#/definitions/ResponseStatus"
           headers:
             X-Requested-With:
               type: "string"
@@ -3085,12 +3084,22 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
       deprecated: false
       security:
       - MineAuth: []
@@ -3156,10 +3165,10 @@ paths:
         required: true
         type: "string"
       responses:
-        '200':
-          description: OK
+        200:
+          description: "200 response"
           schema:
-            $ref: '#/definitions/MyAccountsResponse'
+            $ref: "#/definitions/ResponseStatus"
           headers:
             X-Requested-With:
               type: "string"
@@ -3169,12 +3178,22 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
       deprecated: false
       security:
       - MineAuth: []
@@ -3237,10 +3256,10 @@ paths:
         required: true
         type: "string"
       responses:
-        '200':
-          description: OK
+        200:
+          description: "200 response"
           schema:
-            $ref: '#/definitions/MyAccountsResponse'
+            $ref: "#/definitions/ResponseStatus"
           headers:
             X-Requested-With:
               type: "string"
@@ -3250,12 +3269,22 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
       deprecated: false
       security:
       - MineAuth: []
@@ -3384,9 +3413,9 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/AccountTypeUpdateRequest'
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -3423,7 +3452,7 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{accountId}"
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}"
         responses:
           200:
             statusCode: "200"
@@ -3443,7 +3472,7 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "PATCH"
         type: "http"
@@ -3459,9 +3488,9 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: accountId
+      - name: id
         in: path
-        description: accountId
+        description: id
         required: true
         type: string
         format: uuid
@@ -3498,7 +3527,7 @@ paths:
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{accountId}"
+        uri: "http://${stageVariables.urlAccounts}/v1/account-management/me/accounts/{id}"
         responses:
           200:
             statusCode: "200"
@@ -3518,7 +3547,7 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.path.accountId: "method.request.path.accountId"
+          integration.request.path.id: "method.request.path.id"
         passthroughBehavior: "when_no_match"
         httpMethod: "DELETE"
         type: "http"
