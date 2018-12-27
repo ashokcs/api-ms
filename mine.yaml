@@ -5083,6 +5083,63 @@ definitions:
         type: number
       description:
         type: string
+  SuggestedPaymentDto:
+    type: object
+    properties:
+      totalDebt:
+        type: number
+      currentBalance:
+        type: number
+      userId:
+        type: string
+        format: uuid
+      paymentCompanyId:
+        type: string
+      paymentCompanyName:
+        type: string
+      categoryId:
+        type: string
+        format: uuid
+      categoryName:
+        type: string
+      debtsMessage:
+        type: string
+      userIdentifier:
+        type: string
+      identifierType:
+        type: string
+      favorite:
+        type: boolean
+      suggestedState:
+        type: boolean
+      registerDateTime:
+        type: string
+      updateDateTime:
+        type: string
+      transactionNumber:
+        type: string
+      paymentIdentifier:
+        type: string
+      accountId:
+        type: string
+        format: uuid
+      currency:
+        type: string
+      lstDebtsDetail:
+        type: array
+        items:
+          $ref: '#/definitions/DebtsDetailDto'
+  DebtsDetailDto:
+    type: object
+    properties:
+      debtsType:
+        type: string
+      debtsAmount:
+        type: number
+      debtsDescriptionType:
+        type: string
+      state:
+        type: boolean
   Transference:
     type: object
     properties:
