@@ -618,6 +618,305 @@ paths:
         httpMethod: "PUT"
         type: "http"
   # END ONBOARDING-MS
+  # START SOFT-ONBOARDING-MS
+  /v1/soft-onboarding/users:
+    post:
+      tags:
+        - soft-onboarding-controller
+      summary: createUser
+      operationId: createUserUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: userLogin
+          description: userLogin
+          required: true
+          schema:
+            $ref: '#/definitions/UserLogin'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MinerDTO"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "http"
+  /v1/soft-onboarding/users/{id}/confirm-phone:
+    patch:
+      tags:
+        - soft-onboarding-controller
+      summary: confirmPhone
+      operationId: confirmPhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: phoneValidation
+          description: phoneValidation
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhoneValidation'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MinerDTO"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/confirm-phone"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PATCH"
+        type: "http"
+  /v1/soft-onboarding/users/{id}/update-personal-data:
+    patch:
+      tags:
+        - soft-onboarding-controller
+      summary: updatePersonalData
+      operationId: updatePersonalDataUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: data
+          description: data
+          required: true
+          schema:
+            $ref: '#/definitions/UserPersonalData'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MinerDTO"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/update-personal-data"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PATCH"
+        type: "http"
+  /v1/soft-onboarding/users/{id}/update-phone:
+    patch:
+      tags:
+        - soft-onboarding-controller
+      summary: updatePhone
+      operationId: updatePhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: phone
+          description: phone
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhone'
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/MinerDTO"
+          headers:
+            X-Requested-With:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        401:
+          description: "401 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+      x-amazon-apigateway-integration:
+        uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/update-phone"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
+        responses:
+          200:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+          400:
+            statusCode: "400"
+          401:
+            statusCode: "401"
+          422:
+            statusCode: "422"
+          500:
+            statusCode: "500"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PATCH"
+        type: "http"
+  
+  # END SOFT-ONBOARDING-MS
   # START IDENTITY-PROVIDER
   /v1/provider/users/authentication/logout:
     post:
@@ -5222,6 +5521,47 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Configuration'
+  UserLogin:
+    type: object
+    properties:
+      email:
+        type: string
+    title: UserLogin
+  UserPersonalData:
+    type: object
+    properties:
+      documentNumber:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - ACTIVE
+    title: UserPersonalData
+  UserPhone:
+    type: object
+    properties:
+      countryCode:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+    title: UserPhone
+  UserPhoneValidation:
+    type: object
+    properties:
+      code:
+        type: string
+      password:
+        type: string
+    title: UserPhoneValidation
   Configuration:
     type: object
     properties:
@@ -5687,7 +6027,7 @@ definitions:
     properties:
       address:
         type: string
-      birthdayDate:
+      countryCode:
         type: string
       document:
         type: string
@@ -5707,15 +6047,13 @@ definitions:
         type: string
       phone:
         type: string
-      profession:
-        type: string
       state:
         type: string
         enum:
-        - PENDING
-        - VALIDATED
-        - CONFIRMED
-        - SIGNED
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - ACTIVE
     title: MinerDTO
   UserAuthData:
     type: object
