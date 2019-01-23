@@ -742,6 +742,8 @@ paths:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/confirm-phone"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
@@ -816,6 +818,8 @@ paths:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/update-personal-data"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
@@ -890,6 +894,8 @@ paths:
             $ref: "#/definitions/ResponseStatus"
       x-amazon-apigateway-integration:
         uri: "http://${stageVariables.urlOnboarding}/v1/soft-onboarding/users/{id}/update-phone"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
         responses:
           200:
             statusCode: "200"
