@@ -5533,7 +5533,6 @@ paths:
         requestParameters:
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.header.access-token: "method.request.header.access-token"
-          integration.request.path.companyId: "method.request.path.companyId"
           integration.request.querystring.event_config: "method.request.querystring.event_config"
           integration.request.querystring.action: "method.request.querystring.action"
         passthroughBehavior: "when_no_match"
