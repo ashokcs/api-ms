@@ -4561,6 +4561,10 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
+        422:
+          description: "422 response"
+          schema:
+            $ref: "#/definitions/ResponseStatus"
       security:
       - MineAuth: []
       x-amazon-apigateway-integration:
@@ -4594,6 +4598,8 @@ paths:
               method.response.header.X-Requested-With: "'*'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
+          422:
+            statusCode: "422"
         requestParameters:
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
           integration.request.header.access-token: "method.request.header.access-token"
@@ -5426,7 +5432,7 @@ paths:
         httpMethod: "OPTIONS"
         type: "http"
   /v1/payments-kyc/payments/config:
-    get:
+    post:
       produces:
       - "application/json"
       parameters:
@@ -5536,33 +5542,7 @@ paths:
           integration.request.querystring.event_config: "method.request.querystring.event_config"
           integration.request.querystring.action: "method.request.querystring.action"
         passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
-        type: "http"
-    options:
-      responses:
-        200:
-          description: "200 response"
-          headers:
-            X-Requested-With:
-              type: "string"
-            Access-Control-Allow-Origin:
-              type: "string"
-            Access-Control-Allow-Methods:
-              type: "string"
-            Access-Control-Allow-Headers:
-              type: "string"
-      x-amazon-apigateway-integration:
-        uri: "http://${stageVariables.urlPaymentOrder}/v1/payments-kyc/payments/config"
-        responses:
-          default:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,PUT,PATCH,OPTIONS'"
-              method.response.header.X-Requested-With: "'*'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "OPTIONS"
+        httpMethod: "POST"
         type: "http"
   /v1/payments-kyc/payments/{companyId}/identifiers:
     get:
@@ -5937,7 +5917,6 @@ securityDefinitions:
       providerARNs:
       - "arn:aws:cognito-idp:us-east-1:271902360581:userpool/us-east-1_oBqMQWBUh"
       type: "cognito_user_pools"
-
 definitions:
   ResponseStatus:
     type: "object"
