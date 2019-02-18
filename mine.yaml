@@ -176,6 +176,12 @@ paths:
         in: "header"
         required: true
         type: "string"
+      - name: "userId"
+        in: query
+        description: userId
+        required: true
+        type: string
+        format: uuid
       - in: "body"
         name: "request"
         required: true
