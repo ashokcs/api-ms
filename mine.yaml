@@ -176,12 +176,6 @@ paths:
         in: "header"
         required: true
         type: "string"
-      - name: "userId"
-        in: query
-        description: userId
-        required: true
-        type: string
-        format: uuid
       - in: "body"
         name: "request"
         required: true
@@ -224,7 +218,6 @@ paths:
         requestParameters:
           integration.request.header.access-token: "method.request.header.access-token"
           integration.request.header.x-mine-user-id: "context.authorizer.claims.custom:user_id"
-          integration.request.querystring.userId: "method.request.querystring.userId"
         responses:
           200:
             statusCode: "200"
