@@ -1204,7 +1204,7 @@ paths:
         name: "request"
         required: true
         schema:
-          $ref: "#/definitions/TransferRequest"
+          $ref: "#/definitions/CollectionModel"
       responses:
         200:
           description: "200 response"
@@ -6300,6 +6300,27 @@ definitions:
       angle:
         type: "string"
         description: "rotate angle of back and front image"
+  CollectionModel:
+    type: object
+    properties:
+      collection:
+        type: array
+        items:
+          $ref: '#/definitions/TransferRequestData'
+    title: CollectionModel
+  TransferRequestData:
+    type: object
+    properties:
+      amount:
+        type: number
+      message:
+        type: string
+      phone:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: TransferRequestData
   Notification:
     type: "object"
     properties:
@@ -7052,4 +7073,3 @@ definitions:
         type: string
         format: uuid
     title: ItemAccountRuleBatchData
-
