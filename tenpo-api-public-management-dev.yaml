@@ -1,0 +1,126 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Tenpo API Public
+host: fpneuor4s9.execute-api.us-east-1.amazonaws.com
+basePath: /DEV
+schemes:
+  - https
+paths:
+  /v1/onboarding/users:
+    post:
+      tags:
+        - on-boarding-controller
+      summary: createUser
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: userInfoRequest
+          description: userInfoRequest
+          required: true
+          schema:
+            $ref: '#/definitions/UserInfoRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/sales-services/physical-point:
+    get:
+      produces:
+        - "application/json"
+      parameters:
+        - name: lat
+          in: query
+          description: lat
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+        - name: lng
+          in: query
+          description: lng
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PhysicalPointDto'
+definitions:
+  UserInfoRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      nationality:
+        type: string
+      profession:
+        type: string
+    title: UserInfoRequest
+  OnBoardingResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      documentSeries:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      idToken:
+        type: string
+      lastName:
+        type: string
+      level:
+        type: string
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+    title: OnBoardingResponse
+  PhysicalPointDto:
+    type: object
+    properties:
+      points:
+        type: array
+        items:
+          $ref: '#/definitions/PointDto'
+    title: PhysicalPointDto
