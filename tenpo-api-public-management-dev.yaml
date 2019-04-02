@@ -124,3 +124,17 @@ definitions:
         items:
           $ref: '#/definitions/PointDto'
     title: PhysicalPointDto
+  PointDto:
+    type: object
+    properties:
+      address:
+        type: string
+      commerce:
+        type: string
+      latitude:
+        type: number
+        format: float
+      longitude:
+        type: number
+        format: float
+    title: PointDto
