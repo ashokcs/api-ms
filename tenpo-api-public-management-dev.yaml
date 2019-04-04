@@ -38,11 +38,35 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /v1/sales-services/physical-point:
+    get:
+      produces:
+        - "application/json"
+      parameters:
+        - name: lat
+          in: query
+          description: lat
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+        - name: lng
+          in: query
+          description: lng
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PhysicalPointDto'
   /v1/onboarding/users:
     post:
       tags:
-        - on-boarding-controller
-      summary: createUser
+        - mobile-on-boarding-controller
+      summary: create
       operationId: createUsingPOST
       consumes:
         - application/json
@@ -69,45 +93,203 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /v1/sales-services/physical-point:
-    get:
+  '/v1/onboarding/users/{id}/address':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updateAddress
+      operationId: updateAddressUsingPATCH
+      consumes:
+        - application/json
       produces:
-        - "application/json"
+        - '*/*'
       parameters:
-        - name: lat
-          in: query
-          description: lat
+        - in: body
+          name: addressInfoRequest
+          description: addressInfoRequest
           required: true
-          type: number
-          format: float
-          allowEmptyValue: false
-        - name: lng
-          in: query
-          description: lng
+          schema:
+            $ref: '#/definitions/AddressRequest'
+        - name: id
+          in: path
+          description: id
           required: true
-          type: number
-          format: float
-          allowEmptyValue: false
+          type: string
+          format: uuid
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/PhysicalPointDto'
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/confirm-device':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: confirmPhone
+      operationId: confirmPhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: phoneValidation
+          description: phoneValidation
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhoneValidationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/password':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updatePassword
+      operationId: updatePasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: passwordRequest
+          description: passwordRequest
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users/{id}/validate':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updateIdentity
+      operationId: updateIdentityUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: identityInfoRequest
+          description: identityInfoRequest
+          required: true
+          schema:
+            $ref: '#/definitions/IdentityInfoRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/validate-device':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updatePhone
+      operationId: updatePhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhoneRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
 definitions:
-  UserInfoRequest:
+  AddressRequest:
     type: object
     properties:
-      email:
+      address:
         type: string
-      firstName:
+      regionCode:
+        type: integer
+        format: int32
+    title: AddressRequest
+  IdentityInfoRequest:
+    type: object
+    properties:
+      rut:
         type: string
-      lastName:
+      series:
         type: string
-      nationality:
-        type: string
-      profession:
-        type: string
-    title: UserInfoRequest
+      terms:
+        type: boolean
+    title: IdentityInfoRequest
   OnBoardingResponse:
     type: object
     properties:
@@ -147,6 +329,162 @@ definitions:
       state:
         type: string
     title: OnBoardingResponse
+  PasswordRequest:
+    type: object
+    properties:
+      password:
+        type: string
+    title: PasswordRequest
+  Region:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: Region
+  UserDeviceData:
+    type: object
+    properties:
+      deviceState:
+        type: string
+        enum:
+          - ACTIVE
+          - INACTIVE
+      deviceType:
+        type: string
+      notificationToken:
+        type: string
+    title: UserDeviceData
+  UserInfoRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      nationality:
+        type: string
+      profession:
+        type: string
+    title: UserInfoRequest
+  UserPhoneRequest:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+    title: UserPhoneRequest
+  UserPhoneValidationRequest:
+    type: object
+    properties:
+      code:
+        type: string
+    title: UserPhoneValidationRequest
+  UserRequest:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      documentSeries:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+    title: UserRequest
+  UserResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      documentSeries:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      qrKey:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+    title: UserResponse
   PhysicalPointDto:
     type: object
     properties:
