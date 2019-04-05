@@ -40,8 +40,14 @@ paths:
       deprecated: false
   /v1/sales-services/physical-point:
     get:
+      tags:
+        - physical-point
+      summary: physical-point
+      operationId: physical-point-GET
+      consumes:
+        - application/json
       produces:
-        - "application/json"
+        - application/json
       parameters:
         - name: lat
           in: query
