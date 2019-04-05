@@ -276,6 +276,57 @@ paths:
         '403':
           description: Forbidden
       deprecated: false
+  /v1/user-management/regions:
+    get:
+      tags:
+        - region-controller
+      summary: getRegions
+      operationId: getRegionsUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/regions/{id}':
+    get:
+      tags:
+        - region-controller
+      summary: getRegionsByParent
+      operationId: getRegionsByParentUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   AddressRequest:
     type: object
@@ -513,3 +564,12 @@ definitions:
         type: number
         format: float
     title: PointDto
+  RegionEntity:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: RegionEntity
