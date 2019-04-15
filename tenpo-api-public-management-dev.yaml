@@ -7,7 +7,7 @@ basePath: /DEV
 schemes:
   - https
 paths:
-  '/v1/account-management/accounts/{userId}/on-site/cash-in/generate-code':
+  '/v1/account-management/accounts/{userId}/on-site/generate-code':
     post:
       tags:
         - transaction-cash-in-api-controller
