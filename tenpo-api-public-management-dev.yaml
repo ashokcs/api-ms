@@ -77,7 +77,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - in: body
           name: userInfoRequest
@@ -108,7 +108,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - in: body
           name: addressInfoRequest
@@ -143,7 +143,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - name: id
           in: path
@@ -152,11 +152,11 @@ paths:
           type: string
           format: uuid
         - in: body
-          name: phoneValidation
-          description: phoneValidation
+          name: request
+          description: request
           required: true
           schema:
-            $ref: '#/definitions/UserPhoneValidationRequest'
+            $ref: '#/definitions/ConfirmDeviceRequest'
       responses:
         '200':
           description: OK
@@ -178,7 +178,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - name: id
           in: path
@@ -195,8 +195,6 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/OnBoardingResponse'
         '201':
           description: Created
         '401':
@@ -215,7 +213,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - name: id
           in: path
@@ -250,7 +248,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - application/json
+        - '*/*'
       parameters:
         - name: id
           in: path
@@ -263,7 +261,7 @@ paths:
           description: request
           required: true
           schema:
-            $ref: '#/definitions/UserPhoneRequest'
+            $ref: '#/definitions/ValidateDeviceRequest'
       responses:
         '200':
           description: OK
@@ -376,7 +374,90 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /v1/user-management/users/validate-tributary-identifier:
+    post:
+      tags:
+        - user-controller
+      summary: validateTributaryIdentifier
+      operationId: validateTributaryIdentifierUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/DocumentRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users/{id}/resend-verification-code':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: resendVerificationCode
+      operationId: resendVerificationCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhoneRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
+  ValidateDeviceRequest:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: ValidateDeviceRequest
+  DocumentRequest:
+    type: object
+    properties:
+      tributaryIdentifier:
+        type: string
+    title: DocumentRequest
   CountryEntity:
     type: object
     properties:
@@ -405,24 +486,24 @@ definitions:
   IdentityInfoRequest:
     type: object
     properties:
-      rut:
-        type: string
-      series:
+      documentNumber:
         type: string
       terms:
         type: boolean
+      tributaryIdentifier:
+        type: string
     title: IdentityInfoRequest
-  OnBoardingResponse:
+  UserEntity:
     type: object
     properties:
       address:
         type: string
+      agreeTermsConditions:
+        type: boolean
       countryCode:
         type: integer
         format: int32
       documentNumber:
-        type: string
-      documentSeries:
         type: string
       email:
         type: string
@@ -431,18 +512,22 @@ definitions:
       id:
         type: string
         format: uuid
-      idToken:
-        type: string
       lastName:
         type: string
       level:
         type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
       nationality:
         type: string
       phone:
         type: string
       plan:
         type: string
+        enum:
+          - FREE
+          - PREMIUM
       profession:
         type: string
       regionCode:
@@ -450,6 +535,24 @@ definitions:
         format: int32
       state:
         type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  OnBoardingResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/UserEntity'
     title: OnBoardingResponse
   PasswordRequest:
     type: object
@@ -638,3 +741,12 @@ definitions:
       name:
         type: string
     title: RegionEntity
+  ConfirmDeviceRequest:
+    type: object
+    properties:
+      code:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: ConfirmDeviceRequest
