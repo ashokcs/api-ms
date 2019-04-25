@@ -3370,6 +3370,32 @@ paths:
           description: 404 response
       security:
         - MineAuth: []
+  /v1/user-management/me:
+    get:
+      tags:
+        - user-controller
+      summary: getCurrentUser
+      operationId: getCurrentUserUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: x-mine-user-id
+          in: header
+          description: x-mine-user-id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   Account:
     type: object
@@ -4026,3 +4052,64 @@ definitions:
           - IN
           - OUT
     title: PaymentRequestDto
+  UserEntity:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  UserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/UserEntity'
+    title: UserResponse
