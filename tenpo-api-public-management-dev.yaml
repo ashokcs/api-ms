@@ -2,72 +2,10 @@ swagger: '2.0'
 info:
   version: 1.0.0
   title: Tenpo API Public
-host: fpneuor4s9.execute-api.us-east-1.amazonaws.com
-basePath: /DEV
+host: 172.11.0.136:8080
 schemes:
-  - https
+  - http
 paths:
-  '/v1/account-management/accounts/{userId}/on-site/generate-code':
-    post:
-      tags:
-        - transaction-cash-in-api-controller
-      summary: generate-code
-      operationId: generateCodeUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: userId
-          in: path
-          description: userId
-          required: true
-          type: string
-          format: uuid
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: string
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-  /v1/sales-services/physical-point:
-    get:
-      tags:
-        - physical-point
-      summary: physical-point
-      operationId: physical-point-GET
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: lat
-          in: query
-          description: lat
-          required: true
-          type: number
-          format: float
-          allowEmptyValue: false
-        - name: lng
-          in: query
-          description: lng
-          required: true
-          type: number
-          format: float
-          allowEmptyValue: false
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PhysicalPointDto'
   /v1/onboarding/users:
     post:
       tags:
@@ -607,28 +545,6 @@ definitions:
           - ACTIVE
           - BLOCKED
     title: UserResponse
-  PhysicalPointDto:
-    type: object
-    properties:
-      points:
-        type: array
-        items:
-          $ref: '#/definitions/PointDto'
-    title: PhysicalPointDto
-  PointDto:
-    type: object
-    properties:
-      address:
-        type: string
-      commerce:
-        type: string
-      latitude:
-        type: number
-        format: float
-      longitude:
-        type: number
-        format: float
-    title: PointDto
   RegionEntity:
     type: object
     properties:
