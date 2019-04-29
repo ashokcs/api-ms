@@ -3439,9 +3439,9 @@ paths:
       produces:
         - '*/*'
       parameters:
-        - name: x-mine-user-id
+        - name: Authorization
           in: header
-          description: x-mine-user-id
+          description: Authorization
           required: true
           type: string
       responses:
