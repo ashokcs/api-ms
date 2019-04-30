@@ -6,6 +6,33 @@ host: 172.11.0.136:8080
 schemes:
   - http
 paths:
+  '/v1/user-management/users/{userId}/identity-validation/attempts':
+    get:
+      tags:
+        - user-controller
+      summary: getIdentityValidationAttempts
+      operationId: getIdentityValidationAttemptsUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/IdentityValidationAttemptsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   '/v1/user-management/upload-photos':
     post:
       tags:
@@ -355,6 +382,13 @@ paths:
           description: Not Found
       deprecated: false
 definitions:
+  IdentityValidationAttemptsResponse:
+    type: object
+    properties:
+      identityValidationAttempts:
+        type: integer
+        format: int32
+    title: IdentityValidationAttemptsResponse
   CountryEntity:
     type: object
     properties:
