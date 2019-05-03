@@ -37,7 +37,7 @@ paths:
     get:
       tags:
         - cards-controller
-      summary: getCardByUserId
+      summary: getCardDetailByUserId
       operationId: getCardByUserIdUsingGET
       produces:
         - '*/*'
@@ -127,7 +127,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /v1/onboarding/users:
+  '/v1/onboarding/users':
     post:
       tags:
         - mobile-on-boarding-controller
@@ -333,7 +333,7 @@ paths:
         '403':
           description: Forbidden
       deprecated: false
-  /v1/user-management/regions:
+  '/v1/user-management/regions':
     get:
       tags:
         - region-controller
@@ -384,7 +384,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /v1/user-management/countries:
+  '/v1/user-management/countries':
     get:
       tags:
         - countries-controller
@@ -433,7 +433,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /v1/user-management/users/validate-tributary-identifier:
+  '/v1/user-management/users/validate-tributary-identifier':
     post:
       tags:
         - user-controller
@@ -502,13 +502,6 @@ paths:
           description: Not Found
       deprecated: false
 definitions:
-  IdentityValidationAttemptsResponse:
-    type: object
-    properties:
-      identityValidationAttempts:
-      type: integer
-      format: int32
-    title: IdentityValidationAttemptsResponse
   CardInfoResponse:
     type: object
     properties:
