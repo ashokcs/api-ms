@@ -7,3 +7,6 @@ Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -Policy
 
 docker pull mcr.microsoft.com/powershell:6.2.0-alpine-3.8
 docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli generate -i /local/src/private/v1/accounts.yaml -l swagger
+
+
+docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli:2.4.5 generate -i src/private/v1/accounts.yaml -l swagger -o bin/private/v1/accounts
