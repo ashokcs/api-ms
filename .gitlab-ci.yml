@@ -32,7 +32,7 @@ swagger-validation:
   stage: deploy
   image: mcr.microsoft.com/powershell:6.2.0-alpine-3.8
   script:
-    - $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $RG_NAME -ServiceName $SV_NAME
+    - pwsh src/import.ps1
 
 release-deploy:
   extends: .config-deploy
