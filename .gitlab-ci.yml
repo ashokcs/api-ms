@@ -38,6 +38,9 @@ release-deploy:
   extends: .config-deploy
   only:
     - /^release.*$/
+  artifacts:
+    paths:
+      - bin/
   environment:
     name: uat
   variables:
