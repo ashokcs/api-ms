@@ -30,7 +30,7 @@ swagger-validation:
 
 .config-deploy:
   stage: deploy
-  image: mcr.microsoft.com/powershell:6.2.0-alpine-3.8
+  image: jaxkodex/powershell-az
   script:
     - pwsh src/import.ps1
 
@@ -44,6 +44,8 @@ release-deploy:
   environment:
     name: uat
   variables:
-    AZURE_TENANT_ID: $AZURE_TENANT_UAT_ID
     RESOURCE_GROUP_NAME: tenpo_uat
+    AZURE_TENANT_ID: $AZURE_TENANT_UAT_ID
     SERVICE_NAME: tenpo-uat-api-management
+    AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME
+    AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD
