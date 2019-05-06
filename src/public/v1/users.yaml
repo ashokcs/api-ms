@@ -1,0 +1,270 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Users - Tenpo public API - Users
+host: 40.70.68.63:8080
+basePath: /v1/user-management
+schemes:
+  - http
+paths:
+  '/users/{userId}/identity-validation/attempts':
+    get:
+      tags:
+        - user-controller
+      summary: getIdentityValidationAttempts
+      operationId: getIdentityValidationAttemptsUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/IdentityValidationAttemptsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/regions':
+    get:
+      tags:
+        - region-controller
+      summary: getRegions
+      operationId: getRegionsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/regions/{id}':
+    get:
+      tags:
+        - region-controller
+      summary: getRegionsByParent
+      operationId: getRegionsByParentUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/countries':
+    get:
+      tags:
+        - countries-controller
+      summary: getCountries
+      operationId: getCountriesUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CountryEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/countries/{id}':
+    get:
+      tags:
+        - countries-controller
+      summary: getCountryById
+      operationId: getCountryByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CountryEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/users/validate-tributary-identifier':
+    post:
+      tags:
+        - user-controller
+      summary: validateTributaryIdentifier
+      operationId: validateTributaryIdentifierUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/DocumentRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  DocumentRequest:
+    type: object
+    properties:
+      tributaryIdentifier:
+        type: string
+    title: DocumentRequest
+  IdentityValidationAttemptsResponse:
+    type: object
+    properties:
+      identityValidationAttempts:
+        type: integer
+        format: int32
+    title: IdentityValidationAttemptsResponse
+  CountryEntity:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      isoCode:
+        type: integer
+        format: int32
+      name:
+        type: string
+      threeCode:
+        type: string
+      twoCode:
+        type: string
+    title: CountryEntity
+  UserEntity:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  Region:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: Region
+  RegionEntity:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: RegionEntity
