@@ -1,0 +1,9 @@
+$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName "tenpo_uat" -ServiceName "tenpo-uat-api-management"
+Import-AzApiManagementApi -ApiId accounts-api -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "/Users/jorge/git/api/src/private/v1/accounts.json" -Path "/private/v1/account-management"
+Set-AzApiManagementApi -Context $ApiMgmtContext -Protocols @('https')
+
+Get-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId accounts-api -SaveAs "/Users/jorge/git/api/src/private/security_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -PolicyFilePath "/Users/jorge/git/api/src/private/security_policy.xml"
+
+docker pull mcr.microsoft.com/powershell:6.2.0-alpine-3.8
+docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli generate -i /local/src/private/v1/accounts.yaml -l swagger

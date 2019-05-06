@@ -1,0 +1,41 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+
+swagger-validation:
+  stage: build
+  image: swaggerapi/swagger-codegen-cli:2.4.5
+  artifacts:
+    paths:
+      - bin/
+  script:
+    - generate -i src/private/v1/accounts.yaml -l swagger -o bin/private/v1/accounts
+    - generate -i src/private/v1/devices.yaml -l swagger -o bin/private/v1/devices
+    - generate -i src/private/v1/identityprovider.yaml -l swagger -o bin/private/v1/identityprovider
+    - generate -i src/private/v1/notifications.yaml -l swagger -o bin/private/v1/notifications
+    - generate -i src/private/v1/paymentkyc.yaml -l swagger -o bin/private/v1/paymentkyc
+    - generate -i src/private/v1/payments.yaml -l swagger -o bin/private/v1/payments
+    - generate -i src/private/v1/transactions.yaml -l swagger -o bin/private/v1/transactions
+    - generate -i src/private/v1/users.yaml -l swagger -o bin/private/v1/users
+    - generate -i src/public/v1/cards.yaml -l swagger -o bin/public/v1/cards
+    - generate -i src/public/v1/onboarding.yaml -l swagger -o bin/public/v1/onboarding
+    - generate -i src/public/v1/users.yaml -l swagger -o bin/public/v1/uses
+
+.config-deploy:
+  stage: deploy
+  image: mcr.microsoft.com/powershell:6.2.0-alpine-3.8
+  script:
+    - $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $RG_NAME -ServiceName $SV_NAME
+
+release-deploy:
+  extends: .config-deploy
+  only:
+    - /^release.*$/
+  environment:
+    name: uat
+  variables:
+    RG_NAME: tenpo_uat
+    SV_NAME: tenpo-uat-api-management
