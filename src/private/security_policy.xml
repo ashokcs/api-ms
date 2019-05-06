@@ -1,0 +1,79 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
+    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
+    - Policies are applied in the order of their appearance, from the top down.
+    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+-->
+<policies>
+	<inbound>
+		<base />
+		<!--
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+            <openid-config url="https://login.microsoftonline.com/cae09fee-473e-48e2-99dc-3b7bf4a97411/.well-known/openid-configuration" />
+            <required-claims>
+                <claim name="aud">
+                    <value>00000002-0000-0000-c000-000000000000</value>
+                </claim>
+            </required-claims>
+        </validate-jwt>
+        -->
+		<!-- JWT validation -->
+		<send-request mode="new" response-variable-name="meResponse" timeout="30" ignore-error="true">
+			<set-url>https://graph.microsoft.com/v1.0/me</set-url>
+			<set-method>GET</set-method>
+			<set-header name="Authorization" exists-action="override">
+				<value>@(context.Request.Headers.GetValueOrDefault("Authorization", ""))</value>
+			</set-header>
+		</send-request>
+		<choose>
+			<when condition="@(((IResponse)context.Variables[&quot;meResponse&quot;]).StatusCode == 401)">
+				<return-response>
+					<set-status code="401" reason="Unauthorized" />
+					<set-header name="WWW-Authenticate" exists-action="override">
+						<value>Bearer error="invalid_token"</value>
+					</set-header>
+					<set-body>@{
+                        return new JObject(
+                            new JProperty("statusCode", 401),
+                            new JProperty("message", "Token de acceso inválido")
+                        ).ToString();
+                    }</set-body>
+				</return-response>
+			</when>
+		</choose>
+		<set-variable name="userAzureId" value="@{&#xA;            string oid = &quot;NOOID&quot;;&#xA;            string authHeader = context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;, &quot;&quot;);&#xA;            if (authHeader?.Length &gt; 0) {&#xA;                string[] authHeaderParts = authHeader.Split(' ');&#xA;                if (authHeaderParts?.Length == 2 &amp;&amp; authHeaderParts[0].Equals(&quot;Bearer&quot;)) {&#xA;                    Jwt jwt;&#xA;                    if (authHeaderParts[1].TryParseJwt(out jwt)) {&#xA;                        oid = jwt.Claims.GetValueOrDefault(&quot;oid&quot;, &quot;NOAPPID&quot;);&#xA;                    }&#xA;                }&#xA;            }&#xA;            return oid;&#xA;        }" />
+		<!-- Get user tenpo from oid -->
+		<send-request mode="new" response-variable-name="userResponse" timeout="20" ignore-error="true">
+			<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>
+			<set-method>GET</set-method>
+		</send-request>
+		<!-- Set x-mine-user-id header to request -->
+		<choose>
+			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 200)">
+				<set-header name="x-mine-user-id" exists-action="override">
+					<value>@{
+                        var body = ((IResponse)context.Variables["userResponse"]).Body.As&lt;JObject&gt;();
+                        var user = JObject.Parse(body.ToString())["user"];
+                        string userId = (string) JObject.Parse(user.ToString())["id"];
+                        return userId;
+                    }</value>
+				</set-header>
+			</when>
+		</choose>
+	</inbound>
+	<backend>
+		<base />
+	</backend>
+	<outbound>
+		<base />
+	</outbound>
+	<on-error>
+		<base />
+	</on-error>
+</policies>
