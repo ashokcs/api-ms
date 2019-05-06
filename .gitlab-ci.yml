@@ -41,5 +41,6 @@ release-deploy:
   environment:
     name: uat
   variables:
-    RG_NAME: tenpo_uat
-    SV_NAME: tenpo-uat-api-management
+    AZURE_TENANT_ID: $AZURE_TENANT_UAT_ID
+    RESOURCE_GROUP_NAME: tenpo_uat
+    SERVICE_NAME: tenpo-uat-api-management
