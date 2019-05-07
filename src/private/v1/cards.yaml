@@ -25,6 +25,8 @@ paths:
       responses:
         '200':
           description: OK
+          schema:
+            $ref: '#/definitions/ObfuscatedCardsResponse'
           headers:
             X-Requested-With:
               type: string
@@ -34,8 +36,6 @@ paths:
               type: string
             Access-Control-Allow-Headers:
               type: string
-          schema:
-            $ref: '#/definitions/ObfuscatedCardsResponse'
         '401':
           description: Unauthorized
         '403':
@@ -60,6 +60,8 @@ paths:
       responses:
         '200':
           description: OK
+          schema:
+            $ref: '#/definitions/CardInfoResponse'
           headers:
             X-Requested-With:
               type: string
@@ -69,8 +71,6 @@ paths:
               type: string
             Access-Control-Allow-Headers:
               type: string
-          schema:
-            $ref: '#/definitions/CardInfoResponse'
         '401':
           description: Unauthorized
         '403':
