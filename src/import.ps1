@@ -1,3 +1,8 @@
+$env:AZURE_ACCOUNT_NAME
+$env:AZURE_TENANT_ID
+$env:SERVICE_NAME
+$env:RESOURCE_GROUP_NAME
+
 $azureAccountName = $env:AZURE_ACCOUNT_NAME
 $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText -Force
 $tenantId = $env:AZURE_TENANT_ID
