@@ -19,7 +19,11 @@ function Import-Api {
     param([string] $msName, [string] $apiId, [string] $path)
     $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $path
+<<<<<<< HEAD
     Set-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
+=======
+    Set-AzApiManagementApi -ApiId accounts-api -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
+>>>>>>> origin/release_1.0.x
 }
 
 Import-Secure-Api -msName "accounts" -path "/private/v1/account-management" -apiId "accounts-api"
