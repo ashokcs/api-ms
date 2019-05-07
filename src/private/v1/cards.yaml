@@ -25,6 +25,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
           schema:
             $ref: '#/definitions/ObfuscatedCardsResponse'
         '401':
@@ -51,6 +60,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
           schema:
             $ref: '#/definitions/CardInfoResponse'
         '401':
