@@ -7,7 +7,7 @@ basePath: /v1/cards-management
 schemes:
   - http
 paths:
-  '/cards/{userId}':
+  '/cards':
     get:
       tags:
         - cards-controller
@@ -42,7 +42,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  '/cards/{userId}/details':
+  '/details':
     get:
       tags:
         - cards-controller
