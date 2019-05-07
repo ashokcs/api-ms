@@ -9,6 +9,7 @@ Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
 
 function Import-Secure-Api {
     param([string] $msName, [string] $apiId, [string] $path)
+    "Importing secure API $msName"
     $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/private/v1/$msName/swagger.json" -Path $path
     Set-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
@@ -17,6 +18,7 @@ function Import-Secure-Api {
 
 function Import-Api {
     param([string] $msName, [string] $apiId, [string] $path)
+    "Importing API $msName"
     $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $path
     Set-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
@@ -28,12 +30,12 @@ Import-Secure-Api -msName "identityprovider" -path "/private/v1/provider/users" 
 Import-Secure-Api -msName "notifications" -path "/private/v1/customer-management" -apiId "notifications-api"
 Import-Secure-Api -msName "paymentkyc" -path "/private/v1/payments-kyc" -apiId "paymentkyc-api"
 Import-Secure-Api -msName "payments" -path "/private/v1/sales-services" -apiId "payments-api"
-Import-Secure-Api -msName "transactions" -path "/private/v1/transaction-management" -apiId "transactions-api"
+Import-Secure-Api -msName "transactions" -path "/private/v1/account-management" -apiId "transactions-api"
 Import-Secure-Api -msName "users" -path "/private/v1/user-management" -apiId "users-api"
 
-Import-Secure-Api -msName "users" -path "/public/v1/user-management" -apiId "users-public-api"
-Import-Secure-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
-Import-Secure-Api -msName "cards" -path "/public/v1/cards-management" -apiId "cards-public-api"
+Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-public-api"
+Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
+Import-Api -msName "cards" -path "/public/v1/cards-management" -apiId "cards-public-api"
 
 #Install-Module -Name Az -AllowClobber -SkipPublisherCheck
 #$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName tenpo_uat -ServiceName tenpo-uat-api-management
