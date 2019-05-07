@@ -19,7 +19,7 @@ Import-AzApiManagementApi -ApiId accounts-api -Context $ApiMgmtContext -Specific
 #Set-AzApiManagementApi -ApiId accounts-api -Context $ApiMgmtContext -Protocols @('https')
 
 #Get-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId accounts-api -SaveAs "/Users/jorge/git/api/src/private/security_policy.xml"
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -PolicyFilePath "$pwd/bin/private/security_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -PolicyFilePath "$pwd/src/private/security_policy.xml"
 
 #docker pull mcr.microsoft.com/powershell:6.2.0-alpine-3.8
 #docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli generate -i /local/src/private/v1/accounts.yaml -l swagger
