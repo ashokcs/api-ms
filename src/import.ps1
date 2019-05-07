@@ -1,3 +1,8 @@
+$env:AZURE_ACCOUNT_NAME
+$env:AZURE_TENANT_ID
+$env:SERVICE_NAME
+$env:RESOURCE_GROUP_NAME
+
 $azureAccountName = $env:AZURE_ACCOUNT_NAME
 $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText -Force
 $tenantId = $env:AZURE_TENANT_ID
@@ -17,7 +22,6 @@ function Import-Api {
 }
 
 ImportApi -msName "accounts" -path "/private/v1/account-management" -apiId "accounts-api"
-
 
 #$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName tenpo_uat -ServiceName tenpo-uat-api-management
 #Get-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId accounts-api -SaveAs "/Users/jorge/git/api/src/private/security_policy.xml"
