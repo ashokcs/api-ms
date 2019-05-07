@@ -6,6 +6,78 @@ basePath: /
 schemes:
   - http
 paths:
+  '/v1/cards-management/cards':
+    get:
+      tags:
+        - cards-controller
+      summary: getCardsByUserId
+      operationId: getCardsByUserIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ObfuscatedCardsResponse'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    deprecated: false
+  '/v1/cards-management/cards/details':
+    get:
+      tags:
+        - cards-controller
+      summary: getCardDetailByUserId
+      operationId: getCardByUserIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardInfoResponse'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   '/v1/account-management/accounts/{userId}/on-site/generate-code':
     post:
       tags:
@@ -3491,6 +3563,50 @@ paths:
           description: Not Found
       deprecated: false
 definitions:
+  CardInfoResponse:
+    type: object
+    properties:
+      expiration_date:
+        type: integer
+        format: int32
+      id:
+        type: string
+      name_on_card:
+        type: string
+      pan:
+        type: string
+      security_code:
+        type: integer
+        format: int32
+      status:
+        type: string
+      timestamps:
+      $ref: '#/definitions/TimestampsExtDto'
+    title: CardInfoResponse
+  ObfuscatedCardsResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      name_on_card:
+        type: string
+      pan:
+        type: string
+      status:
+        type: string
+      timestamps:
+      $ref: '#/definitions/TimestampsExtDto'
+    title: ObfuscatedCardsResponse
+  TimestampsExtDto:
+    type: object
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    title: TimestampsExtDto
   NewPasswordRequest:
     type: object
     properties:
