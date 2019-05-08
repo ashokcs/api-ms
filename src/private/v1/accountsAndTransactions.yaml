@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: Accounts API
+  title: Accounts + Transactions API
 host: 52.167.62.186:8080
 basePath: /v1/account-management
 schemes:
@@ -519,6 +519,74 @@ paths:
           description: 500 response
           schema:
             $ref: "#/definitions/ResponseStatus"
+# Transactions endpoints
+  '/accounts/{id}/transaction':
+    get:
+      tags:
+        - transaction-api-controller
+      operationId: listTransactionsUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/TransactionListResource'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+  "/accounts/{userId}/on-site/generate-code":
+    post:
+      tags:
+        - transaction-cash-in-api-controller
+      summary: generate-code
+      operationId: generateCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
 definitions:
   MyAccountsResponse:
     type: object
@@ -626,3 +694,55 @@ definitions:
         type: string
         format: uuid
     title: ItemAccountRuleBatchData
+  TransactionListResource:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/AccountTransaction'
+    title: TransactionListResource
+  AccountTransaction:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+      balance_amount:
+        type: number
+      balance_currency:
+        type: string
+      completed:
+        type: string
+        format: date-time
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+        format: uuid
+      state:
+        type: string
+      to:
+        $ref: '#/definitions/CounterParty'
+      type:
+        type: string
+    title: AccountTransaction
+  CounterParty:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      merchantId:
+        type: string
+        format: uuid
+      name:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: CounterParty
