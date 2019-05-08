@@ -16,7 +16,7 @@ swagger-validation:
   before_script:
     - wget http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/${CLI_VERSION}/swagger-codegen-cli-${CLI_VERSION}.jar -O /swagger-codegen-cli.jar
   script:
-    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/accounts.yaml -l swagger -o bin/private/v1/accounts
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/accountsAndTransactions.yaml -l swagger -o bin/private/v1/accountsAndTransactions
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/devices.yaml -l swagger -o bin/private/v1/devices
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/identityprovider.yaml -l swagger -o bin/private/v1/identityprovider
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/notifications.yaml -l swagger -o bin/private/v1/notifications
@@ -24,6 +24,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payments.yaml -l swagger -o bin/private/v1/payments
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/transactions.yaml -l swagger -o bin/private/v1/transactions
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/users.yaml -l swagger -o bin/private/v1/users
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/cards.yaml -l swagger -o bin/private/v1/cards
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/appconfig.yaml -l swagger -o bin/public/v1/appconfig
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/onboarding.yaml -l swagger -o bin/public/v1/onboarding
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users.yaml -l swagger -o bin/public/v1/users
