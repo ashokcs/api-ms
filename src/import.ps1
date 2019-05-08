@@ -39,8 +39,6 @@ Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-publ
 Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
 Import-Api -msName "appconfig" -path "/public/v1/app" -apiId "appconfig-public-api"
 
-$transactionPolicyString = "<set-backend-service base-url="http://echoapi.cloudapp.net/api2" />"
-
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 
