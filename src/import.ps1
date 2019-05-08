@@ -39,11 +39,13 @@ Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-publ
 Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
 Import-Api -msName "appconfig" -path "/public/v1/app" -apiId "appconfig-public-api"
 
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -Policy $PolicyString
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -Policy $PolicyString
-Get-AzApiManagementApi -Context $ApiMgmtContext
-Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
+$transactionPolicyString = "<set-backend-service base-url="http://echoapi.cloudapp.net/api2" />"
 
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
+
+#Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
+#Get-AzApiManagementApi -Context $ApiMgmtContext
 #Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted  
 #Install-Module -Name Az -AllowClobber -SkipPublisherCheck
 #$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName tenpo_uat -ServiceName tenpo-uat-api-management
