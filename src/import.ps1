@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 $azureAccountName = $env:AZURE_ACCOUNT_NAME
 $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText -Force
 $tenantId = $env:AZURE_TENANT_ID
@@ -31,9 +33,8 @@ Import-Secure-Api -msName "identityprovider" -path "/private/v1/provider/users" 
 Import-Secure-Api -msName "notifications" -path "/private/v1/customer-management" -apiId "notifications-api"
 Import-Secure-Api -msName "paymentkyc" -path "/private/v1/payments-kyc" -apiId "paymentkyc-api"
 Import-Secure-Api -msName "payments" -path "/private/v1/sales-services" -apiId "payments-api"
-Import-Secure-Api -msName "transactions" -path "/private/v1/account-management" -apiId "transactions-api"
 Import-Secure-Api -msName "users" -path "/private/v1/user-management" -apiId "users-api"
-Import-Secure-Api -msName "cards" -path "/private/v1/user-management" -apiId "cards-api"
+Import-Secure-Api -msName "cards" -path "/private/v1/cards-management" -apiId "cards-api"
 
 Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-public-api"
 Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
