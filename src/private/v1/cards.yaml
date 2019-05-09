@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: Cards - Tenpo public API
+  title: Cards API
 host: 40.79.18.220:8080
 basePath: /v1/cards-management
 schemes:
