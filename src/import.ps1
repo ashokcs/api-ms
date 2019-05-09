@@ -4,41 +4,71 @@ $azureAccountName = $env:AZURE_ACCOUNT_NAME
 $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText -Force
 $tenantId = $env:AZURE_TENANT_ID
 
+$usersIp = $env:USERS_IP
+$accountsIp = $env:ACCOUNT_IP
+$identityproviderIp = $env:IDENTITPROVIDER_IP
+$transactionsIp = $env:TRANSACTIONS_IP
+$notificationsIp = $env:NOTIFICATION_IP
+$paymentsIp = $env:PAYMENTS_IP
+$paymentsKycIp = $env:PAYMENTSKYC_IP
+$cardsIp = $env:CARDS_IP
+
+$b2cTenantId = $env:AZURE_B2C_TENANT_ID
+$authUrl = $env:AUTH_URL
+$userFlowName = $env:USER_FLOW_NAME
+$clientId = $env:CLIENT_ID
+$tenantName = $env:AZURE_TENANT_NAME
+
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
-Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
+$null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
 
 function Import-Secure-Api {
-    param([string] $msName, [string] $apiId, [string] $path)
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
+          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing secure API $msName"
-    $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
-    $api = Import-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/private/v1/$msName/swagger.json" -Path $path
-    Set-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
-    Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/private/v1/$msName/swagger.json" -Path $sufix$path
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
+    Set-AzApiManagementPolicy -Context $context -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
 }
 
 function Import-Api {
-    param([string] $msName, [string] $apiId, [string] $path)
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
+          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing API $msName"
-    $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
-    $api = Import-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $path
-    Set-AzApiManagementApi -ApiId $apiId -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl $api.ServiceUrl -Name $api.Name
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
 }
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
-New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value "52.167.62.186:8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value $usersIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlAccounts" -Name "urlAccounts" -Value $accountsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactions" -Name "urlTransactions" -Value $cardsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlIdentityProvider" -Name "urlIdentityProvider" -Value $identityproviderIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlNotifications" -Name "urlNotifications" -Value $notificationsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentskyc" -Name "urlPaymentskyc" -Value $paymentsKycIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPayments" -Name "urlPayments" -Value $paymentsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCards" -Name "urlCards" -Value $cardsIp":8080"
 
-Import-Secure-Api -msName "accountsAndTransactions" -path "/private/v1/account-management" -apiId "accounts-api"
-Import-Secure-Api -msName "devices" -path "/private/v1/device-management" -apiId "devices-api"
-Import-Secure-Api -msName "identityprovider" -path "/private/v1/provider/users" -apiId "identityprovider-api"
-Import-Secure-Api -msName "notifications" -path "/private/v1/customer-management" -apiId "notifications-api"
-Import-Secure-Api -msName "paymentkyc" -path "/private/v1/payments-kyc" -apiId "paymentkyc-api"
-Import-Secure-Api -msName "payments" -path "/private/v1/sales-services" -apiId "payments-api"
-Import-Secure-Api -msName "users" -path "/private/v1/user-management" -apiId "users-api"
-Import-Secure-Api -msName "cards" -path "/private/v1/cards-management" -apiId "cards-api"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "clientId" -Name "clientId" -Value $clientId
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantId" -Name "tenantId" -Value $b2cTenantId
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantName" -Name "tenantName" -Value $tenantName
 
-Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-public-api"
-Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
-Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
+Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "identityprovider" -sufix "/private" -path "/v1/provider/users" -apiId "identityprovider-api" -serviceBase "http://$identityproviderIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "notifications" -sufix "/private" -path "/v1/customer-management" -apiId "notifications-api" -serviceBase "http://$notificationsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private" -path "/v1/payments-kyc" -apiId "paymentkyc-api" -serviceBase "http://$paymentsKycIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
+
+Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
+
+$null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
@@ -52,4 +82,4 @@ Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -Operat
 #docker pull mcr.microsoft.com/powershell:6.2.0-alpine-3.8
 #docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli generate -i /local/src/private/v1/accounts.yaml -l swagger
 #docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli:2.4.5 generate -i src/private/v1/accounts.yaml -l swagger -o bin/private/v1/accounts
-#docker run --rm -v ${PWD}:/local -w /local -e AZURE_ACCOUNT_NAME=ef4b51f2-362c-481f-883d-5d69d5fce8d9 -e AZURE_ACCOUNT_PASSWORD=35c40102-7641-4576-8768-8c5eb449f665 -e AZURE_TENANT_ID=b8944bcc-fb75-44c3-b743-5ae9eb56b0fc -e RESOURCE_GROUP_NAME=tenpo_uat -e SERVICE_NAME=tenpo-uat-api-management jaxkodex/powershell-az pwsh /local/src/import.ps1
+#docker run --rm -v ${PWD}:/local -w /local -e AZURE_B2C_TENANT_ID=cae09fee-473e-48e2-99dc-3b7bf4a97411 -e USERS_IP=172.11.0.129 -e ACCOUNT_IP=172.11.0.131 -e IDENTITPROVIDER_IP=172.11.0.133 -e TRANSACTIONS_IP=172.11.0.137 -e NOTIFICATION_IP=172.11.0.134 -e PAYMENTS_IP=172.11.0.130 -e PAYMENTSKYC_IP=0.0.0.0 -e CARDS_IP=172.11.0.132 -e AUTH_URL=https://tenpodev2.b2clogin.com/ -e USER_FLOW_NAME=B2C_1_ROPC_mobile -e CLIENT_ID=5cba8f4d-b819-4903-a414-732dbd4b8378 -e AZURE_TENANT_NAME=uattenpo2.onmicrosoft.com -e AZURE_ACCOUNT_NAME=ef4b51f2-362c-481f-883d-5d69d5fce8d9 -e AZURE_ACCOUNT_PASSWORD=35c40102-7641-4576-8768-8c5eb449f665 -e AZURE_TENANT_ID=b8944bcc-fb75-44c3-b743-5ae9eb56b0fc -e RESOURCE_GROUP_NAME=tenpo_uat -e SERVICE_NAME=tenpo-uat-api-management jaxkodex/powershell-az pwsh /local/src/import.ps1

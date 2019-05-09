@@ -15,7 +15,7 @@
         <base />
         <return-response>
             <set-status code="200" reason="OK" />
-            <set-body>{"auth":{"url":"http://tenpodev2.b2clogin.com/","userFlowName":"B2C_1_ROPC_mobile","clientId":"5cba8f4d-b819-4903-a414-732dbd4b8378"},"tenantId":"cae09fee-473e-48e2-99dc-3b7bf4a97411","tenantName":"uattenpo2.onmicrosoft.com"}</set-body>
+            <set-body>{"auth":{"url":"{{authUrl}}","userFlowName":"{{userFlowName}}","clientId":"{{clientId}}"},"tenantId":"{{tenantId}}","tenantName":"{{tenantName}}"}</set-body>
         </return-response>
     </inbound>
     <backend>
