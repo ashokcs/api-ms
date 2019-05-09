@@ -38,7 +38,7 @@ Import-Secure-Api -msName "cards" -path "/private/v1/cards-management" -apiId "c
 
 Import-Api -msName "users" -path "/public/v1/user-management" -apiId "users-public-api"
 Import-Api -msName "onboarding" -path "/public/v1/onboarding" -apiId "onboarding-public-api"
-Import-Api -msName "appconfig" -path "/public/v1/app" -apiId "appconfig-public-api"
+Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
