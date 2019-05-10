@@ -205,7 +205,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/user-management/reset-password':
+  '/reset-password':
     post:
       tags:
         - user-controller
@@ -234,7 +234,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/user-management/confirm-user':
+  '/confirm-user':
     post:
       tags:
         - user-controller
@@ -263,7 +263,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/user-management/validate-user':
+  '/validate-user':
     post:
       tags:
         - user-controller
