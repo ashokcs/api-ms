@@ -8,6 +8,9 @@ variables:
 swagger-validation:
   stage: build
   image: openjdk:8-jdk-alpine
+  only:
+    - develop
+    - /^release.*$/
   variables:
     CLI_VERSION: 2.4.5
   artifacts:
@@ -34,7 +37,36 @@ swagger-validation:
   script:
     - pwsh src/import.ps1
 
-release-deploy:
+dev-deploy:
+  extends: .config-deploy
+  only:
+    - develop
+  artifacts:
+    paths:
+      - bin/
+  environment:
+    name: dev
+  variables:
+    RESOURCE_GROUP_NAME: tenpo_dev
+    AZURE_TENANT_ID: $AZURE_TENANT_ID
+    SERVICE_NAME: tenpo-dev-api-management
+    AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME
+    AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD
+    USERS_IP: 40.70.68.63
+    ACCOUNT_IP: 52.167.62.186
+    IDENTITPROVIDER_IP: 40.123.26.42
+    TRANSACTIONS_IP: 40.70.202.107
+    NOTIFICATION_IP: 52.179.169.65
+    PAYMENTS_IP: 52.147.169.246
+    PAYMENTSKYC_IP: 52.147.169.246
+    CARDS_IP: 40.79.18.220
+    AUTH_URL: https://tenpodev2.b2clogin.com/
+    USER_FLOW_NAME: B2C_1_ROPC_mobile
+    CLIENT_ID: 5cba8f4d-b819-4903-a414-732dbd4b8378
+    AZURE_TENANT_NAME: tenpodev2.onmicrosoft.com
+    AZURE_B2C_TENANT_ID: cae09fee-473e-48e2-99dc-3b7bf4a97411
+
+uat-deploy:
   extends: .config-deploy
   only:
     - /^release.*$/
@@ -45,7 +77,7 @@ release-deploy:
     name: uat
   variables:
     RESOURCE_GROUP_NAME: tenpo_uat
-    AZURE_TENANT_ID: $AZURE_TENANT_UAT_ID
+    AZURE_TENANT_ID: $AZURE_TENANT_ID
     SERVICE_NAME: tenpo-uat-api-management
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD
@@ -57,8 +89,8 @@ release-deploy:
     PAYMENTS_IP: 172.11.0.130
     PAYMENTSKYC_IP: 0.0.0.0
     CARDS_IP: 172.11.0.132
-    AUTH_URL: https://tenpodev2.b2clogin.com/
-    USER_FLOW_NAME: B2C_1_ROPC_mobile
-    CLIENT_ID: 5cba8f4d-b819-4903-a414-732dbd4b8378
+    AUTH_URL: https://uattenpo2.b2clogin.com/
+    USER_FLOW_NAME: B2C_1_ROPC_tenpo_uat
+    CLIENT_ID: e9cfc90e-ee75-49a6-b765-4e74093b2878
     AZURE_TENANT_NAME: uattenpo2.onmicrosoft.com
-    AZURE_B2C_TENANT_ID: cae09fee-473e-48e2-99dc-3b7bf4a97411
+    AZURE_B2C_TENANT_ID: c3fdc983-c30f-4c4e-b7e9-29502a5a7ee5
