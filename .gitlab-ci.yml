@@ -8,6 +8,9 @@ variables:
 swagger-validation:
   stage: build
   image: openjdk:8-jdk-alpine
+  only:
+    - develop
+    - /^release.*$/
   variables:
     CLI_VERSION: 2.4.5
   artifacts:
@@ -37,7 +40,7 @@ swagger-validation:
 dev-deploy:
   extends: .config-deploy
   only:
-    - /^release.*$/
+    - develop
   artifacts:
     paths:
       - bin/
