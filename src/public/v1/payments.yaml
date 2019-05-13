@@ -3,11 +3,11 @@ info:
   version: 1.0.0
   title: Payment - Tenpo public API - Payment
 host: 52.179.131.53:8080
-basePath:
+basePath: /v1/integration/payment/cl/on-site
 schemes:
-  - http
+- http
 paths:
-  /v1/integration/payment/cl/on-site/cash-in:
+  /cash-in:
     post:
       tags:
       - payment-on-site-controller
@@ -42,7 +42,7 @@ paths:
         '500':
           description: Ocurrió un error inesperado
       deprecated: false
-  /v1/integration/payment/cl/on-site/cash-out:
+  /cash-out:
     post:
       tags:
       - payment-on-site-controller
@@ -151,6 +151,19 @@ definitions:
         type: number
         format: float
     title: PointDto
+  PaymentConfigDto:
+    type: object
+    properties:
+      createdAt:
+        type: string
+        format: date-time
+        description: Id de usuario
+      updatedAt:
+        type: string
+        format: date-time
+        description: Id de usuario
+    title: PaymentConfigDto
+    description: Clase u objeto que representa una configuración de pago
   AmountExternalDto:
     type: object
     properties:
