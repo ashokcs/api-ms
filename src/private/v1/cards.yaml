@@ -33,6 +33,32 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/v1/cards-management/cards/details':
+    get:
+      tags:
+        - cards-controller
+      summary: getCardByUserId
+      operationId: getCardByUserIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardInfoResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   '/cards/{cardId}':
     put:
       tags:
@@ -113,3 +139,23 @@ definitions:
           - CLOSED
           - EXPIRED
     title: ChangeCardStatusRequest
+  CardInfoResponse:
+    type: object
+    properties:
+      expiration_date:
+        type: integer
+        format: int32
+      id:
+        type: string
+      name_on_card:
+        type: string
+      pan:
+        type: string
+      security_code:
+        type: integer
+        format: int32
+      status:
+        type: string
+      timestamps:
+        $ref: '#/definitions/TimestampsExtDto'
+    title: CardInfoResponse
