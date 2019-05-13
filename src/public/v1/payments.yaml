@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Payment - Tenpo public API - Payment
+host: 52.179.131.53:8080
+basePath:
+schemes:
+  - http
+paths:
+  /v1/integration/payment/cl/on-site/cash-in:
+    post:
+      tags:
+      - payment-on-site-controller
+      summary: 'Permite realizar el cashIn físico, Este servicio sera llamado desde el POS'
+      operationId: processCashInUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: validateCashInDto
+        description: validateCashInDto
+        required: true
+        schema:
+          $ref: '#/definitions/CashInDto'
+      responses:
+        '200':
+          description: CashIn Procesado correctamente
+          schema:
+            $ref: '#/definitions/CashInResponseDto'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: El cliente no existe
+        '422':
+          description: El cliente no existe
+        '500':
+          description: Ocurrió un error inesperado
+      deprecated: false
+  /v1/integration/payment/cl/on-site/cash-out:
+    post:
+      tags:
+      - payment-on-site-controller
+      summary: 'Permite realizar el cashOut físico, Este servicio sera llamado desde el POS'
+      operationId: processCashOutUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: validateCashInDto
+        description: validateCashInDto
+        required: true
+        schema:
+          $ref: '#/definitions/CashInDto'
+      responses:
+        '200':
+          description: CashOut Procesado correctamente
+          schema:
+            $ref: '#/definitions/CashInResponseDto'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: El recurso que trataste de alcanzar no fue encontrado
+        '500':
+          description: Ocurrió un error inesperado
+      deprecated: false
+definitions:
+  CashInDto:
+    type: object
+    properties:
+      agencyCode:
+        type: string
+        description: Codigo de la agencia donde se realiza el depósito
+      amount:
+        description: Monto del depósito
+        $ref: '#/definitions/AmountDto'
+      dynamic_token:
+        type: string
+        description: Token dinamico generado desde el app tenpo
+      merchant_category:
+        type: string
+        description: Categoria del comercio donde se realiza el depósito
+      merchant_code:
+        type: string
+        description: Codigo del comercio donde se realiza el depósito
+      merchant_name:
+        type: string
+        description: Nombre del comercio donde se realiza el depósito
+      rut:
+        type: string
+        description: Rut del usuario tenpo
+      token:
+        type: string
+      transaction_id:
+        type: string
+        description: Id de la transación generado desde el POS
+    title: CashInDto
+    description: 'Clase u objeto que representa los datos que son enviados desde el POS, para realizar un CashIn'
+  CashInResponseDto:
+    type: object
+    properties:
+      amount:
+        description: Monto que se ha depositado
+        $ref: '#/definitions/AmountExternalDto'
+      id:
+        type: string
+        description: Id de la operación
+      mcVoucherDataDto:
+        type: array
+        description: Voucher de la transación
+        items:
+          $ref: '#/definitions/PaymentConfigDto'
+      timestampsDto:
+        description: timestampsDto
+        $ref: '#/definitions/PaymentConfigDto'
+      transactionId:
+        type: string
+        description: Id de la transación
+    title: CashInResponseDto
+    description: Clase u objeto que representa la respuesta del procesador para un CashIn
+  PhysicalPointDto:
+    type: object
+    properties:
+      points:
+        type: array
+        items:
+          $ref: "#/definitions/PointDto"
+    title: PhysicalPointDto
+  PointDto:
+    type: object
+    properties:
+      address:
+        type: string
+      commerce:
+        type: string
+      latitude:
+        type: number
+        format: float
+      longitude:
+        type: number
+        format: float
+    title: PointDto
+  AmountExternalDto:
+    type: object
+    properties:
+      currencyCode:
+        type: integer
+        format: int32
+      value:
+        type: number
+    title: AmountExternalDto
+  AmountDto:
+    type: object
+    properties:
+      currency_code:
+        type: string
+        description: Codigo del tipo de moneda del depósito
+      value:
+        type: number
+        description: Monto del depósito
+    title: AmountDto
+    description: Clase u objeto que representa el monto en el proceso de CashIn
