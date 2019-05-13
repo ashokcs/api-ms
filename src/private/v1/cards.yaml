@@ -33,7 +33,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/cards-management/users/{user_id}/account/{account_id}/card/{card_id}':
+  '/v1/cards-management/users/{user_uuid}/account/{account_uuid}/card/{card_uuid}':
     get:
       tags:
         - cards-controller
@@ -47,19 +47,19 @@ paths:
           description: Authorization
           required: true
           type: string
-        - name: user_id
+        - name: user_uuid
           in: path
-          description: user_id
+          description: user_uuid
           required: true
           type: string
-        - name: account_id
+        - name: account_uuid
           in: path
-          description: account_id
+          description: account_uuid
           required: true
           type: string
-        - name: card_id
+        - name: card_uuid
           in: path
-          description: card_id
+          description: card_uuid
           required: true
           type: string
       responses:
