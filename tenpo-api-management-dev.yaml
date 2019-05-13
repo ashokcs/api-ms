@@ -1652,8 +1652,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: access-token
+        - name: Authorization
           in: header
+          description: Authorization
           required: true
           type: string
         - in: body
