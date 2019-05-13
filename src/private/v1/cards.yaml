@@ -47,6 +47,21 @@ paths:
           description: Authorization
           required: true
           type: string
+        - name: user_id
+          in: path
+          description: user_id
+          required: true
+          type: string
+        - name: account_id
+          in: path
+          description: account_id
+          required: true
+          type: string
+        - name: card_id
+          in: path
+          description: card_id
+          required: true
+          type: string
       responses:
         '200':
           description: OK
