@@ -33,7 +33,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/users/{user_uuid}/account/{account_uuid}/card/{card_uuid}':
+  '/{user_uuid}/account/{account_uuid}/card/{card_uuid}':
     get:
       tags:
         - cards-controller
@@ -115,6 +115,47 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/cards/{cardId}/report':
+    post:
+      tags:
+        - cards-controller
+      summary: reportCardProblem
+      operationId: reportCardProblemUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: cardId
+          in: path
+          description: cardId
+          required: true
+          type: string
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ReportCardRequest'
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ObfuscatedCardsResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   ObfuscatedCardsResponse:
     type: object
@@ -174,3 +215,18 @@ definitions:
       timestamps:
         $ref: '#/definitions/TimestampsExtDto'
     title: CardInfoResponse
+  ReportCardRequest:
+    type: object
+    properties:
+      movements:
+        type: string
+        enum:
+          - AFFIRMATIVE
+          - NEGATIVE
+      problem:
+        type: string
+        enum:
+          - LOCK
+          - REMISSION
+    title: ReportCardRequest
+    description: Request Data for decision making in regard of a card
