@@ -563,8 +563,6 @@ paths:
         - transaction-cash-in-api-controller
       summary: generate-code
       operationId: generateCodeUsingPOST
-      consumes:
-        - application/json
       produces:
         - application/json
       parameters:
