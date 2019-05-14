@@ -292,6 +292,36 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/users/identity-validation/link/{link}':
+    post:
+      tags:
+        - upgrade-user-controller
+      summary: validateLink
+      operationId: validateLinkUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: link
+          in: path
+          description: link
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ContinueLinkResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   DocumentRequest:
     type: object
@@ -493,3 +523,23 @@ definitions:
       email:
         type: string
     title: ValidateUserRequest
+  ContinueLinkResponse:
+    type: object
+    properties:
+      flow:
+        type: string
+        enum:
+          - ONBOARDING
+          - CARD_ACTIVATION
+          - CARD_PROBLEM
+          - CASH_IN
+          - CASH_OUT
+          - ACCOUNT_CONFIG
+          - BLACKLIST
+      payload:
+        $ref: '#/definitions/Serializable'
+      step:
+        type: string
+        enum:
+          - PASSWORD
+    title: ContinueLinkResponse
