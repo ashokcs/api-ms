@@ -47,7 +47,7 @@ Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -Subscr
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value $usersIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlAccounts" -Name "urlAccounts" -Value $accountsIp":8080"
-$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactions" -Name "urlTransactions" -Value $cardsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactions" -Name "urlTransactions" -Value $transactionsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlIdentityProvider" -Name "urlIdentityProvider" -Value $identityproviderIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlNotifications" -Name "urlNotifications" -Value $notificationsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentskyc" -Name "urlPaymentskyc" -Value $paymentsKycIp":8080"
