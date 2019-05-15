@@ -13,8 +13,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: access-token
+        - name: Authorization
           in: header
+          description: Authorization
           required: true
           type: string
       responses:
@@ -528,8 +529,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: access-token
+        - name: Authorization
           in: header
+          description: Authorization
           required: true
           type: string
         - name: id
@@ -562,11 +564,14 @@ paths:
         - transaction-cash-in-api-controller
       summary: generate-code
       operationId: generateCodeUsingPOST
-      consumes:
-        - application/json
       produces:
         - application/json
       parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
         - name: userId
           in: path
           description: userId
@@ -596,6 +601,15 @@ definitions:
         items:
           $ref: "#/definitions/Account"
     title: MyAccountsResponse
+  GeneratedCodeDto:
+    type: object
+    properties:
+      generatedCode:
+        type: string
+      remainingTime:
+        type: integer
+        format: int64
+    title: GeneratedCodeDto
   Account:
     type: object
     properties:

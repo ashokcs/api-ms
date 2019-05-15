@@ -205,6 +205,123 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/reset-password':
+    post:
+      tags:
+        - user-controller
+      summary: resetPassword
+      operationId: resetPasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordRequest'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/confirm-user':
+    post:
+      tags:
+        - user-controller
+      summary: confirmUserByEmail
+      operationId: confirmUserByEmailUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ConfirmUserRequest'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/validate-user':
+    post:
+      tags:
+        - user-controller
+      summary: validateUserByEmail
+      operationId: validateUserByEmailUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ValidateUserRequest'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/users/identity-validation/link/{link}':
+    post:
+      tags:
+        - upgrade-user-controller
+      summary: validateLink
+      operationId: validateLinkUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: link
+          in: path
+          description: link
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ContinueLinkResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   DocumentRequest:
     type: object
@@ -384,3 +501,45 @@ definitions:
         type: integer
         format: int32
     title: ResponseEntity
+  PasswordRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    title: PasswordRequest
+  ConfirmUserRequest:
+    type: object
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+    title: ConfirmUserRequest
+  ValidateUserRequest:
+    type: object
+    properties:
+      email:
+        type: string
+    title: ValidateUserRequest
+  ContinueLinkResponse:
+    type: object
+    properties:
+      flow:
+        type: string
+        enum:
+          - ONBOARDING
+          - CARD_ACTIVATION
+          - CARD_PROBLEM
+          - CASH_IN
+          - CASH_OUT
+          - ACCOUNT_CONFIG
+          - BLACKLIST
+      payload:
+        $ref: '#/definitions/Serializable'
+      step:
+        type: string
+        enum:
+          - PASSWORD
+    title: ContinueLinkResponse
