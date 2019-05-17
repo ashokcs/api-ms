@@ -30,6 +30,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/appconfig.yaml -l swagger -o bin/public/v1/appconfig
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/onboarding.yaml -l swagger -o bin/public/v1/onboarding
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users.yaml -l swagger -o bin/public/v1/users
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/payments.yaml -l swagger -o bin/public/v1/payments
 
 .config-deploy:
   stage: deploy
