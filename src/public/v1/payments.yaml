@@ -25,12 +25,10 @@ paths:
         schema:
           $ref: '#/definitions/CashInDto'
       responses:
-        '200':
+        '201':
           description: CashIn Procesado correctamente
           schema:
             $ref: '#/definitions/CashInResponseDto'
-        '201':
-          description: Created
         '401':
           description: Unauthorized
         '403':
@@ -60,14 +58,8 @@ paths:
         schema:
           $ref: '#/definitions/ReverseDTO'
       responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/ResponseEntity'
         '201':
           description: CashIn correcto. Se iniciará el proceso de reversa.
-          schema:
-            $ref: '#/definitions/ResponseEntity'
         '202':
           description: '130001: CashIn no se recibió. Registrando reversa. 130003. Reversa ya fue recibida'
           schema:
@@ -103,14 +95,12 @@ paths:
         description: validateCashInDto
         required: true
         schema:
-          $ref: '#/definitions/CashInDto'
+          $ref: '#/definitions/CashOutDto'
       responses:
-        '200':
+        '201':
           description: CashOut Procesado correctamente
           schema:
             $ref: '#/definitions/CashInResponseDto'
-        '201':
-          description: Created
         '401':
           description: Unauthorized
         '403':
@@ -138,14 +128,8 @@ paths:
         schema:
           $ref: '#/definitions/ReverseDTO'
       responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/ResponseEntity'
         '201':
           description: CashOut correcto. Se iniciará proceso de reversa.
-          schema:
-            $ref: '#/definitions/ResponseEntity'
         '202':
           description: '130001: CashOut no se recibió. Registrando reversa.130003. Reversa ya fue recibida'
           schema:
@@ -289,8 +273,34 @@ definitions:
       rut:
         type: string
         description: Rut del usuario tenpo
-      token:
+      transaction_id:
         type: string
+        description: Id de la transación generado desde el POS
+    title: CashInDto
+  CashOutDto:
+    type: object
+    properties:
+      agencyCode:
+        type: string
+        description: Codigo de la agencia donde se realiza el retiro
+      amount:
+        description: Monto del depósito
+        $ref: '#/definitions/AmountDto'
+      dynamic_token:
+        type: string
+        description: Token dinamico generado desde el app tenpo
+      merchant_category:
+        type: string
+        description: Categoria del comercio donde se realiza el retiro
+      merchant_code:
+        type: string
+        description: Codigo del comercio donde se realiza el retiro
+      merchant_name:
+        type: string
+        description: Nombre del comercio donde se realiza el retiro
+      rut:
+        type: string
+        description: Rut del usuario tenpo
       transaction_id:
         type: string
         description: Id de la transación generado desde el POS
