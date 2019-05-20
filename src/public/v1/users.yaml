@@ -322,7 +322,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/user-management/users/{userId}/account/close':
+  '/users/{userId}/account/close':
     post:
       tags:
         - user-controller
