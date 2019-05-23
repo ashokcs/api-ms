@@ -156,22 +156,17 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/cards/{cardId}/reissue':
+  /v1/cards-management/cards/reissue:
     post:
       tags:
         - cards-controller
-      summary: reIssueCard
-      operationId: reIssueCardUsingPOST
+      summary: reIssueCardTicket
+      operationId: reIssueCardTicketUsingPOST
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
-        - name: cardId
-          in: path
-          description: cardId
-          required: true
-          type: string
         - name: Authorization
           in: header
           description: Authorization
@@ -180,8 +175,6 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/ObfuscatedCardsResponse'
         '201':
           description: Created
         '401':
