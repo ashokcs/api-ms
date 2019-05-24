@@ -129,7 +129,7 @@ uat-deploy:
 prod-deploy:
   extends: .config-deploy
   only:
-    - /^prod.*$/
+    - master
   artifacts:
     paths:
       - bin/
