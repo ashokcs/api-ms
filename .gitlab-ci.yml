@@ -9,6 +9,7 @@ swagger-validation:
   stage: build
   image: openjdk:8-jdk-alpine
   only:
+    - master
     - develop
     - /^release.*$/
   variables:
@@ -134,7 +135,7 @@ prod-deploy:
     paths:
       - bin/
   environment:
-    name: uat
+    name: prod
   variables:
     RESOURCE_GROUP_NAME: tenpo_prod_resource_group
     AZURE_TENANT_ID: $AZURE_TENANT_ID_PROD
