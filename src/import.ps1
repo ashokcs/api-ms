@@ -19,7 +19,7 @@ $userFlowName = $env:USER_FLOW_NAME
 $clientId = $env:CLIENT_ID
 $tenantName = $env:AZURE_TENANT_NAME
 
-$tenantName
+$tenantId
 $tenantId
 $azureAccountName
 
