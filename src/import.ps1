@@ -20,7 +20,7 @@ $clientId = $env:CLIENT_ID
 $tenantName = $env:AZURE_TENANT_NAME
 
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
-$null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
+Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
 
 function Import-Secure-Api {
     param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
@@ -45,6 +45,9 @@ function Import-Api {
 
 $rg = $env:RESOURCE_GROUP_NAME
 $sn = $env:SERVICE_NAME
+
+$rg
+$sn
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
 
