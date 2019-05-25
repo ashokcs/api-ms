@@ -43,7 +43,12 @@ function Import-Api {
     Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId $apiId
 }
 
-$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
+$rg = $env:RESOURCE_GROUP_NAME
+$sn = $env:SERVICE_NAME
+
+$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
+
+$ApiMgmtContext
 
 Get-AzApiManagementApi -Context $ApiMgmtContext
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -SubscriptionRequired $False -State "Published"
