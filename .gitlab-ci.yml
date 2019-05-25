@@ -42,7 +42,7 @@ swagger-validation:
 dev-deploy:
   extends: .config-deploy
   only:
-    - nomore
+    - develop
   artifacts:
     paths:
       - bin/
@@ -100,7 +100,7 @@ uat-deploy:
 prod-deploy:
   extends: .config-deploy
   only:
-    - develop
+    - master
   artifacts:
     paths:
       - bin/
