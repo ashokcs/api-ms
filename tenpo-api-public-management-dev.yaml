@@ -1,0 +1,742 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Tenpo API Public
+host: 172.11.0.136:8080
+schemes:
+  - http
+paths:
+  '/v1/user-management/users/{userId}/identity-validation/attempts':
+    get:
+      tags:
+        - user-controller
+      summary: getIdentityValidationAttempts
+      operationId: getIdentityValidationAttemptsUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/IdentityValidationAttemptsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/upload-photos':
+    post:
+      tags:
+        - upgrade-user-controller
+      summary: uploadPhotos
+      operationId: uploadPhotosUsingPOST
+      consumes:
+        - multipart/form-data
+      produces:
+        - '*/*'
+      parameters:
+        - name: photos
+          in: formData
+          description: photos
+          required: true
+          type: array
+          items:
+            type: file
+          collectionFormat: multi
+        - in: formData
+          name: userId
+          description: userId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseEntity'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: create
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: userInfoRequest
+          description: userInfoRequest
+          required: true
+          schema:
+            $ref: '#/definitions/UserInfoRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users/{id}/address':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updateAddress
+      operationId: updateAddressUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: addressInfoRequest
+          description: addressInfoRequest
+          required: true
+          schema:
+            $ref: '#/definitions/AddressRequest'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/confirm-device':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: confirmPhone
+      operationId: confirmPhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ConfirmDeviceRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/password':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updatePassword
+      operationId: updatePasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: passwordRequest
+          description: passwordRequest
+          required: true
+          schema:
+            $ref: '#/definitions/PasswordRequest'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users/{id}/validate':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updateIdentity
+      operationId: updateIdentityUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: identityInfoRequest
+          description: identityInfoRequest
+          required: true
+          schema:
+            $ref: '#/definitions/IdentityInfoRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/onboarding/users/{id}/validate-device':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updatePhone
+      operationId: updatePhoneUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ValidateDeviceRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/v1/user-management/regions':
+    get:
+      tags:
+        - region-controller
+      summary: getRegions
+      operationId: getRegionsUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/regions/{id}':
+    get:
+      tags:
+        - region-controller
+      summary: getRegionsByParent
+      operationId: getRegionsByParentUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegionEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/countries':
+    get:
+      tags:
+        - countries-controller
+      summary: getCountries
+      operationId: getCountriesUsingGET
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CountryEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/countries/{id}':
+    get:
+      tags:
+        - countries-controller
+      summary: getCountryById
+      operationId: getCountryByIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CountryEntity'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/user-management/users/validate-tributary-identifier':
+    post:
+      tags:
+        - user-controller
+      summary: validateTributaryIdentifier
+      operationId: validateTributaryIdentifierUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/DocumentRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/onboarding/users/{id}/resend-verification-code':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: resendVerificationCode
+      operationId: resendVerificationCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - 'application/json'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/UserPhoneRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  ValidateDeviceRequest:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: ValidateDeviceRequest
+  DocumentRequest:
+    type: object
+    properties:
+      tributaryIdentifier:
+        type: string
+    title: DocumentRequest
+  IdentityValidationAttemptsResponse:
+    type: object
+    properties:
+      identityValidationAttempts:
+        type: integer
+        format: int32
+    title: IdentityValidationAttemptsResponse
+  CountryEntity:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      isoCode:
+        type: integer
+        format: int32
+      name:
+        type: string
+      threeCode:
+        type: string
+      twoCode:
+        type: string
+    title: CountryEntity
+  AddressRequest:
+    type: object
+    properties:
+      address:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+    title: AddressRequest
+  IdentityInfoRequest:
+    type: object
+    properties:
+      documentNumber:
+        type: string
+      terms:
+        type: boolean
+      tributaryIdentifier:
+        type: string
+    title: IdentityInfoRequest
+  UserEntity:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  OnBoardingResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/UserEntity'
+    title: OnBoardingResponse
+  PasswordRequest:
+    type: object
+    properties:
+      password:
+        type: string
+    title: PasswordRequest
+  Region:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: Region
+  UserDeviceData:
+    type: object
+    properties:
+      deviceState:
+        type: string
+        enum:
+          - ACTIVE
+          - INACTIVE
+      deviceType:
+        type: string
+      notificationToken:
+        type: string
+    title: UserDeviceData
+  UserInfoRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      nationality:
+        type: string
+      profession:
+        type: string
+    title: UserInfoRequest
+  UserPhoneRequest:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+    title: UserPhoneRequest
+  UserPhoneValidationRequest:
+    type: object
+    properties:
+      code:
+        type: string
+    title: UserPhoneValidationRequest
+  UserRequest:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      documentSeries:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+    title: UserRequest
+  UserResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      documentSeries:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      qrKey:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+    title: UserResponse
+  RegionEntity:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: RegionEntity
+  ConfirmDeviceRequest:
+    type: object
+    properties:
+      code:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: ConfirmDeviceRequest

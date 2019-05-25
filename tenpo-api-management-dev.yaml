@@ -1,0 +1,4358 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Tenpo API Private
+basePath: /
+schemes:
+  - http
+paths:
+  '/v1/cards-management/cards':
+    get:
+      tags:
+        - cards-controller
+      summary: getCardsByUserId
+      operationId: getCardsByUserIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ObfuscatedCardsResponse'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    deprecated: false
+  '/v1/cards-management/cards/details':
+    get:
+      tags:
+        - cards-controller
+      summary: getCardDetailByUserId
+      operationId: getCardByUserIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardInfoResponse'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/v1/account-management/accounts/{userId}/on-site/generate-code':
+    post:
+      tags:
+        - transaction-cash-in-api-controller
+      summary: generate-code
+      operationId: generateCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/sales-services/physical-point:
+    get:
+      tags:
+        - physical-point
+      summary: physical-point
+      operationId: physical-point-GET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: lat
+          in: query
+          description: lat
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+        - name: lng
+          in: query
+          description: lng
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PhysicalPointDto'
+  /points/provider/cashin:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: quantity
+          in: query
+          required: false
+          type: string
+        - name: longitude
+          in: query
+          required: false
+          type: string
+        - name: latitude
+          in: query
+          required: false
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/account-management/accounts:
+    get:
+      operationId: myAccountsUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/MyAccountsResponse'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+      security:
+        - MineAuth: []
+  '/v1/account-management/accounts/{id}/movement-history':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  '/v1/account-management/accounts/{id}/transaction':
+    get:
+      operationId: listUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/TransactionListResource'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+      security:
+        - MineAuth: []
+  /v1/account-management/me/accounts:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: AccountTypeRequest
+          required: true
+          schema:
+            $ref: '#/definitions/AccountTypeRequest'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/account-management/me/accounts/{id}':
+    get:
+      operationId: loadUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: AccountTypeUpdateRequest
+          required: true
+          schema:
+            $ref: '#/definitions/AccountTypeUpdateRequest'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/account-management/me/accounts/{id}/rules':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/account-management/me/accounts/{id}/rules/{type}':
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: RuleInputData
+          required: true
+          schema:
+            $ref: '#/definitions/RuleInputData'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/account-management/me/accounts/{id}/rules/{type}/items':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: ItemAccountRuleData
+          required: true
+          schema:
+            $ref: '#/definitions/ItemAccountRuleData'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: ArrayOfItemAccountRuleBatchData
+          required: true
+          schema:
+            $ref: '#/definitions/ArrayOfItemAccountRuleBatchData'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/account-management/me/accounts/{id}/rules/{type}/items/{itemId}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: itemId
+          in: path
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/account-management/users/contacts/filters:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: Contact
+          required: true
+          schema:
+            $ref: '#/definitions/Contact'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/account-management/users/logout:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/account-management/users/qrInfo:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: qrKey
+          in: query
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/account-management/users/requests:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: Transference
+          required: true
+          schema:
+            $ref: '#/definitions/Transference'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/adapter/user-navigation/{screenCode}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: screenCode
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/customer-management/notification:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/customer-management/notification-setting:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: NotificationConfiguration
+          required: true
+          schema:
+            $ref: '#/definitions/NotificationConfiguration'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification-setting/{userId}/configuration':
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification/{messageId}':
+    put:
+      operationId: updateNotificationUserByIdUsingPUT
+      produces:
+        - application/json
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/MODELba1d6c'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '403':
+          description: 403 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '404':
+          description: 404 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/customer-management/notification_setting/configuration:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: NotificationConfigDto
+          required: true
+          schema:
+            $ref: '#/definitions/NotificationConfigDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification_setting/me/accounts/{id}/configuration':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}':
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: RuleData
+          required: true
+          schema:
+            $ref: '#/definitions/RuleData'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification_setting/me/accounts/{id}/configuration/{type}/items':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: ArrayOfItemAccountConfigData
+          required: true
+          schema:
+            $ref: '#/definitions/ArrayOfItemAccountConfigData'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/customer-management/notification_setting/{serviceId}/configuration':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/device-management/devices:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - in: body
+          name: Device
+          required: true
+          schema:
+            $ref: '#/definitions/Device'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/integration/notify:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: RequestNotificationModel
+          required: true
+          schema:
+            $ref: '#/definitions/RequestNotificationModel'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/Empty'
+  '/v1/integration/{merchantId}/banks':
+    get:
+      operationId: getBanksUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/Response'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+      security:
+        - MineAuth: []
+  /v1/payment-management/transfer-request:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: CollectionModel
+          required: true
+          schema:
+            $ref: '#/definitions/CollectionModel'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payment-management/transfer-request/{requestId}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+    patch:
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: TransferRequestDto
+          required: true
+          schema:
+            $ref: '#/definitions/TransferRequestDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payment-management/transfer-request/{requestId}/forward':
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/payment-management/transfer-requested:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/payment-management/transfers:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: Transfer
+          required: true
+          schema:
+            $ref: '#/definitions/Transfer'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payment-management/transfers/{id}':
+    patch:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: VerificationCode
+          required: true
+          schema:
+            $ref: '#/definitions/VerificationCode'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payment-management/transfers/{id}/resend':
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: VerificationCode
+          required: true
+          schema:
+            $ref: '#/definitions/VerificationCode'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  /v1/payments-kyc/payments/categories:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/payments/categories/{categoryId}/companies':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '404':
+          description: 404 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/payments/categories/{categoryId}/companies/{companyId}/services':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: companyId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/payments-kyc/payments/config:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: action
+          in: query
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: event_config
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/payments-kyc/payments/suggestions/favorites:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: SuggestedPaymentDto
+          required: true
+          schema:
+            $ref: '#/definitions/SuggestedPaymentDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/payments/suggestions/{id}':
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/payments/{companyId}/identifiers':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: companyId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/payments-kyc/recharge/category:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/recharge/company/{companyId}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: companyId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/payments-kyc/recharge/suggested:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: RechargeSuggestedDto
+          required: true
+          schema:
+            $ref: '#/definitions/RechargeSuggestedDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/recharge/suggested/{suggestedId}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: suggestedId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/payments-kyc/recharge/{categoryId}/company':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/provider/users/authentication/logout:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+      security:
+        - MineAuth: []
+  /v1/provider/users/policies/password:
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PasswordPattern'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+  /v1/sales-services/accounts/payment_suggested:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: suggested_state
+          in: query
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+    post:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: CreatePaymentSuggestedDto
+          required: true
+          schema:
+            $ref: '#/definitions/CreatePaymentSuggestedDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/CreatePaymentSuggestedDto'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+    put:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: PaymentServiceRequestDto
+          required: true
+          schema:
+            $ref: '#/definitions/PaymentServiceRequestDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '412':
+          description: 412 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+        '422':
+          description: 422 response
+      security:
+        - MineAuth: []
+  '/v1/sales-services/accounts/payment_suggested/{companyId}/validate':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: debtIdentifier
+          in: query
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: companyId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '400':
+          description: 400 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '500':
+          description: 500 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+      security:
+        - MineAuth: []
+  /v1/sales-services/accounts/recharge:
+    put:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: PaymentServiceRequestDto
+          required: true
+          schema:
+            $ref: '#/definitions/PaymentServiceRequestDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '400':
+          description: 400 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/sales-services/accounts/{id}/payment':
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: PaymentRequestDto
+          required: true
+          schema:
+            $ref: '#/definitions/PaymentRequestDto'
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+        '422':
+          description: 422 response
+          schema:
+            $ref: '#/definitions/ResponseStatus'
+      security:
+        - MineAuth: []
+  '/v1/sales-services/accounts/{id}/payment/{paymentId}':
+    put:
+      produces:
+        - application/json
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/PaymentOrder'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '201':
+          description: 201 response
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+      security:
+        - MineAuth: []
+  /v1/user-management/me:
+    get:
+      tags:
+        - user-controller
+      summary: getCurrentUser
+      operationId: getCurrentUserUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/user-management/me/changePassword:
+    post:
+      tags:
+        - user-controller
+      summary: changePassword
+      operationId: changePasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/NewPasswordRequest'
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  CardInfoResponse:
+    type: object
+    properties:
+      expiration_date:
+        type: integer
+        format: int32
+      id:
+        type: string
+      name_on_card:
+        type: string
+      pan:
+        type: string
+      security_code:
+        type: integer
+        format: int32
+      status:
+        type: string
+      timestamps:
+      $ref: '#/definitions/TimestampsExtDto'
+    title: CardInfoResponse
+  ObfuscatedCardsResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      name_on_card:
+        type: string
+      pan:
+        type: string
+      status:
+        type: string
+      timestamps:
+      $ref: '#/definitions/TimestampsExtDto'
+    title: ObfuscatedCardsResponse
+  TimestampsExtDto:
+    type: object
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+    title: TimestampsExtDto
+  NewPasswordRequest:
+    type: object
+    properties:
+      confirmationNewPassword:
+        type: string
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+    title: NewPasswordRequest
+  PhysicalPointDto:
+    type: object
+    properties:
+      points:
+        type: array
+        items:
+          $ref: '#/definitions/PointDto'
+    title: PhysicalPointDto
+  PointDto:
+    type: object
+    properties:
+      address:
+        type: string
+      commerce:
+        type: string
+      latitude:
+        type: number
+        format: float
+      longitude:
+        type: number
+        format: float
+    title: PointDto
+  Account:
+    type: object
+    properties:
+      balanceAmount:
+        type: number
+      balanceCurrency:
+        type: string
+      id:
+        type: string
+        format: uuid
+      userId:
+        type: string
+        format: uuid
+    title: Account
+  Configuration:
+    type: object
+    properties:
+      enable:
+        type: boolean
+      unitTime:
+        type: string
+      quantity:
+        type: string
+      configurationMasterId:
+        type: number
+    title: Account
+  ItemAccountRuleData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+    title: ItemAccountRuleData
+  AccountTypeUpdateRequest:
+    type: object
+    properties:
+      pocket:
+        $ref: '#/definitions/PocketRequest'
+    title: AccountTypeUpdateRequest
+  PaymentServiceRequestDto:
+    type: object
+  UserPhone:
+    type: object
+    properties:
+      countryCode:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+    title: UserPhone
+  Currency:
+    type: string
+    enum:
+      - CLP
+      - PEN
+  ArrayOfItemAccountRuleBatchData:
+    type: array
+    items:
+      $ref: '#/definitions/ItemAccountRuleBatchData'
+  MyAccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          $ref: '#/definitions/Account'
+    title: MyAccountsResponse
+  DebtsDetailDto:
+    type: object
+    properties:
+      debtsType:
+        type: string
+      debtsAmount:
+        type: number
+      debtsDescriptionType:
+        type: string
+      state:
+        type: boolean
+  RuleInputData:
+    type: object
+    properties:
+      status:
+        type: boolean
+    title: RuleInputData
+  UserLogin:
+    type: object
+    properties:
+      email:
+        type: string
+    title: UserLogin
+  MinerDTO:
+    type: object
+    properties:
+      address:
+        type: string
+      countryCode:
+        type: string
+      document:
+        type: string
+      documentType:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      idIdentityProvider:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      phone:
+        type: string
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - ACTIVE
+    title: MinerDTO
+  UserPersonalData:
+    type: object
+    properties:
+      documentNumber:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - ACTIVE
+    title: UserPersonalData
+  Device:
+    type: object
+    properties:
+      notificationId:
+        type: string
+      deviceType:
+        type: string
+        enum:
+          - IOS
+          - ANDROID
+  RechargeSuggestedDto:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      categoryId:
+        type: string
+        format: uuid
+      companyId:
+        type: string
+        format: uuid
+      companyCode:
+        type: string
+      paymentIdentifier:
+        type: string
+  ArrayOfItemAccountConfigData:
+    type: array
+    items:
+      $ref: '#/definitions/ItemAccountConfigData'
+  ItemAccountConfigData:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+        enum:
+          - RULE_GOAL_FINALIZED
+          - RULE_GOAL_AMOUNT
+          - RULE_GOAL_DATE
+          - VALIDATE_RULE
+      status:
+        type: boolean
+      value:
+        type: string
+    title: ItemAccountConfigData
+  CreatePaymentSuggestedDto:
+    type: object
+    properties:
+      lstPaymentSuggested:
+        type: array
+        items:
+          $ref: '#/definitions/PaymentServiceRequestDto'
+  RuleData:
+    type: object
+    properties:
+      status:
+        type: boolean
+    title: RuleData
+  ResponseStatus:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The HTTP code
+      message:
+        type: string
+        description: A description message
+  SuggestedPaymentDto:
+    type: object
+    properties:
+      totalDebt:
+        type: number
+      currentBalance:
+        type: number
+      userId:
+        type: string
+        format: uuid
+      paymentCompanyId:
+        type: string
+      paymentCompanyName:
+        type: string
+      categoryId:
+        type: string
+        format: uuid
+      categoryName:
+        type: string
+      debtsMessage:
+        type: string
+      userIdentifier:
+        type: string
+      identifierType:
+        type: string
+      favorite:
+        type: boolean
+      suggestedState:
+        type: boolean
+      registerDateTime:
+        type: string
+      updateDateTime:
+        type: string
+      transactionNumber:
+        type: string
+      paymentIdentifier:
+        type: string
+      accountId:
+        type: string
+        format: uuid
+      currency:
+        type: string
+      lstDebtsDetail:
+        type: array
+        items:
+          $ref: '#/definitions/DebtsDetailDto'
+  Transfer:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+          - P2P
+      target:
+        type: string
+      amount:
+        type: string
+      note:
+        type: string
+      currency:
+        $ref: '#/definitions/Currency'
+  Region:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    title: Region
+  PasswordPattern:
+    type: object
+    properties:
+      regexLowerLetter:
+        type: string
+      regexUpperLetter:
+        type: string
+      regexNumber:
+        type: string
+      regexSpecialCharacter:
+        type: string
+      regexMinLength:
+        type: string
+  PaymentOrder:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+        format: uuid
+      merchant:
+        $ref: '#/definitions/Merchant'
+      paymentCode:
+        type: string
+      processedDate:
+        type: string
+        format: date-time
+      requestedDate:
+        type: string
+        format: date-time
+      state:
+        type: string
+        enum:
+          - PENDING
+          - CANCELED
+          - REQUESTED
+          - CONFIRMED
+      type:
+        type: string
+        enum:
+          - IN
+          - OUT
+    title: PaymentOrder
+  SignUp:
+    type: object
+    properties:
+      password:
+        type: string
+    title: SignUp
+  CollectionModel:
+    type: object
+    properties:
+      collection:
+        type: array
+        items:
+          $ref: '#/definitions/TransferRequestData'
+    title: CollectionModel
+  Bank:
+    type: object
+    properties:
+      id:
+        type: string
+      minAmount:
+        type: number
+        format: double
+      name:
+        type: string
+    title: Bank
+  VerificationCode:
+    type: object
+    properties:
+      code:
+        type: string
+  UserPhoneValidation:
+    type: object
+    properties:
+      code:
+        type: string
+      password:
+        type: string
+    title: UserPhoneValidation
+  BankParent:
+    type: object
+    properties:
+      banks:
+        type: array
+        items:
+          $ref: '#/definitions/Bank'
+      id:
+        type: string
+      minAmount:
+        type: number
+        format: double
+      name:
+        type: string
+    title: Bank
+  Empty:
+    type: object
+    title: Empty Schema
+  PocketRequest:
+    type: object
+    properties:
+      amount:
+        type: number
+      avatarLinkId:
+        type: string
+      endDate:
+        type: string
+        format: date-time
+      estimatedAmount:
+        type: number
+      name:
+        type: string
+      startDate:
+        type: string
+        format: date-time
+    title: PocketRequest
+  Merchant:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+    title: Merchant
+  AccountTypeRequest:
+    type: object
+    properties:
+      currency:
+        type: string
+        enum:
+          - CLP
+          - PEN
+      pocketDetail:
+        $ref: '#/definitions/PocketRequest'
+      type:
+        type: string
+        enum:
+          - CURRENT
+          - POCKET
+    title: AccountTypeRequest
+  TransactionListResource:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/AccountTransaction'
+    title: TransactionListResource
+  Transference:
+    type: object
+    properties:
+      phone:
+        type: string
+      message:
+        type: string
+      amount:
+        type: number
+  TransferRequestData:
+    type: object
+    properties:
+      amount:
+        type: number
+      message:
+        type: string
+      phone:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: TransferRequestData
+  NotificationConfigDto:
+    type: object
+    properties:
+      operationType:
+        type: string
+      serviceId:
+        type: string
+        format: uuid
+      whenDebtExist:
+        type: boolean
+      exactlyDate:
+        type: string
+        format: date-time
+      dateMonth:
+        type: string
+  MODELba1d6c:
+    type: object
+  RequestNotificationModel:
+    type: object
+    required:
+      - api_version
+      - notification_token
+    properties:
+      api_version:
+        type: string
+      notification_token:
+        type: string
+    title: Request Notification Model
+  TransferRequestDto:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      userSenderId:
+        type: string
+        format: uuid
+      userReceiverId:
+        type: string
+        format: uuid
+      note:
+        type: string
+      currencySymbol:
+        type: string
+      firstNameSender:
+        type: string
+      lastNameSender:
+        type: string
+      firstNameReceiver:
+        type: string
+      lastNameReceiver:
+        type: string
+      readStatus:
+        type: string
+      requestedDate:
+        type: string
+      processedDate:
+        type: string
+      forwardedDate:
+        type: string
+      amount:
+        type: number
+      description:
+        type: string
+  NotificationConfiguration:
+    type: object
+    properties:
+      notificationConfigurationList:
+        type: array
+        items:
+          $ref: '#/definitions/Configuration'
+  AccountTransaction:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+      balance_amount:
+        type: number
+      balance_currency:
+        type: string
+      completed:
+        type: string
+        format: date-time
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+        format: uuid
+      state:
+        type: string
+      to:
+        $ref: '#/definitions/CounterParty'
+      type:
+        type: string
+    title: AccountTransaction
+  AddressInfo:
+    type: object
+    properties:
+      apartment:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      street:
+        type: string
+      streetNumber:
+        type: string
+    title: AddressInfo
+  Contact:
+    type: object
+    properties:
+      phones:
+        type: array
+        items:
+          type: string
+  Response:
+    type: object
+    properties:
+      appUrl:
+        type: string
+      banks:
+        type: array
+        items:
+          $ref: '#/definitions/BankParent'
+      paymentId:
+        type: string
+      paymentUrl:
+        type: string
+      readyForTerminal:
+        type: boolean
+      simplifiedTransferUrl:
+        type: string
+      transferUrl:
+        type: string
+    title: Response
+  CounterParty:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      merchantId:
+        type: string
+        format: uuid
+      name:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: CounterParty
+  ItemAccountRuleBatchData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+      id:
+        type: string
+        format: uuid
+    title: ItemAccountRuleBatchData
+  PaymentRequestDto:
+    type: object
+    properties:
+      amount:
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      extraParams:
+        type: object
+        additionalProperties:
+          type: string
+      merchantId:
+        type: string
+        format: uuid
+      type:
+        type: string
+        enum:
+          - IN
+          - OUT
+    title: PaymentRequestDto
+  UserEntity:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  UserResponse:
+    type: object
+    properties:
+      user:
+        $ref: '#/definitions/UserEntity'
+    title: UserResponse

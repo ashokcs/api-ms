@@ -1,0 +1,178 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Users API
+host: 40.70.68.63:8080
+basePath: /v1/user-management
+schemes:
+  - http
+paths:
+  /me:
+    get:
+      tags:
+        - user-controller
+      summary: getCurrentUser
+      operationId: getCurrentUserUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/UserResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /me/changePassword:
+    post:
+      tags:
+        - user-controller
+      summary: changePassword
+      operationId: changePasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: "#/definitions/NewPasswordRequest"
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /users/me/account/closure-request:
+    post:
+      tags:
+        - user-controller
+      summary: sendAccountClosureRequest
+      operationId: sendAccountClosureRequestUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  ResponseStatus:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The HTTP code
+      message:
+        type: string
+        description: A description message
+  UserResponse:
+    type: object
+    properties:
+      user:
+        $ref: "#/definitions/UserEntity"
+    title: UserResponse
+  UserEntity:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      countryCode:
+        type: integer
+        format: int32
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+      tributaryIdentifier:
+        type: string
+      verificationCode:
+        type: string
+    title: UserEntity
+  NewPasswordRequest:
+    type: object
+    properties:
+      confirmationNewPassword:
+        type: string
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+    title: NewPasswordRequest

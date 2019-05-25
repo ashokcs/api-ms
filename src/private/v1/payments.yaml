@@ -1,0 +1,62 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Payments API
+host: 52.179.131.53:8080
+basePath: /v1/sales-services
+schemes:
+  - http
+paths:
+  /physical-point:
+    get:
+      tags:
+        - physical-point
+      summary: physical-point
+      operationId: physical-point-GET
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: lat
+          in: query
+          description: lat
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+        - name: lng
+          in: query
+          description: lng
+          required: true
+          type: number
+          format: float
+          allowEmptyValue: false
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/PhysicalPointDto"
+definitions:
+  PhysicalPointDto:
+    type: object
+    properties:
+      points:
+        type: array
+        items:
+          $ref: "#/definitions/PointDto"
+    title: PhysicalPointDto
+  PointDto:
+    type: object
+    properties:
+      address:
+        type: string
+      commerce:
+        type: string
+      latitude:
+        type: number
+        format: float
+      longitude:
+        type: number
+        format: float
+    title: PointDto

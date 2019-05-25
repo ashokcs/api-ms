@@ -1,0 +1,762 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Accounts + Transactions API
+host: 52.167.62.186:8080
+basePath: /v1/account-management
+schemes:
+  - http
+paths:
+  /accounts:
+    get:
+      operationId: myAccountsUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/MyAccountsResponse"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "401":
+          description: 401 response
+        "403":
+          description: 403 response
+        "404":
+          description: 404 response
+  /me/accounts:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: AccountTypeRequest
+          required: true
+          schema:
+            $ref: "#/definitions/AccountTypeRequest"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+  "/me/accounts/{id}":
+    get:
+      operationId: loadUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: AccountTypeUpdateRequest
+          required: true
+          schema:
+            $ref: "#/definitions/AccountTypeUpdateRequest"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+  "/me/accounts/{id}/rules":
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+  "/me/accounts/{id}/rules/{type}":
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: RuleInputData
+          required: true
+          schema:
+            $ref: "#/definitions/RuleInputData"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+  "/me/accounts/{id}/rules/{type}/items":
+    get:
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: ItemAccountRuleData
+          required: true
+          schema:
+            $ref: "#/definitions/ItemAccountRuleData"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: ArrayOfItemAccountRuleBatchData
+          required: true
+          schema:
+            $ref: "#/definitions/ArrayOfItemAccountRuleBatchData"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+  "/me/accounts/{id}/rules/{type}/items/{itemId}":
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - name: type
+          in: path
+          required: true
+          type: string
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - name: itemId
+          in: path
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+# Transactions endpoints
+  '/accounts/{id}/transaction':
+    get:
+      tags:
+        - transaction-api-controller
+      operationId: listTransactionsUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/TransactionListResource'
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        '401':
+          description: 401 response
+        '403':
+          description: 403 response
+        '404':
+          description: 404 response
+  "/accounts/{userId}/on-site/generate-code":
+    post:
+      tags:
+        - transaction-cash-in-api-controller
+      summary: generate-code
+      operationId: generateCodeUsingPOST
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+definitions:
+  MyAccountsResponse:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          $ref: "#/definitions/Account"
+    title: MyAccountsResponse
+  GeneratedCodeDto:
+    type: object
+    properties:
+      generatedCode:
+        type: string
+      remainingTime:
+        type: integer
+        format: int64
+    title: GeneratedCodeDto
+  Account:
+    type: object
+    properties:
+      balanceAmount:
+        type: number
+      balanceCurrency:
+        type: string
+      id:
+        type: string
+        format: uuid
+      userId:
+        type: string
+        format: uuid
+    title: Account
+  AccountTypeRequest:
+    type: object
+    properties:
+      currency:
+        type: string
+        enum:
+          - CLP
+          - PEN
+      pocketDetail:
+        $ref: "#/definitions/PocketRequest"
+      type:
+        type: string
+        enum:
+          - CURRENT
+          - POCKET
+    title: AccountTypeRequest
+  ResponseStatus:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The HTTP code
+      message:
+        type: string
+        description: A description message
+  PocketRequest:
+    type: object
+    properties:
+      amount:
+        type: number
+      avatarLinkId:
+        type: string
+      endDate:
+        type: string
+        format: date-time
+      estimatedAmount:
+        type: number
+      name:
+        type: string
+      startDate:
+        type: string
+        format: date-time
+    title: PocketRequest
+  AccountTypeUpdateRequest:
+    type: object
+    properties:
+      pocket:
+        $ref: "#/definitions/PocketRequest"
+    title: AccountTypeUpdateRequest
+  RuleInputData:
+    type: object
+    properties:
+      status:
+        type: boolean
+    title: RuleInputData
+  ItemAccountRuleData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+    title: ItemAccountRuleData
+  ArrayOfItemAccountRuleBatchData:
+    type: array
+    items:
+      $ref: "#/definitions/ItemAccountRuleBatchData"
+  ItemAccountRuleBatchData:
+    type: object
+    properties:
+      active:
+        type: boolean
+      amount:
+        type: number
+      frequency:
+        type: integer
+        format: int32
+      id:
+        type: string
+        format: uuid
+    title: ItemAccountRuleBatchData
+  TransactionListResource:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/AccountTransaction'
+    title: TransactionListResource
+  AccountTransaction:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+      balance_amount:
+        type: number
+      balance_currency:
+        type: string
+      completed:
+        type: string
+        format: date-time
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+        format: uuid
+      state:
+        type: string
+      to:
+        $ref: '#/definitions/CounterParty'
+      type:
+        type: string
+    title: AccountTransaction
+  CounterParty:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      merchantId:
+        type: string
+        format: uuid
+      name:
+        type: string
+      userId:
+        type: string
+        format: uuid
+    title: CounterParty

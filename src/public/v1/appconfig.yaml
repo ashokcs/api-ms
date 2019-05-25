@@ -1,0 +1,52 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: AppConfig - Tenpo public API
+basePath: /v1/app
+schemes:
+  - http
+paths:
+  /config:
+    get:
+      tags:
+        - appconfig-controller
+      summary: getAppConfigUsingGet
+      operationId: getAppConfig
+      produces:
+        - 'application/json'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AppConfigResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+definitions:
+  AppConfigResponse:
+    type: object
+    properties:
+      auth:
+        $ref: '#/definitions/AppConfigResponseAuth'
+      tenantId:
+        type: string
+        description: The tenant id to be used in service calls for auth eg. cae09fee-473e-48e2-99dc-3b7bf4a97411
+      tenantName:
+        type: string
+        description: The tenant url name. Eg. tenpodev2.b2clogin.com
+  AppConfigResponseAuth:
+    type: object
+    properties:
+      url:
+        type: string
+        description: URl to do the login eg. http://tenpodev2.b2clogin.com/
+      userFlowName:
+        type: string
+        description: The user flow name to be used when generating the token eg.B2C_1_ROPC_mobile
+      clientId:
+        type: string
+        description: The clinet ID that makes the request. Eg. 5cba8f4d-b819-4903-a414-732dbd4b8378

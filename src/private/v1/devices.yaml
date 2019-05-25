@@ -1,0 +1,75 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Devices API
+host: 40.70.68.63:8080
+basePath: /v1/device-management
+schemes:
+  - http
+paths:
+  /devices:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: access-token
+          in: header
+          required: true
+          type: string
+        - in: body
+          name: Device
+          required: true
+          schema:
+            $ref: "#/definitions/Device"
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+          headers:
+            X-Requested-With:
+              type: string
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+        "400":
+          description: 400 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "401":
+          description: 401 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "422":
+          description: 422 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+        "500":
+          description: 500 response
+          schema:
+            $ref: "#/definitions/ResponseStatus"
+definitions:
+  Device:
+    type: object
+    properties:
+      notificationId:
+        type: string
+      deviceType:
+        type: string
+        enum:
+          - IOS
+          - ANDROID
+  ResponseStatus:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The HTTP code
+      message:
+        type: string
+        description: A description message
