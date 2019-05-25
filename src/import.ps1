@@ -19,9 +19,8 @@ $userFlowName = $env:USER_FLOW_NAME
 $clientId = $env:CLIENT_ID
 $tenantName = $env:AZURE_TENANT_NAME
 
-$tenantId
-$tenantId
-$azureAccountName
+$env:RESOURCE_GROUP_NAME
+$env:SERVICE_NAME
 
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
 $null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
