@@ -19,9 +19,6 @@ $userFlowName = $env:USER_FLOW_NAME
 $clientId = $env:CLIENT_ID
 $tenantName = $env:AZURE_TENANT_NAME
 
-$env:RESOURCE_GROUP_NAME
-$env:SERVICE_NAME
-
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
 $null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
 
@@ -48,6 +45,7 @@ function Import-Api {
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $env:RESOURCE_GROUP_NAME -ServiceName $env:SERVICE_NAME
 
+Get-AzApiManagementApi -Context $ApiMgmtContext
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -SubscriptionRequired $False -State "Published"
 #Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -SubscriptionRequired $False
 
