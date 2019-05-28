@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <json-to-xml apply="always" consider-accept-header="false" />
-        <set-backend-service base-url="http://20.50.1.4:31400" />
+        <set-backend-service base-url="http://{{urlApiPrepaid}}:31400" />
     </inbound>
     <backend>
         <base />
