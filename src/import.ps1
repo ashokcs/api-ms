@@ -12,6 +12,7 @@ $notificationsIp = $env:NOTIFICATION_IP
 $paymentsIp = $env:PAYMENTS_IP
 $paymentsKycIp = $env:PAYMENTSKYC_IP
 $cardsIp = $env:CARDS_IP
+$apiPrepaidIp = $env:API_PREPAID
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -59,6 +60,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlNot
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentskyc" -Name "urlPaymentskyc" -Value $paymentsKycIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPayments" -Name "urlPayments" -Value $paymentsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCards" -Name "urlCards" -Value $cardsIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApiPrepaid" -Name "urlApiPrepaid" -Value $apiPrepaidIp":8080"
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
@@ -87,6 +89,7 @@ Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -Ap
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "cards-api" -OperationId "getCardByUserIdUsingGET" -PolicyFilePath "$pwd/src/private/cards_policy.xml"
 
 #Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
 #Get-AzApiManagementApi -Context $ApiMgmtContext
