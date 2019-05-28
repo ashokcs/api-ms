@@ -37,8 +37,8 @@ paths:
     get:
       tags:
         - cards-controller
-      summary: getCardByUserId
-      operationId: getCardByUserIdUsingGET
+      summary: getCardDetailByUserId
+      operationId: getCardDetailByUserIdUsingGET
       produces:
         - '*/*'
       parameters:
