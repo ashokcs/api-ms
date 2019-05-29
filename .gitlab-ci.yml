@@ -92,7 +92,8 @@ uat-deploy:
     PAYMENTS_IP: 172.11.0.130
     PAYMENTSKYC_IP: 0.0.0.0
     CARDS_IP: 172.11.0.132
-    API_PREPAID: 20.50.1.4
+    API_PREPAID: api.uat.multicajadigital.cloud
+    #API_PREPAID: "20.50.1.4:31400"
     AUTH_URL: https://uattenpo2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo_uat
     CLIENT_ID: e9cfc90e-ee75-49a6-b765-4e74093b2878
@@ -122,7 +123,7 @@ prod-deploy:
     PAYMENTS_IP: 172.11.0.42
     PAYMENTSKYC_IP: 0.0.0.0
     CARDS_IP: 172.11.0.40
-    API_PREPAID: 10.80.1.5
+    API_PREPAID: "10.80.1.5:31400"
     AUTH_URL: https://tenpoapp.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo
     CLIENT_ID: 0b9c4aeb-9a1a-4ee4-a18e-94b01df49e5e
