@@ -82,7 +82,7 @@ Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" 
 Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
-Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API" -SubscriptionRequired $True
+Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
