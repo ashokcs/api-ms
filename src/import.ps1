@@ -87,7 +87,7 @@ $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -P
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
-Remove-AzApiManagementSubscription -Context $apimContext -SubscriptionId "123456" -Force
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456" -Force
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name -SubscriptionId "123456" "AddSubscriptionTest" -Scope "/apis/appconfig"  -PrimaryKey "80450f7d0b6d481382113073f67822c2" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a762c" -State "Active"
 
 
