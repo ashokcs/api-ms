@@ -18,6 +18,12 @@ paths:
       produces:
       - application/json
       parameters:
+        parameters:
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          description: Ocp-Apim-Subscription-Key
+          required: true
+          type: string
       - in: body
         name: validateCashInDto
         description: validateCashInDto
