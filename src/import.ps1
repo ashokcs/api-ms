@@ -88,7 +88,7 @@ Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimit
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "AddSubscriptionTest" -SubscriptionId "123456" -Scope "/apis/appconfig"  -PrimaryKey "80450f7d0b6d481382113073f67822c2" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a762c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "AddSubscriptionTest" -SubscriptionId "123456" -Scope "/apis/payments-api"  -PrimaryKey "80450f7d0b6d481382113073f67822c2" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a762c" -State "Active"
 
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
