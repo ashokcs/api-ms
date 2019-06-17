@@ -70,7 +70,8 @@ dev-deploy:
     CLIENT_ID: 5cba8f4d-b819-4903-a414-732dbd4b8378
     AZURE_TENANT_NAME: tenpodev2.onmicrosoft.com
     AZURE_B2C_TENANT_ID: cae09fee-473e-48e2-99dc-3b7bf4a97411
-
+    USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c3
+    PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c4
 uat-deploy:
   extends: .config-deploy
   only:
@@ -102,7 +103,8 @@ uat-deploy:
     CLIENT_ID: e9cfc90e-ee75-49a6-b765-4e74093b2878
     AZURE_TENANT_NAME: uattenpo2.onmicrosoft.com
     AZURE_B2C_TENANT_ID: c3fdc983-c30f-4c4e-b7e9-29502a5a7ee5
-
+    USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c5
+    PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c6
 prod-deploy:
   extends: .config-deploy
   only:
@@ -133,3 +135,5 @@ prod-deploy:
     CLIENT_ID: 0b9c4aeb-9a1a-4ee4-a18e-94b01df49e5e
     AZURE_TENANT_NAME: krealoprepago.onmicrosoft.com
     AZURE_B2C_TENANT_ID: 30db1526-4fa2-4f4a-ae85-6d1e64e29171
+    USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c5
+    PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c6
