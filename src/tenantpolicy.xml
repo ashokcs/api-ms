@@ -3,12 +3,9 @@
         <rate-limit-by-key calls="100" renewal-period="1" counter-key="@(context.Request.IpAddress)" />
     </inbound>
     <backend>
-        <base />
     </backend>
     <outbound>
-        <base />
     </outbound>
     <on-error>
-        <base />
     </on-error>
 </policies>
