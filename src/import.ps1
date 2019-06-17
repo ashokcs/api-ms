@@ -52,7 +52,7 @@ $sn = $env:SERVICE_NAME
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -State "Published"
-#Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited
+#Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -SubscriptionRequired $False
 #Set-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId -0123456789 -PrimaryKey "80450f7d0b6d481382113073f67822c1" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a761c" -State "Active"
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value $usersIp":8080"
