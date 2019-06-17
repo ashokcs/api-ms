@@ -3,7 +3,8 @@ $ErrorActionPreference = "Stop"
 $azureAccountName = $env:AZURE_ACCOUNT_NAME
 $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText -Force
 $tenantId = $env:AZURE_TENANT_ID
-
+$userSubscriptionKey = $env:USER_SUBSCRIPTION_KEY
+$paymentSubscriptionKey = $env:PAYMENT_SUBSCRIPTION_KEY
 $usersIp = $env:USERS_IP
 $accountsIp = $env:ACCOUNT_IP
 $identityproviderIp = $env:IDENTITPROVIDER_IP
