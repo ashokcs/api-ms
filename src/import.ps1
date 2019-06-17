@@ -77,9 +77,10 @@ Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" 
 Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
 
-Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080" -SubscriptionRequired
+Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080" -SubscriptionRequired
+Import-Api -context $ApiMgmtContext -msName "wehookUser" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080" -SubscriptionRequired
 
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
@@ -91,7 +92,7 @@ Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey "80450f7d0b6d481382113073f67822c3" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/users-public-api"  -PrimaryKey "80450f7d0b6d481382113073f67822c4" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey "80450f7d0b6d481382113073f67822c4" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
