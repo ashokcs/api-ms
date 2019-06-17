@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: UsersExternal - Tenpo public API - UsersExternal
+  title: UsersWebhook - Tenpo public API - UsersWebhook
 host: 40.70.68.63:8080
 basePath: /v1/webhook-user-management/
 schemes:
