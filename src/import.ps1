@@ -53,7 +53,7 @@ function Import-Api-Subscription {
           [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
-    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name -SubscriptionRequired $True
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name -SubscriptionRequired
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
     Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId $apiId
 }
@@ -98,7 +98,7 @@ Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" 
 #Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Api-Subscription -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
-Import-Api-Subscription -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
+#Import-Api-Subscription -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 
 
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
