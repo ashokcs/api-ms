@@ -1,0 +1,12 @@
+<policies>
+    <inbound>
+        <rate-limit-by-key calls="100" renewal-period="1" counter-key="@(context.Request.IpAddress)"/>
+    </inbound>
+    <backend>
+        <forward-request/>
+    </backend>
+    <outbound>
+    </outbound>
+    <on-error>
+    </on-error>
+</policies>
