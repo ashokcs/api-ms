@@ -62,7 +62,7 @@ $rg = $env:RESOURCE_GROUP_NAME
 $sn = $env:SERVICE_NAME
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
-New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -SubscriptionRequired $False -State "Published"
+New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all"  -State "Published"
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -Title "Tenpo API Subscription" -Description "Tenpo API Subscription" -LegalTerms "Free for all"  -State "Published"
 
 #Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -SubscriptionRequired $False
