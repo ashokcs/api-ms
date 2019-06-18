@@ -108,10 +108,10 @@ Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimit
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
