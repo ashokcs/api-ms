@@ -40,23 +40,23 @@ function Import-Secure-Api {
 
 function Import-Api {
     param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
-          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
+          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase, [string] $productId)
     "Importing API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
     Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
-    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId $apiId
+    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId $productId -ApiId $apiId
 }
 
-function Import-Api-Subscription {
-    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
-          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
-    "Importing API $msName"
-    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
-    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name -SubscriptionRequired
-    Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
-    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId $apiId
-}
+#function Import-Api-Subscription {
+#    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
+#          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
+#    "Importing API $msName"
+#    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
+#    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name -SubscriptionRequired
+#    Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
+#    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId $apiId
+#}
 
 $rg = $env:RESOURCE_GROUP_NAME
 $sn = $env:SERVICE_NAME
@@ -85,24 +85,22 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "client
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantId" -Name "tenantId" -Value $b2cTenantId
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantName" -Name "tenantName" -Value $tenantName
 
-Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "identityprovider" -sufix "/private" -path "/v1/provider/users" -apiId "identityprovider-api" -serviceBase "http://$identityproviderIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "notifications" -sufix "/private" -path "/v1/customer-management" -apiId "notifications-api" -serviceBase "http://$notificationsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private" -path "/v1/payments-kyc" -apiId "paymentkyc-api" -serviceBase "http://$paymentsKycIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
+Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -ProductId tenpoapi -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "devices" -ProductId tenpoapi -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "identityprovider" -ProductId tenpoapi -sufix "/priva te" -path "/v1/provider/users" -apiId "identityprovider-api" -serviceBase "http://$identityproviderIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "notifications" -ProductId tenpoapi -sufix "/private" -path "/v1/customer-management" -apiId "notifications-api" -serviceBase "http://$notificationsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -ProductId tenpoapi -sufix "/private" -path "/v1/payments-kyc" -apiId "paymentkyc-api" -serviceBase "http://$paymentsKycIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapi -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "cards" -ProductId tenpoapi -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -ProductId tenpoapi -sufix "" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
 
-Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
-Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
-Import-Api-Subscription -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
-Import-Api-Subscription -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
-
-
+Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscription -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
