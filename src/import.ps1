@@ -93,7 +93,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private
 Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -path "" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
+Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"

@@ -3,6 +3,7 @@ info:
   title: Utility Payments
   version: 1.0.0
 host: tenpo.staging.multicajadigital.cloud
+basePath: /v1/utility-payments
 schemes:
   - https
 securityDefinitions:
@@ -11,7 +12,7 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:
-  /v1/utility-payments/categories:
+  /categories:
     get:
       produces:
         - application/json
