@@ -133,7 +133,7 @@ prod-deploy:
     AUTH_URL: https://tenpoapp.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo
     CLIENT_ID: 0b9c4aeb-9a1a-4ee4-a18e-94b01df49e5e
-    AZURE_TENANT_NAME: krealoprepago.onmicrosoft.com
+    AZURE_TENANT_NAME: tenpoapp.onmicrosoft.com
     AZURE_B2C_TENANT_ID: 30db1526-4fa2-4f4a-ae85-6d1e64e29171
     USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c5
     PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c6
