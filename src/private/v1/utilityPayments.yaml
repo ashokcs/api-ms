@@ -1,0 +1,38 @@
+swagger: "2.0"
+info:
+  title: Utility Payments
+  version: 1.0.0
+host: tenpo.staging.multicajadigital.cloud
+basePath: /v1/utility-payments
+schemes:
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:
+  /categories:
+    get:
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Category"
+definitions:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Agua
+        utilities:
+          type: integer
+          example: 14

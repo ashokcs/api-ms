@@ -13,12 +13,16 @@ $paymentsIp = $env:PAYMENTS_IP
 $paymentsKycIp = $env:PAYMENTSKYC_IP
 $cardsIp = $env:CARDS_IP
 $apiPrepaidIp = $env:API_PREPAID
+$utilityPaymentsIp = $env:API_UTILITY_PAYMENT
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
 $userFlowName = $env:USER_FLOW_NAME
 $clientId = $env:CLIENT_ID
 $tenantName = $env:AZURE_TENANT_NAME
+
+$userSubscriptionKey = $env:USER_SUBSCRIPTION_KEY
+$PaymentSubscriptionKey = $env:PAYMENT_SUBSCRIPTION_KEY
 
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
 $null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
@@ -44,13 +48,25 @@ function Import-Api {
     Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId $apiId
 }
 
+function Import-Api-Subscription {
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
+          [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
+    "Importing API $msName"
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
+    Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
+    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId $apiId
+}
+
 $rg = $env:RESOURCE_GROUP_NAME
 $sn = $env:SERVICE_NAME
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
-
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -SubscriptionRequired $False -State "Published"
+New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -Title "Tenpo API Subscription" -Description "Tenpo API Subscription" -LegalTerms "Free for all"  -State "Published"
+
 #Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -SubscriptionRequired $False
+#Set-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId -0123456789 -PrimaryKey "80450f7d0b6d481382113073f67822c1" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a761c" -State "Active"
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value $usersIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlAccounts" -Name "urlAccounts" -Value $accountsIp":8080"
@@ -61,6 +77,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPay
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPayments" -Name "urlPayments" -Value $paymentsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCards" -Name "urlCards" -Value $cardsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApiPrepaid" -Name "urlApiPrepaid" -Value $apiPrepaidIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUtilityPaymentsIp" -Name "urlUtilityPaymentsIp" -Value $utilityPaymentsIp
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
@@ -76,20 +93,32 @@ Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private
 Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "onboarding" -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
-Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
+#Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
+#Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
+Import-Api-Subscription -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
+Import-Api-Subscription -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
+
 
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
-Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
+Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId "appconfig"
+
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
+
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "cards-api" -OperationId "getCardDetailByUserIdUsingGET" -PolicyFilePath "$pwd/src/private/cards_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -PolicyFilePath "$pwd/src/tenantpolicy.xml"
 
 #Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
 #Get-AzApiManagementApi -Context $ApiMgmtContext

@@ -156,7 +156,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /v1/cards-management/cards/reissue:
+  '/cards/reissue':
     post:
       tags:
         - cards-controller
