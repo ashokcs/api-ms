@@ -87,7 +87,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenant
 
 Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "identityprovider" -sufix "/priva te" -path "/v1/provider/users" -apiId "identityprovider-api" -serviceBase "http://$identityproviderIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "identityprovider" -sufix "/private" -path "/v1/provider/users" -apiId "identityprovider-api" -serviceBase "http://$identityproviderIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "notifications" -sufix "/private" -path "/v1/customer-management" -apiId "notifications-api" -serviceBase "http://$notificationsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private" -path "/v1/payments-kyc" -apiId "paymentkyc-api" -serviceBase "http://$paymentsKycIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
