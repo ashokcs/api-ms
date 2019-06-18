@@ -53,7 +53,7 @@ function Import-Api-Subscription {
           [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
-    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name -SubscriptionRequired
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
     Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId $apiId
 }
@@ -62,7 +62,7 @@ $rg = $env:RESOURCE_GROUP_NAME
 $sn = $env:SERVICE_NAME
 
 $ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName $rg -ServiceName $sn
-New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all"  -State "Published"
+New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapi -Title "Tenpo API" -Description "Tenpo API" -LegalTerms "Free for all" -SubscriptionRequired $False -State "Published"
 New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -Title "Tenpo API Subscription" -Description "Tenpo API Subscription" -LegalTerms "Free for all"  -State "Published"
 
 #Set-AzApiManagementProduct -Context $ApiMgmtContext -ProductId unlimited -SubscriptionRequired $False
@@ -107,7 +107,7 @@ $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -S
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
-Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscription -ApiId "appconfig"
+Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
