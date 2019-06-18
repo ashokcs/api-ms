@@ -28,7 +28,7 @@ $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName
 $null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
 
 function Import-Secure-Api {
-    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
           [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing secure API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/private/v1/$msName/swagger.json" -Path $sufix$path
@@ -39,7 +39,7 @@ function Import-Secure-Api {
 }
 
 function Import-Api {
-    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context, 
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
           [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase, [string] $productId)
     "Importing API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/$msName/swagger.json" -Path $sufix$path
@@ -101,6 +101,10 @@ Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -pa
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscription -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
+
+Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
+Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
+
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
@@ -119,7 +123,7 @@ Set-AzApiManagementPolicy -Context $ApiMgmtContext -PolicyFilePath "$pwd/src/ten
 
 #Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
 #Get-AzApiManagementApi -Context $ApiMgmtContext
-#Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted  
+#Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 #Install-Module -Name Az -AllowClobber -SkipPublisherCheck
 #$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName tenpo_uat -ServiceName tenpo-uat-api-management
 #Get-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId accounts-api -SaveAs "/Users/jorge/git/api/src/private/security_policy.xml"
