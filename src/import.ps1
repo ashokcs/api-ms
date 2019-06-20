@@ -108,6 +108,8 @@ Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoap
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "payments-public-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "webhook-user-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
