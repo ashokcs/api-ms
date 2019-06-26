@@ -47,11 +47,6 @@ paths:
           description: Authorization
           required: true
           type: string
-        - name: X-Authorization
-          in: header
-          description: X-Authorization
-          required: true
-          type: string
         - name: user_uuid
           in: path
           description: user_uuid
