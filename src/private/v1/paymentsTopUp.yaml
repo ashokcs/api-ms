@@ -1,0 +1,485 @@
+openapi: 3.0.1
+info:
+  title: Tenpo TopUp API
+  version: 1.0.0
+servers:
+  - url: https://tenpo.dev.multicajadigital.cloud
+    description: Development Environment
+tags:
+  - name: Products
+    description: Operaciones sobre productos de recarga y operadores
+  - name: Helpers
+    description: Operaciones de apoyo a la recarga
+  - name: Transaction
+    description: Operaciones de transacciones de recarga
+
+paths:
+  /v1/topup/products:
+    get:
+      tags: 
+        - Products
+      summary: Lista los tipos de producto disponibles para recarga
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              example: 
+                - code: "movil"
+                  name: "Telefonía Móvil"
+                - code: "fija"
+                  name: "Telefonía Fija"
+                - code: "bam"
+                  name: "Banda Ancha Móvil"
+                - code: "tv"
+                  name: "Televisión"
+  
+  /v1/topup/products/{id}:
+    get:
+      tags: 
+        - Products
+      summary: Lista los operadores disponibles para el tipo de producto
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Id del tipo de producto
+          schema:
+            type: string
+            example: "movil"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOperators'
+              example: 
+                product:
+                  id: "movil"
+                  name: "Telefonía Móvil"
+                operators:
+                    - operator:
+                        id: "wom"
+                        name: "WOM"
+                      constraint:
+                        identifier_type: "subscripionIdentifier"
+                        amount_rule:
+                          type: "minMaxRangeAmountRule"
+                          min: 1000
+                          max: 20000
+                    - operator:
+                        id: "claro"
+                        name: "Claro"
+                      constraint:
+                        identifier_type: "subscripionIdentifier"
+                        amount_rule:
+                          type: "fixedListAmountRule"
+                          amounts: [1000, 2000, 3000, 4000, 5000]
+                    - operator:
+                        id: "vtr"
+                        name: "VTR"
+                      constraint:
+                        identifier_type: "subscriptorIdentifier"
+                        amount_rule:
+                          type: "minMaxRangeAmountRule"
+                          min: 500
+                          max: 15000
+        400:
+          description: "invalid parameter"
+        404:
+          description: "product not found"
+
+  /v1/topup/helpers/check:
+    post:
+      tags:
+        - Helpers
+      summary: Obtiene la factibilidad de una solicitud de recarga
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUp'
+            example:
+                product_code: "movil"
+                operator_code: "wom"
+                identifier: "912345678"
+                amount: 1500    
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid parameters"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                IncompatibleOperator:
+                  value:
+                    code: "TEN-TOPUP-ERR03"
+                    message: "El operador no soporta el tipo de producto especificado"
+                InvalidIdentifier:
+                  value:
+                    code: "TEN-TOPUP-ERR04"
+                    message: "Suscriptor no válido"
+                InvalidAmount:
+                  value:
+                    code: "TEN-TOPUP-ERR05"
+                    message: "El monto no es válido"
+
+  /v1/topup/transaction:
+    post:
+      tags: 
+        - Transaction
+      summary: Crea una transacción de recarga
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TransactionRequest'
+              example:
+                topups:
+                - product_code: "movil"
+                  operator_code: "wom"
+                  identifier: "912345678"
+                  amount: 1500
+                - product_code: "bam"
+                  operator_code: "entel"
+                  identifier: "912345678"
+                  amount: 5000
+                - product_code: "tv"
+                  operator_code: "direct-tv"
+                  identifier: "175018999"
+                  amount: 25000
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+              example:
+                id: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
+                user_id: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+                order: "T20190620144252014"
+                status: "PENDING"
+                created_at: "2019-04-24T10:58:26.140605-04:00"
+                updated_at: "2019-04-24T10:58:26.140605-04:00"
+                topups:
+                  - id: "5439d566-a9ac-417c-b7b0-7b95d3ba8e82"
+                    product_code: "movil"
+                    operator_code: "wom"
+                    identifier: "912345678"
+                    amount: 1500
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+                  - id: "e699f2e4-4972-4197-934f-d7a2410fb73c"
+                    product_code: "bam"
+                    operator_code: "entel"
+                    identifier: "912345678"
+                    amount: 5000
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+                  - id: "04cfa79f-b5b9-49c7-ae8b-8903cbfb6bba"
+                    product_code: "tv"
+                    operator_code: "direct-tv"
+                    identifier: "175018999"
+                    amount: 25000
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+        400:
+          description: invalid parameters
+        500:
+          description: internal server error
+
+  /v1/topup/transaction/{id}:
+    get:
+      tags: 
+        - Transaction
+      summary: Obtiene los detalles de una transacción de pago de cuenta
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: Id de la transacción de pago de cuenta
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+              example:
+                id: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
+                user_id: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+                order: "T20190620144252014"
+                status: "PENDING"
+                created_at: "2019-04-24T10:58:26.140605-04:00"
+                updated_at: "2019-04-24T10:58:26.140605-04:00"
+                topups:
+                  - id: "5439d566-a9ac-417c-b7b0-7b95d3ba8e82"
+                    product_code: "movil"
+                    operator_code: "wom"
+                    identifier: "912345678"
+                    amount: 1500
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+                  - id: "e699f2e4-4972-4197-934f-d7a2410fb73c"
+                    product_code: "bam"
+                    operator_code: "entel"
+                    identifier: "912345678"
+                    amount: 5000
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+                  - id: "04cfa79f-b5b9-49c7-ae8b-8903cbfb6bba"
+                    product_code: "tv"
+                    operator_code: "direct-tv"
+                    identifier: "175018999"
+                    amount: 25000
+                    status: "PENDING"
+                    created_at: "2019-04-24T10:58:26.140605-04:00"
+                    updated_at: "2019-04-24T10:58:26.140605-04:00"
+        404:
+          description: resource not found
+        500:
+          description: internal server error
+          
+components:
+  securitySchemes:
+    bearerAuth:
+      type: https
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        code:
+          type: string
+          description: ID del producto
+          example: "tv"
+        name:
+          type: string
+          description: Nombre del producto
+          example: "Televisión"
+    
+    Operator:
+      type: object
+      properties:
+        code: 
+          type: string
+          description: ID del operador
+          example: "wom"
+        name:
+          type: string
+          description: Nombre del operador
+          example: "WOM"
+
+    ProductOperators:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        operators:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperatorConstraint'
+
+    OperatorConstraint:
+      type: object
+      properties:
+        operator: 
+          $ref: '#/components/schemas/Operator'
+        constraint:
+          $ref: '#/components/schemas/Constraint'
+
+    Constraint:
+      type: object
+      properties:
+        identifier_type:
+          type: string
+          enum:
+            ["SubscriptorRut", "SubscriptionIdentifier"]
+          description: Tipo de identificador del producto
+          example:
+            "SubscriptorRut"
+        amount_rule:
+          oneOf:
+            - $ref: '#/components/schemas/MinMaxRangeAmountRule'
+            - $ref: '#/components/schemas/FixedListAmountRule'
+
+    MinMaxRangeAmountRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["MinMaxRangeAmountRule"]
+          description: Tipo de regla de monto por rangos
+          example: "MinMaxRangeAmountRule"
+        min:
+          type: int64
+          description: Monto mínimo del rango
+          example: 1500
+        max:
+          type: int64
+          description: Monto máximo del rango
+          example: 20000
+
+    FixedListAmountRule:
+      type: object
+      properties:
+        type: 
+          type: string
+          enum: ["FixedListAmountRule"]
+          description: Tipo de regla de monto por valores fijos
+          example: "FixedListAmountRule"
+        amounts:
+          type: array
+          items:
+            type: int64
+          description: Valores de recarga permitidos
+          example: [1000, 2000, 3000, 4000, 5000]
+    
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del método de pago
+          example: webpay
+        name:
+          type: string
+          description: Nombre del método de pago
+          example: Webpay
+        private_only:
+          type: boolean
+          description: Si es verdadero, el medio de pago solo puede usarse por usuarios autenticados
+          example: true
+    
+    TopUp:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la recarga
+          example: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+        identifier:
+          type: string
+          description: Identificador del producto a recargar
+          example: "912345678"
+        amount:
+          type: int64
+          description: Monto a recargar
+          example: 1500
+        status:
+          type: string
+          description: "Estado de la recarga"
+          enum: 
+            ["PENDING", "PROCESSING", "SUCCEEDED", "FORWARDED", "FAILED"]
+          example: "PENDING"
+        productCode:
+          type: string
+          description: Código del producto
+          example: "movil"
+        operatorCode:
+          type: string
+          description: Código del operador
+          example: "wom"
+        created_at:
+          type: string
+          description: Fecha de creación de la transacción
+          example: "2019-04-24T10:58:26.140605-04:00"
+        updated_at:
+          type: string
+          description: Fecha de actualización de la transacción
+          example: "2019-04-24T10:58:26.140605-04:00"
+
+
+    TransactionRequest:
+      type: object
+      properties:
+        topups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUp'
+
+    TransactionCheckoutRequest:
+      type: object
+      properties:
+        payment_method_code:
+          type: string
+          description: ID del método de pago
+          example: "webpay"
+    
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la transacción
+          example: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
+        user_id:
+          type: string
+          description: ID del usuario
+          example: "51d95fc7-58e8-4cb0-d622-031cf08ed34f"
+        order:
+          type: string
+          description: Número de orden de la transacción
+          example: "T20190620144252014"
+        status:
+          type: string
+          enum: ["PENDING", "PROCESSING", "SUCCEEDED", "UNFINISHED", "FAILED"]
+          description: Estado de la transacción
+          example: "PENDING"
+        created_at:
+          type: string
+          description: Fecha de creación de la transacción
+          example: "2019-04-24T10:58:26.140605-04:00"
+        updated_at:
+          type: string
+          description: Fecha de actualización de la transacción
+          example: "2019-04-24T10:58:26.140605-04:00"
+        topups:
+          type: array
+          description: Lista de productos a recargar
+          items:
+            $ref: '#/components/schemas/TopUp'
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código del error
+          example: "TEN-TOPUP-ERR04"
+        message: 
+          type: string
+          description: Detalle del error
+          example: "Suscriptor no válido"
