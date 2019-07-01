@@ -43,7 +43,7 @@ function Import-Secure-Api-OpenApi {
     param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
           [string] $msName, [string] $apiId, [string] $path, [string] $serviceBase)
     "Importing secure API $msName - OpenAPI"
-    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "OpenApi" -SpecificationPath "$pwd/src/private/v1/$msName.yaml"
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "OpenApi" -SpecificationPath "$pwd/src/private/v1/$msName.yaml" -Path $path
     Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
     Set-AzApiManagementPolicy -Context $context -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
