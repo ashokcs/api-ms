@@ -3,7 +3,7 @@ info:
   title: Tenpo TopUp API
   version: 1.0.0
 servers:
-  - url: https://tenpo.dev.multicajadigital.cloud
+  - url: https://api.dev.tenpo.cl/v1/topup
     description: Development Environment
 tags:
   - name: Products
@@ -14,7 +14,7 @@ tags:
     description: Operaciones de transacciones de recarga
 
 paths:
-  /v1/topup/products:
+  /products:
     get:
       tags: 
         - Products
@@ -31,7 +31,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Product'
   
-  /v1/topup/products/{id}:
+  /products/{id}:
     get:
       tags: 
         - Products
@@ -58,7 +58,7 @@ paths:
         404:
           description: "product not found"
 
-  /v1/topup/helpers/check:
+  /helpers/check:
     post:
       tags:
         - Helpers
@@ -81,7 +81,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /v1/topup/transaction:
+  /transaction:
     post:
       tags: 
         - Transaction
@@ -108,7 +108,7 @@ paths:
         500:
           description: internal server error
 
-  /v1/topup/transaction/{id}:
+  /transaction/{id}:
     get:
       tags: 
         - Transaction
