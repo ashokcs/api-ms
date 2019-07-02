@@ -30,15 +30,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-              example: 
-                - code: "movil"
-                  name: "Telefonía Móvil"
-                - code: "fija"
-                  name: "Telefonía Fija"
-                - code: "bam"
-                  name: "Banda Ancha Móvil"
-                - code: "tv"
-                  name: "Televisión"
   
   /v1/topup/products/{id}:
     get:
@@ -62,37 +53,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductOperators'
-              example: 
-                product:
-                  id: "movil"
-                  name: "Telefonía Móvil"
-                operators:
-                    - operator:
-                        id: "wom"
-                        name: "WOM"
-                      constraint:
-                        identifier_type: "subscripionIdentifier"
-                        amount_rule:
-                          type: "minMaxRangeAmountRule"
-                          min: 1000
-                          max: 20000
-                    - operator:
-                        id: "claro"
-                        name: "Claro"
-                      constraint:
-                        identifier_type: "subscripionIdentifier"
-                        amount_rule:
-                          type: "fixedListAmountRule"
-                          amounts: [1000, 2000, 3000, 4000, 5000]
-                    - operator:
-                        id: "vtr"
-                        name: "VTR"
-                      constraint:
-                        identifier_type: "subscriptorIdentifier"
-                        amount_rule:
-                          type: "minMaxRangeAmountRule"
-                          min: 500
-                          max: 15000
         400:
           description: "invalid parameter"
         404:
@@ -125,19 +85,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                IncompatibleOperator:
-                  value:
-                    code: "TEN-TOPUP-ERR03"
-                    message: "El operador no soporta el tipo de producto especificado"
-                InvalidIdentifier:
-                  value:
-                    code: "TEN-TOPUP-ERR04"
-                    message: "Suscriptor no válido"
-                InvalidAmount:
-                  value:
-                    code: "TEN-TOPUP-ERR05"
-                    message: "El monto no es válido"
 
   /v1/topup/transaction:
     post:
@@ -154,20 +101,6 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/TransactionRequest'
-              example:
-                topups:
-                - product_code: "movil"
-                  operator_code: "wom"
-                  identifier: "912345678"
-                  amount: 1500
-                - product_code: "bam"
-                  operator_code: "entel"
-                  identifier: "912345678"
-                  amount: 5000
-                - product_code: "tv"
-                  operator_code: "direct-tv"
-                  identifier: "175018999"
-                  amount: 25000
       responses:
         201:
           description: successful operation
@@ -175,38 +108,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
-              example:
-                id: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
-                user_id: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
-                order: "T20190620144252014"
-                status: "PENDING"
-                created_at: "2019-04-24T10:58:26.140605-04:00"
-                updated_at: "2019-04-24T10:58:26.140605-04:00"
-                topups:
-                  - id: "5439d566-a9ac-417c-b7b0-7b95d3ba8e82"
-                    product_code: "movil"
-                    operator_code: "wom"
-                    identifier: "912345678"
-                    amount: 1500
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
-                  - id: "e699f2e4-4972-4197-934f-d7a2410fb73c"
-                    product_code: "bam"
-                    operator_code: "entel"
-                    identifier: "912345678"
-                    amount: 5000
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
-                  - id: "04cfa79f-b5b9-49c7-ae8b-8903cbfb6bba"
-                    product_code: "tv"
-                    operator_code: "direct-tv"
-                    identifier: "175018999"
-                    amount: 25000
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
         400:
           description: invalid parameters
         500:
@@ -233,38 +134,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
-              example:
-                id: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
-                user_id: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
-                order: "T20190620144252014"
-                status: "PENDING"
-                created_at: "2019-04-24T10:58:26.140605-04:00"
-                updated_at: "2019-04-24T10:58:26.140605-04:00"
-                topups:
-                  - id: "5439d566-a9ac-417c-b7b0-7b95d3ba8e82"
-                    product_code: "movil"
-                    operator_code: "wom"
-                    identifier: "912345678"
-                    amount: 1500
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
-                  - id: "e699f2e4-4972-4197-934f-d7a2410fb73c"
-                    product_code: "bam"
-                    operator_code: "entel"
-                    identifier: "912345678"
-                    amount: 5000
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
-                  - id: "04cfa79f-b5b9-49c7-ae8b-8903cbfb6bba"
-                    product_code: "tv"
-                    operator_code: "direct-tv"
-                    identifier: "175018999"
-                    amount: 25000
-                    status: "PENDING"
-                    created_at: "2019-04-24T10:58:26.140605-04:00"
-                    updated_at: "2019-04-24T10:58:26.140605-04:00"
         404:
           description: resource not found
         500:
