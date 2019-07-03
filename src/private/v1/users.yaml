@@ -111,6 +111,11 @@ paths:
         description: user_token
         required: true
         type: string
+      - name: user_uuid
+        in: path
+        description: user_uuid
+        required: true
+        type: string
       responses:
         '200':
           description: OK
@@ -134,6 +139,11 @@ paths:
       - name: user_token
         in: header
         description: user_token
+        required: true
+        type: string
+      - name: user_uuid
+        in: path
+        description: user_uuid
         required: true
         type: string
       responses:
