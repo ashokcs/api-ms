@@ -23,10 +23,10 @@
 		<!-- Get user tenpo from oid -->
 		<send-request mode="new" response-variable-name="userResponse" timeout="20" ignore-error="true">
 			<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>
+			<set-method>GET</set-method>
 			<set-header name="user_token" exists-action="override">
 				<value>@(context.Request.Headers.GetValueOrDefault("Authorization"))</value>
 			</set-header>
-			<set-method>GET</set-method>
 		</send-request>
 		<!-- Set x-mine-user-id header to request -->
 		<choose>
