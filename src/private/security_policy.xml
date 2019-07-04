@@ -13,16 +13,19 @@
 <policies>
 	<inbound>
 		<base />
-        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
-            <openid-config url="{{authUrl}}{{tenantId}}/v2.0/.well-known/openid-configuration?p={{userFlowName}}" />
-            <audiences>
-                <audience>{{clientId}}</audience>
-            </audiences>
-        </validate-jwt>
+		<validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+			<openid-config url="{{authUrl}}{{tenantId}}/v2.0/.well-known/openid-configuration?p={{userFlowName}}" />
+			<audiences>
+				<audience>{{clientId}}</audience>
+			</audiences>
+		</validate-jwt>
 		<set-variable name="userAzureId" value="@{&#xA;            string oid = &quot;NOOID&quot;;&#xA;            string authHeader = context.Request.Headers.GetValueOrDefault(&quot;Authorization&quot;, &quot;&quot;);&#xA;            if (authHeader?.Length &gt; 0) {&#xA;                string[] authHeaderParts = authHeader.Split(' ');&#xA;                if (authHeaderParts?.Length == 2 &amp;&amp; authHeaderParts[0].Equals(&quot;Bearer&quot;)) {&#xA;                    Jwt jwt;&#xA;                    if (authHeaderParts[1].TryParseJwt(out jwt)) {&#xA;                        oid = jwt.Claims.GetValueOrDefault(&quot;oid&quot;, &quot;NOAPPID&quot;);&#xA;                    }&#xA;                }&#xA;            }&#xA;            return oid;&#xA;        }" />
 		<!-- Get user tenpo from oid -->
 		<send-request mode="new" response-variable-name="userResponse" timeout="20" ignore-error="true">
 			<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>
+			<set-header name="user_token" exists-action="override">
+				<value>@(context.Request.Headers.GetValueOrDefault("Authorization"))</value>
+			</set-header>
 			<set-method>GET</set-method>
 		</send-request>
 		<!-- Set x-mine-user-id header to request -->
@@ -30,11 +33,11 @@
 			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 200)">
 				<set-header name="x-mine-user-id" exists-action="override">
 					<value>@{
-                        var body = ((IResponse)context.Variables["userResponse"]).Body.As&lt;JObject&gt;();
-                        var user = JObject.Parse(body.ToString())["user"];
-                        string userId = (string) JObject.Parse(user.ToString())["id"];
-                        return userId;
-                    }</value>
+						var body = ((IResponse)context.Variables["userResponse"]).Body.As&lt;JObject&gt;();
+						var user = JObject.Parse(body.ToString())["user"];
+						string userId = (string) JObject.Parse(user.ToString())["id"];
+						return userId;
+						}</value>
 				</set-header>
 			</when>
 		</choose>
