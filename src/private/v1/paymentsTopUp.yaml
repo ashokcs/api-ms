@@ -3,7 +3,7 @@ info:
   title: Tenpo TopUp API
   version: 1.0.0
 servers:
-  - url: https://api.dev.tenpo.cl/v1/topup
+  - url: https://api.dev.tenpo.cl
     description: Development Environment
 tags:
   - name: Products
@@ -12,6 +12,8 @@ tags:
     description: Operaciones de apoyo a la recarga
   - name: Transaction
     description: Operaciones de transacciones de recarga
+  - name: User
+    description: Operaciones para usuarios autenticadosa
 
 paths:
   /products:
@@ -133,6 +135,91 @@ paths:
           description: resource not found
         500:
           description: internal server error
+        
+  /user/favourite:
+    put:
+      tags:
+        - User
+      summary: Agrega un nuevo favorito
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favourite'
+      
+      responses:
+        201:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favourite'
+        400:
+          description: "invalid parameters"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - User
+      summary: Lista los favoritos de un usuario
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favourite'
+
+  /user/favourite/{id}:
+    get:
+      tags: 
+        - User
+      summary: Obtiene un favorito vinculado al usuario autenticado
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: Id del favorito
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favourite'
+        404:
+          description: not found
+    delete:
+      tags: 
+        - User
+      summary: Elimina un favorito vinculado al usuario autenticado
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: Id del favorito
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
           
 components:
   securitySchemes:
@@ -285,6 +372,41 @@ components:
           description: Fecha de actualización de la transacción
           example: "2019-04-24T10:58:26.140605-04:00"
 
+    Favourite:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del favorito
+          example: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+        user_id:
+          type: string
+          description: ID del usuario
+          example: "1845e261-7cbc-4a9e-8cc7-31f21573ded4"
+        description:
+          type: string
+          description: Descripción del favorito
+          example: "Mi celular"
+        identifier:
+          type: string
+          description: Identificador del producto
+          example: "912345678"
+        productCode:
+          type: string
+          description: Código del producto
+          example: "movil"
+        operatorCode:
+          type: string
+          description: Código del operador
+          example: "wom"
+        created_at:
+          type: string
+          description: Fecha de creación
+          example: "2019-04-24T10:58:26.140605-04:00"
+        updated_at:
+          type: string
+          description: Fecha de actualización
+          example: "2019-04-24T10:58:26.140605-04:00"
 
     TransactionRequest:
       type: object
