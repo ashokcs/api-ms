@@ -40,10 +40,8 @@
 						}</value>
 				</set-header>
 			</when>
-		</choose>
 
-		<choose>
-			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 404)">
+			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 401)">
 				<return-response>
 					<set-status code="@(context.Response.StatusCode)" reason="@(context.Response.StatusReason)" />
 					<set-header name="ErrorReason" exists-action="override">
@@ -61,12 +59,5 @@
 		<base />
 	</outbound>
 	<on-error>
-		<return-response>
-			<set-status code="@(context.Response.StatusCode)" reason="@(context.Response.StatusReason)" />
-			<set-header name="ErrorReason" exists-action="override">
-				<value>@(context.LastError.Reason)</value>
-			</set-header>
-			<set-body>@{return new JObject(new JProperty("code","000001"),new JProperty("message", context.LastError.Message)).ToString();}</set-body>
-		</return-response>
 	</on-error>
 </policies>
