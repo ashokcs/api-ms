@@ -31,6 +31,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/appconfig.yaml -l swagger -o bin/public/v1/appconfig
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/onboarding.yaml -l swagger -o bin/public/v1/onboarding
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users.yaml -l swagger -o bin/public/v1/users
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/launch.yaml -l swagger -o bin/public/v1/launch
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/payments.yaml -l swagger -o bin/public/v1/payments
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/validateUsers.yaml -l swagger -o bin/public/v1/validateUsers
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/utilityPayments.yaml -l swagger -o bin/private/v1/utilityPayments
@@ -56,6 +57,7 @@ dev-deploy:
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_DEV
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_DEV
     USERS_IP: 40.70.68.63
+    LAUNCH_IP: 104.208.140.16
     ACCOUNT_IP: 52.167.62.186
     IDENTITPROVIDER_IP: 40.123.26.42
     TRANSACTIONS_IP: 40.70.202.107

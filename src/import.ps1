@@ -5,6 +5,7 @@ $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText
 $tenantId = $env:AZURE_TENANT_ID
 
 $usersIp = $env:USERS_IP
+$launchIp = $env:LAUNCH_IP
 $accountsIp = $env:ACCOUNT_IP
 $identityproviderIp = $env:IDENTITPROVIDER_IP
 $transactionsIp = $env:TRANSACTIONS_IP
@@ -111,6 +112,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "launch" -ProductId tenpoapi -path "/v1/launch" -sufix "/public" -apiId "launch-public-api" -serviceBase "http://$launchIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
