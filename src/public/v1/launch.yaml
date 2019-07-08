@@ -7,7 +7,7 @@ basePath: /v1/launch
 schemes:
   - http
 paths:
-  '':
+  '/':
     get:
       tags:
         - launch-controller
