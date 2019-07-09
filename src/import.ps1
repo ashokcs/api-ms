@@ -5,6 +5,7 @@ $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText
 $tenantId = $env:AZURE_TENANT_ID
 
 $usersIp = $env:USERS_IP
+$launchIp = $env:LAUNCH_IP
 $accountsIp = $env:ACCOUNT_IP
 $identityproviderIp = $env:IDENTITPROVIDER_IP
 $transactionsIp = $env:TRANSACTIONS_IP
@@ -14,6 +15,7 @@ $paymentsKycIp = $env:PAYMENTSKYC_IP
 $cardsIp = $env:CARDS_IP
 $apiPrepaidIp = $env:API_PREPAID
 $utilityPaymentsIp = $env:API_UTILITY_PAYMENT
+$paymentsTopUpIp = $env:API_PAYMENTS_TOPUP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -32,6 +34,17 @@ function Import-Secure-Api {
           [string] $msName, [string] $apiId, [string] $path, [string] $sufix, [string] $serviceBase)
     "Importing secure API $msName"
     $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/private/v1/$msName/swagger.json" -Path $sufix$path
+    Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
+    Set-AzApiManagementPolicy -Context $context -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
+    Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
+    Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId $apiId
+}
+
+function Import-Secure-Api-OpenApi {
+    param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
+          [string] $msName, [string] $apiId, [string] $path, [string] $serviceBase)
+    "Importing secure API $msName - OpenAPI"
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "OpenApi" -SpecificationPath "$pwd/src/private/v1/$msName.yaml" -Path $path
     Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
     Set-AzApiManagementPolicy -Context $context -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
@@ -78,6 +91,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPay
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCards" -Name "urlCards" -Value $cardsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApiPrepaid" -Name "urlApiPrepaid" -Value $apiPrepaidIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUtilityPaymentsIp" -Name "urlUtilityPaymentsIp" -Value $utilityPaymentsIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsTopUpIp" -Name "urlPaymentsTopUpIp" -Value $paymentsTopUpIp
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
@@ -93,9 +107,12 @@ Import-Secure-Api -context $ApiMgmtContext -msName "paymentkyc" -sufix "/private
 Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" -path "/v1/sales-services" -apiId "payments-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
+Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/private" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
+
+Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "launch" -ProductId tenpoapi -path "/v1/launch" -sufix "/public" -apiId "launch-public-api" -serviceBase "http://$launchIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -path "/v1/onboarding" -sufix "/public" -apiId "onboarding-public-api" -serviceBase "http://$usersIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "payments" -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"

@@ -1,0 +1,485 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Launch - Tenpo public API - Launch
+host: 104.208.140.16:8080
+basePath: /v1/launch
+schemes:
+  - http
+paths:
+  '/':
+    get:
+      tags:
+        - launch-controller
+      summary: getRanking
+      operationId: getRankingUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/RankingResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - launch-controller
+      summary: signUp
+      operationId: signUpUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SignUpRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SignUpResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/me':
+    post:
+      tags:
+        - launch-controller
+      summary: signIn
+      operationId: signInUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SignInRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SignInResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/me/{session}':
+    get:
+      tags:
+        - launch-controller
+      summary: getBalance
+      operationId: getBalanceUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: session
+          in: path
+          description: session
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/BalanceResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - launch-controller
+      summary: signUpFinal
+      operationId: signUpFinalUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/SignUpFinalRequest'
+        - name: session
+          in: path
+          description: session
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SignUpFinalResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - launch-controller
+      summary: signOut
+      operationId: signOutUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: session
+          in: path
+          description: session
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    patch:
+      tags:
+        - launch-controller
+      summary: chagePassword
+      operationId: chagePasswordUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ChangePasswordRequest'
+        - name: session
+          in: path
+          description: session
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  '/reset':
+    post:
+      tags:
+        - launch-controller
+      summary: resetPassword
+      operationId: resetPasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/ResetPasswordRequest'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  BalanceResponse:
+    type: object
+    properties:
+      points:
+        $ref: '#/definitions/UserPointsResponse'
+      user:
+        $ref: '#/definitions/UserResponse'
+    title: BalanceResponse
+  ChangePasswordRequest:
+    type: object
+    properties:
+      newPassword:
+        type: string
+      password:
+        type: string
+      session:
+        type: string
+    title: ChangePasswordRequest
+  Link:
+    type: object
+    properties:
+      href:
+        type: string
+      templated:
+        type: boolean
+    title: Link
+  'Map«string,Link»':
+    type: object
+    title: 'Map«string,Link»'
+    additionalProperties:
+      $ref: '#/definitions/Link'
+  ModelAndView:
+    type: object
+    properties:
+      empty:
+        type: boolean
+      model:
+        type: object
+      modelMap:
+        type: object
+        additionalProperties:
+          type: object
+      reference:
+        type: boolean
+      status:
+        type: string
+        enum:
+          - '100'
+          - '101'
+          - '102'
+          - '103'
+          - '200'
+          - '201'
+          - '202'
+          - '203'
+          - '204'
+          - '205'
+          - '206'
+          - '207'
+          - '208'
+          - '226'
+          - '300'
+          - '301'
+          - '302'
+          - '303'
+          - '304'
+          - '305'
+          - '307'
+          - '308'
+          - '400'
+          - '401'
+          - '402'
+          - '403'
+          - '404'
+          - '405'
+          - '406'
+          - '407'
+          - '408'
+          - '409'
+          - '410'
+          - '411'
+          - '412'
+          - '413'
+          - '414'
+          - '415'
+          - '416'
+          - '417'
+          - '418'
+          - '419'
+          - '420'
+          - '421'
+          - '422'
+          - '423'
+          - '424'
+          - '426'
+          - '428'
+          - '429'
+          - '431'
+          - '451'
+          - '500'
+          - '501'
+          - '502'
+          - '503'
+          - '504'
+          - '505'
+          - '506'
+          - '507'
+          - '508'
+          - '509'
+          - '510'
+          - '511'
+      view:
+        $ref: '#/definitions/View'
+      viewName:
+        type: string
+    title: ModelAndView
+  RankUserResponse:
+    type: object
+    properties:
+      fullname:
+        type: string
+      points:
+        type: string
+    title: RankUserResponse
+  RankingResponse:
+    type: object
+    properties:
+      ranking:
+        type: array
+        items:
+          $ref: '#/definitions/RankUserResponse'
+    title: RankingResponse
+  ReferralResponse:
+    type: object
+    properties:
+      fullname:
+        type: string
+      points:
+        type: string
+    title: ReferralResponse
+  ResetPasswordRequest:
+    type: object
+    properties:
+      email:
+        type: string
+    title: ResetPasswordRequest
+  SignInRequest:
+    type: object
+    properties:
+      accountType:
+        type: string
+        enum:
+          - GOOGLE
+          - FACEBOOK
+          - EMAIL
+      email:
+        type: string
+      password:
+        type: string
+      socialNetworkId:
+        type: string
+    title: SignInRequest
+  SignInResponse:
+    type: object
+    properties:
+      points:
+        $ref: '#/definitions/UserPointsResponse'
+      session:
+        type: string
+      user:
+        $ref: '#/definitions/UserResponse'
+    title: SignInResponse
+  SignUpFinalRequest:
+    type: object
+    properties:
+      fullname:
+        type: string
+      phone:
+        type: string
+      referredCode:
+        type: string
+      session:
+        type: string
+    title: SignUpFinalRequest
+  SignUpFinalResponse:
+    type: object
+    properties:
+      points:
+        $ref: '#/definitions/UserPointsResponse'
+      session:
+        type: string
+      user:
+        $ref: '#/definitions/UserResponse'
+    title: SignUpFinalResponse
+  SignUpRequest:
+    type: object
+    properties:
+      accountType:
+        type: string
+        enum:
+          - GOOGLE
+          - FACEBOOK
+          - EMAIL
+      email:
+        type: string
+      password:
+        type: string
+      socialNetworkId:
+        type: string
+    title: SignUpRequest
+  SignUpResponse:
+    type: object
+    properties:
+      points:
+        $ref: '#/definitions/UserPointsResponse'
+      session:
+        type: string
+      user:
+        $ref: '#/definitions/UserResponse'
+    title: SignUpResponse
+  UserPointsResponse:
+    type: object
+    properties:
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/ReferralResponse'
+      referenced:
+        type: string
+      referrals:
+        type: string
+      register:
+        type: string
+      total:
+        type: string
+    title: UserPointsResponse
+  UserResponse:
+    type: object
+    properties:
+      code:
+        type: string
+      fullname:
+        type: string
+    title: UserResponse
+  View:
+    type: object
+    properties:
+      contentType:
+        type: string
+    title: View
