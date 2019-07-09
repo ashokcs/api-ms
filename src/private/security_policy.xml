@@ -46,7 +46,8 @@
 				</set-header>
 			</when>
 			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 401)">
-				<set-variable name="LastError" value="@{ return new JObject(new JProperty(&quot;context.LastError.Reason&quot; , &quot;Token Invalido&quot;)).ToString();}" />
+				<!--<set-variable name="LastError" value="@{ return new JObject(new JProperty(&quot;context.LastError.Reason&quot; , &quot;Token Invalido&quot;)).ToString();}" />-->
+				<set-variable name="LastError" value="@(context.LastError.Reason(&quot;Token Invalidate&quot;)" />
 				<return-response>
 					<set-status code="@(context.Response.StatusCode)" reason="@(context.Response.StatusReason)" />
 					<set-header name="ErrorReason" exists-action="override">
