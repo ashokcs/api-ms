@@ -42,9 +42,9 @@ function Import-Secure-Api {
 
 function Import-Secure-Api-OpenApi {
     param([Microsoft.Azure.Commands.ApiManagement.ServiceManagement.Models.PsApiManagementContext] $context,
-          [string] $msName, [string] $apiId, [string] $path, [string] $serviceBase)
+          [string] $msName, [string] $apiId, [string] $path, [string] $prefix, [string] $serviceBase)
     "Importing secure API $msName - OpenAPI"
-    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "OpenApi" -SpecificationPath "$pwd/src/private/v1/$msName.yaml" -Path $path
+    $api = Import-AzApiManagementApi -ApiId $apiId -Context $context -SpecificationFormat "OpenApi" -SpecificationPath "$pwd/src/private/v1/$msName.yaml" -Path $prefix$path
     Set-AzApiManagementApi -ApiId $apiId -Context $context -Protocols @('https') -ServiceUrl $serviceBase$path -Name $api.Name
     Set-AzApiManagementPolicy -Context $context -ApiId $apiId -PolicyFilePath "$pwd/src/private/security_policy.xml"
     Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId $apiId
@@ -109,7 +109,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -pa
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/private" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "https://$utilityPaymentsIp"
 
-Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
+Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "launch" -ProductId tenpoapi -path "/v1/launch" -sufix "/public" -apiId "launch-public-api" -serviceBase "http://$launchIp`:8080"
