@@ -22,6 +22,9 @@
         <base />
     </backend>
     <outbound>
+        <set-header name="Access-Control-Allow-Origin" exists-action="override">
+            <value>*</value>
+        </set-header>
         <base />
     </outbound>
     <on-error>
