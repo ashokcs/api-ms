@@ -127,6 +127,7 @@ Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @(
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -PolicyFilePath "$pwd/src/public/appconfig_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "payments-public-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "webhook-user-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "launch-public-api" -PolicyFilePath "$pwd/src/public/launch_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
@@ -138,7 +139,6 @@ New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUser
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "cards-api" -OperationId "getCardDetailByUserIdUsingGET" -PolicyFilePath "$pwd/src/private/cards_policy.xml"
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "launch-public-api" -OperationId "processIdentityValidationIntentUsingPOST" -PolicyFilePath "$pwd/src/public/launch_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -PolicyFilePath "$pwd/src/tenantpolicy.xml"
 
 #Get-AzApiManagementOperation -Context $ApiMgmtContext -ApiId "account-api"
