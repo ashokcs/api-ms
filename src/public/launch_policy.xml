@@ -12,6 +12,11 @@
 -->
 <policies>
     <inbound>
+        <cors allow-credentials="false">
+            <allowed-origins>
+                <origin>https://launch.dev.tenpo.cl</origin>
+            </allowed-origins>
+        </cors>
         <base />
         <return-response>
             <set-status code="200" reason="OK" />
@@ -22,11 +27,6 @@
         <base />
     </backend>
     <outbound>
-        <cors allow-credentials="false">
-            <allowed-origins>
-                <origin>https://launch.dev.tenpo.cl</origin>
-            </allowed-origins>
-        </cors>
         <base />
     </outbound>
     <on-error>
