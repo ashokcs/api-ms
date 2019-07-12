@@ -22,6 +22,11 @@
         <base />
     </backend>
     <outbound>
+        <cors allow-credentials="false">
+            <allowed-origins>
+                <origin>https://launch.dev.tenpo.cl</origin>
+            </allowed-origins>
+        </cors>
         <base />
     </outbound>
     <on-error>
