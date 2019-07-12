@@ -12,25 +12,34 @@
 -->
 <policies>
     <inbound>
+        <base />
         <cors allow-credentials="true">
             <allowed-origins>
                 <origin>https://launch.dev.tenpo.cl</origin>
             </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>PATCH</method>
+                <method>DELETE</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>content-type</header>
+                <header>accept</header>
+            </allowed-headers>
         </cors>
-        <base />
-        <return-response>
-            <set-status code="200" reason="OK" />
-            <set-body>{"auth":{"url":"{{authUrl}}","userFlowName":"{{userFlowName}}","clientId":"{{clientId}}"},"tenantId":"{{tenantId}}","tenantName":"{{tenantName}}"}</set-body>
-        </return-response>
     </inbound>
     <backend>
         <base />
     </backend>
     <outbound>
-        <set-header name="Access-Control-Allow-Origin" exists-action="override">
-            <value>*</value>
-        </set-header>
         <base />
+        <set-header name="Access-Control-Allow-Origin" exists-action="override">
+          <value>@(context.Request.Headers.GetValueOrDefault("Origin",""))</value>
+        </set-header>
+        <set-header name="Access-Control-Allow-Credentials" exists-action="override">
+          <value>true</value>
+        </set-header>
     </outbound>
     <on-error>
         <base />
