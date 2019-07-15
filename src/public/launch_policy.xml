@@ -18,6 +18,7 @@
                 <origin>https://launch.dev.tenpo.cl</origin>
             </allowed-origins>
             <allowed-methods  preflight-result-max-age="300">
+                <method>OPTIONS</method>
                 <method>GET</method>
                 <method>POST</method>
                 <method>PATCH</method>
@@ -35,7 +36,10 @@
     <outbound>
         <base />
         <set-header name="Access-Control-Allow-Origin" exists-action="override">
-          <value>@(context.Request.Headers.GetValueOrDefault("Origin",""))</value>
+          <value>@(context.Request.Headers.GetValueOrDefault("Origin","*"))</value>
+        </set-header>
+        <set-header name="Access-Control-Request-Methods" exists-action="override">
+          <value>@(context.Request.Headers.GetValueOrDefault("Access-Control-Request-Method","OPTIONS, GET, POST, PATCH, DELETE"))</value>
         </set-header>
         <set-header name="Access-Control-Allow-Credentials" exists-action="override">
           <value>true</value>
