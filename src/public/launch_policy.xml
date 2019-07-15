@@ -27,10 +27,11 @@
             <allowed-headers>
                 <header>content-type</header>
                 <header>accept</header>
+                <header>Access-Control-Allow-Origin</header>
             </allowed-headers>
         </cors>
         <set-header name="Origin" exists-action="override">
-          <value>*</value>
+          <value>@(context.Request.Headers.GetValueOrDefault("Access-Control-Allow-Origin","*"))</value>
         </set-header>
     </inbound>
     <backend>
