@@ -29,12 +29,12 @@
                 <header>accept</header>
             </allowed-headers>
         </cors>
-    </inbound>
-    <backend>
-        <base />
         <set-header name="Origin" exists-action="override">
           <value>*</value>
         </set-header>
+    </inbound>
+    <backend>
+        <base />
     </backend>
     <outbound>
         <base />
