@@ -17,7 +17,7 @@
             <allowed-origins>
                 <origin>https://launch.dev.tenpo.cl</origin>
             </allowed-origins>
-            <allowed-methods>
+            <allowed-methods  preflight-result-max-age="300">
                 <method>GET</method>
                 <method>POST</method>
                 <method>PATCH</method>
