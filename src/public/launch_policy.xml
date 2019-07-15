@@ -32,6 +32,9 @@
     </inbound>
     <backend>
         <base />
+        <set-header name="Origin" exists-action="override">
+          <value>*</value>
+        </set-header>
     </backend>
     <outbound>
         <base />
