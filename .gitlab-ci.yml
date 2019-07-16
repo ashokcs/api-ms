@@ -31,6 +31,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/appconfig.yaml -l swagger -o bin/public/v1/appconfig
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/onboarding.yaml -l swagger -o bin/public/v1/onboarding
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users.yaml -l swagger -o bin/public/v1/users
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/launch.yaml -l swagger -o bin/public/v1/launch
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/payments.yaml -l swagger -o bin/public/v1/payments
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/validateUsers.yaml -l swagger -o bin/public/v1/validateUsers
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/utilityPayments.yaml -l swagger -o bin/private/v1/utilityPayments
@@ -56,6 +57,7 @@ dev-deploy:
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_DEV
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_DEV
     USERS_IP: 40.70.68.63
+    LAUNCH_IP: 104.208.140.16
     ACCOUNT_IP: 52.167.62.186
     IDENTITPROVIDER_IP: 40.123.26.42
     TRANSACTIONS_IP: 40.70.202.107
@@ -65,6 +67,7 @@ dev-deploy:
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.staging.multicajadigital.cloud
     API_UTILITY_PAYMENT: tenpo.dev.multicajadigital.cloud
+    API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_mobile
     CLIENT_ID: 5cba8f4d-b819-4903-a414-732dbd4b8378
@@ -88,6 +91,7 @@ uat-deploy:
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_DEV
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_DEV
     USERS_IP: 172.11.0.129
+    LAUNCH_IP: 0.0.0.0
     ACCOUNT_IP: 172.11.0.131
     IDENTITPROVIDER_IP: 172.11.0.133
     TRANSACTIONS_IP: 172.11.0.137
@@ -98,6 +102,7 @@ uat-deploy:
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
     API_UTILITY_PAYMENT: tenpo.uat.multicajadigital.cloud
+    API_PAYMENTS_TOPUP: tenpo.uat.multicajadigital.cloud
     AUTH_URL: https://uattenpo2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo_uat
     CLIENT_ID: e9cfc90e-ee75-49a6-b765-4e74093b2878
@@ -121,6 +126,7 @@ prod-deploy:
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_PROD
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_PROD
     USERS_IP: 172.11.0.36
+    LAUNCH_IP: 0.0.0.0
     ACCOUNT_IP: 172.11.0.37
     IDENTITPROVIDER_IP: 172.11.0.38
     TRANSACTIONS_IP: 172.11.0.43
@@ -130,6 +136,7 @@ prod-deploy:
     CARDS_IP: 172.11.0.40
     API_PREPAID: "10.80.1.5:31400"
     API_UTILITY_PAYMENT: "10.80.1.5:31400"
+    API_PAYMENTS_TOPUP: "10.80.1.5:31400"
     AUTH_URL: https://tenpoapp.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo
     CLIENT_ID: 0b9c4aeb-9a1a-4ee4-a18e-94b01df49e5e

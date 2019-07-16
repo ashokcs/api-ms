@@ -95,6 +95,67 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /users/{user_uuid}/user-token:
+    post:
+      tags:
+      - user-controller
+      summary: userTokenSave
+      operationId: userTokenSavePOST
+      consumes:
+      - application/json
+      produces:
+      - '*/*'
+      parameters:
+      - name: user_token
+        in: header
+        description: user_token
+        required: true
+        type: string
+      - name: user_uuid
+        in: path
+        description: user_uuid
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    get:
+      tags:
+      - user-controller
+      summary: userTokenValidate
+      operationId: userTokenValidateGET
+      produces:
+      - "*/*"
+      parameters:
+      - name: user_token
+        in: header
+        description: user_token
+        required: true
+        type: string
+      - name: user_uuid
+        in: path
+        description: user_uuid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
 definitions:
   ResponseStatus:
     type: object
