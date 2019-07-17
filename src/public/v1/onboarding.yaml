@@ -250,7 +250,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/onboarding/users/{id}/validate-email':
+  '/users/{id}/validate-email':
     post:
       tags:
         - mobile-on-boarding-controller
@@ -359,6 +359,7 @@ definitions:
           - ACTIVE
           - BLOCKED
           - BLACKLIST
+          - EMAIL_VALIDATED
       tributaryIdentifier:
         type: string
       verificationCode:
