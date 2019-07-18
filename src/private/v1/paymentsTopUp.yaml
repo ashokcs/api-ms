@@ -33,7 +33,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Product'
   
-  /products/{id}:
+  /products/{productCode}:
     get:
       tags: 
         - Products
@@ -42,9 +42,9 @@ paths:
         - bearerAuth: []
       parameters:
         - in: path
-          name: id
+          name: productCode
           required: true
-          description: Id del tipo de producto
+          description: Código del tipo de producto
           schema:
             type: string
             example: "movil"
@@ -55,6 +55,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductOperators'
+        400:
+          description: "invalid parameter"
+        404:
+          description: "product not found"
+
+  /products/{productCode}/{operatorCode}:
+    get:
+      tags: 
+        - Products
+      summary: Obtiene los detalles del operador del producto y sus reglas.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: productCode
+          required: true
+          description: Código del tipo de producto
+          schema:
+            type: string
+            example: "movil"
+        - in: path
+          name: operatorCode
+          required: true
+          description: Código del operador
+          schema:
+            type: string
+            example: "movil"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorConstraint'
         400:
           description: "invalid parameter"
         404:
