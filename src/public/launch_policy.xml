@@ -18,36 +18,21 @@
                 <origin>https://launch.dev.tenpo.cl</origin>
             </allowed-origins>
             <allowed-methods  preflight-result-max-age="300">
-                <method>OPTIONS</method>
-                <method>GET</method>
-                <method>POST</method>
-                <method>PATCH</method>
-                <method>DELETE</method>
+                <method>*</method>
             </allowed-methods>
             <allowed-headers>
-                <header>content-type</header>
-                <header>accept</header>
-                <header>Access-Control-Allow-Origin</header>
+                <header>*</header>
             </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
         </cors>
-        <set-header name="Origin" exists-action="override">
-          <value>@(context.Request.Headers.GetValueOrDefault("Access-Control-Allow-Origin","*"))</value>
-        </set-header>
     </inbound>
     <backend>
         <base />
     </backend>
     <outbound>
         <base />
-        <set-header name="Access-Control-Allow-Origin" exists-action="override">
-          <value>@(context.Request.Headers.GetValueOrDefault("Origin","*"))</value>
-        </set-header>
-        <set-header name="Access-Control-Request-Methods" exists-action="override">
-          <value>@(context.Request.Headers.GetValueOrDefault("Access-Control-Request-Method","OPTIONS, GET, POST, PATCH, DELETE"))</value>
-        </set-header>
-        <set-header name="Access-Control-Allow-Credentials" exists-action="override">
-          <value>true</value>
-        </set-header>
     </outbound>
     <on-error>
         <base />
