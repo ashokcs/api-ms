@@ -118,31 +118,15 @@ paths:
           schema:
             $ref: "#/definitions/FavoriteRequest"
       responses:
+        200:
+          description: successful operation (already created)
+          schema:
+            $ref: '#/definitions/Favorite'
         201:
           description: successful operation
           schema:
             $ref: '#/definitions/Favorite'
   /favorites/{id}:
-    get:
-      parameters: 
-        - in: header
-          name: x-mine-user-id
-          type: string
-          required: true
-        - in: path
-          name: id
-          type: string
-          required: true
-          description: Id de la cuenta favorita
-      responses:
-        200:
-          description: successful operation
-          schema:
-            $ref: '#/definitions/Favorite'
-        404:
-          description: resource not found
-        500:
-          description: internal server error
     delete:
       parameters: 
         - in: header
@@ -180,21 +164,11 @@ definitions:
       id:
         type: integer
         example: 1
-      user:
-        type: string
-        example: "bdb7cd6d-dfca-4aee-82b0-4588e871ec79"
-      utility_id:
-        type: integer
-        example: 1
       identifier:
         type: string
         example: 12345678
-      description:
-        type: string
-        example: cuenta fav 1
-      created:
-        type: string
-        example: "2019-07-04T15:49:25.668-04:00"
+      utility:
+        $ref: '#/definitions/Utility'
   FavoriteRequest:
     type: object
     properties:
@@ -204,9 +178,6 @@ definitions:
       identifier:
         type: string
         example: "123123"
-      description:
-        type: string
-        example: "cuenta fav 1"
   Utility:
     type: object
     properties:
