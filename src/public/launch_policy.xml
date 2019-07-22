@@ -15,7 +15,9 @@
         <base />
         <cors allow-credentials="true">
             <allowed-origins>
+                <origin>https://launch.tenpo.cl</origin>
                 <origin>https://launch.dev.tenpo.cl</origin>
+                <origin>https://launchdevtenpo.azureedge.net/</origin>
             </allowed-origins>
             <allowed-methods  preflight-result-max-age="300">
                 <method>*</method>
