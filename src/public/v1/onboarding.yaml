@@ -450,3 +450,13 @@ definitions:
         type: string
         format: uuid
     title: ConfirmDeviceRequest
+  NationalityProfessionRequest:
+    type: object
+    properties:
+      nationality:
+        type: string
+      profession:
+        type: string
+    title: NationalityProfessionRequest
+
+
