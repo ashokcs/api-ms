@@ -66,7 +66,7 @@ dev-deploy:
     PAYMENTSKYC_IP: 52.147.169.246
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.staging.multicajadigital.cloud
-    API_UTILITY_PAYMENT: 10.0.28.235
+    API_UTILITY_PAYMENT: 104.208.153.162
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_mobile
