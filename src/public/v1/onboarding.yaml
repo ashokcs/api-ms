@@ -280,6 +280,41 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/users/{id}/nationality-profession':
+    patch:
+      tags:
+        - mobile-on-boarding-controller
+      summary: updateNationalityProfession
+      operationId: updateNationalityProfessionUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: nationalityProfessionRequest
+          description: nationalityProfessionRequest
+          required: true
+          schema:
+            $ref: '#/definitions/NationalityProfessionRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
 definitions:
   ValidateDeviceRequest:
     type: object
@@ -415,3 +450,13 @@ definitions:
         type: string
         format: uuid
     title: ConfirmDeviceRequest
+  NationalityProfessionRequest:
+    type: object
+    properties:
+      nationality:
+        type: string
+      profession:
+        type: string
+    title: NationalityProfessionRequest
+
+
