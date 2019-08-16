@@ -66,8 +66,7 @@ dev-deploy:
     PAYMENTSKYC_IP: 52.147.169.246
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.staging.multicajadigital.cloud
-    API_UTILITY_PAYMENT: tenpo.dev.multicajadigital.cloud
-    # API_UTILITY_PAYMENT: "20.40.1.4:31400"
+    API_UTILITY_PAYMENT: 104.209.159.135
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_mobile
@@ -121,20 +120,20 @@ prod-deploy:
   environment:
     name: prod
   variables:
-    RESOURCE_GROUP_NAME: tenpo_prod_resource_group
+    RESOURCE_GROUP_NAME: tenpo_drp_resource_group
     AZURE_TENANT_ID: $AZURE_TENANT_ID_PROD
-    SERVICE_NAME: tenpo-prod-api-management
+    SERVICE_NAME: tenpo-drp-api-management
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_PROD
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_PROD
-    USERS_IP: 172.11.0.36
+    USERS_IP: 172.11.0.67
     LAUNCH_IP: 0.0.0.0
-    ACCOUNT_IP: 172.11.0.37
-    IDENTITPROVIDER_IP: 172.11.0.38
-    TRANSACTIONS_IP: 172.11.0.43
-    NOTIFICATION_IP: 172.11.0.39
-    PAYMENTS_IP: 172.11.0.42
+    ACCOUNT_IP: 172.11.0.68
+    IDENTITPROVIDER_IP: 172.11.0.69
+    TRANSACTIONS_IP: 172.11.0.74
+    NOTIFICATION_IP: 172.11.0.70
+    PAYMENTS_IP: 172.11.0.73
     PAYMENTSKYC_IP: 0.0.0.0
-    CARDS_IP: 172.11.0.40
+    CARDS_IP: 172.11.0.71
     API_PREPAID: "10.80.1.5:31400"
     API_UTILITY_PAYMENT: "10.80.1.5:31400"
     API_PAYMENTS_TOPUP: "10.80.1.5:31400"
