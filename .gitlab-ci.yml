@@ -65,7 +65,7 @@ dev-deploy:
     PAYMENTS_IP: 52.179.131.53 
     PAYMENTSKYC_IP: 52.147.169.246
     CARDS_IP: 40.79.18.220
-    API_PREPAID: api.staging.multicajadigital.cloud
+    API_PREPAID: api.dev.multicajadigital.cloud
     API_UTILITY_PAYMENT: 104.209.159.135
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
@@ -90,18 +90,18 @@ uat-deploy:
     SERVICE_NAME: tenpo-uat-api-management
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_DEV
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_DEV
-    USERS_IP: 172.11.0.129
+    USERS_IP: 172.11.0.135
     LAUNCH_IP: 0.0.0.0
-    ACCOUNT_IP: 172.11.0.131
-    IDENTITPROVIDER_IP: 172.11.0.133
-    TRANSACTIONS_IP: 172.11.0.137
-    NOTIFICATION_IP: 172.11.0.134
-    PAYMENTS_IP: 172.11.0.130
+    ACCOUNT_IP: 172.11.0.133
+    IDENTITPROVIDER_IP: 172.11.0.136
+    TRANSACTIONS_IP: 172.11.0.139
+    NOTIFICATION_IP: 172.11.0.137
+    PAYMENTS_IP: 172.11.0.138
     PAYMENTSKYC_IP: 0.0.0.0
-    CARDS_IP: 172.11.0.132
+    CARDS_IP: 172.11.0.140
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
-    API_UTILITY_PAYMENT: tenpo.uat.multicajadigital.cloud
+    API_UTILITY_PAYMENT: 104.209.212.179
     API_PAYMENTS_TOPUP: tenpo.uat.multicajadigital.cloud
     AUTH_URL: https://uattenpo2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo_uat
