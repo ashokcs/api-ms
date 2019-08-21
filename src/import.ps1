@@ -16,6 +16,7 @@ $cardsIp = $env:CARDS_IP
 $apiPrepaidIp = $env:API_PREPAID
 $utilityPaymentsIp = $env:API_UTILITY_PAYMENT
 $paymentsTopUpIp = $env:API_PAYMENTS_TOPUP
+$paymentOnlineIp = $env:API_PAYMENT_ONLINE
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -92,6 +93,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCar
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApiPrepaid" -Name "urlApiPrepaid" -Value $apiPrepaidIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUtilityPaymentsIp" -Name "urlUtilityPaymentsIp" -Value $utilityPaymentsIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsTopUpIp" -Name "urlPaymentsTopUpIp" -Value $paymentsTopUpIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlpaymentOnlineIp" -Name "urlpaymentOnlineIp" -Value $paymentOnlineIp
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
@@ -108,6 +110,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "payments" -sufix "/private" 
 Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -path "/v1/user-management" -apiId "users-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/private" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "http://$utilityPaymentsIp"
+Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
 
