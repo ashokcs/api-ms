@@ -122,7 +122,7 @@ prod-deploy:
   environment:
     name: prod
   variables:
-    RESOURCE_GROUP_NAME: tenpo_drp_resource_group
+    RESOURCE_GROUP_NAME: tenpo_prod_resource_group
     AZURE_TENANT_ID: $AZURE_TENANT_ID_PROD
     SERVICE_NAME: tenpo-api-management
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_PROD
