@@ -35,6 +35,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/payments.yaml -l swagger -o bin/public/v1/payments
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/validateUsers.yaml -l swagger -o bin/public/v1/validateUsers
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/utilityPayments.yaml -l swagger -o bin/private/v1/utilityPayments
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-online.yaml -l swagger -o bin/private/v1/paymentOnline
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
@@ -67,6 +68,7 @@ dev-deploy:
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.dev.multicajadigital.cloud
     API_UTILITY_PAYMENT: 104.209.159.135
+    API_PAYMENT_ONLINE: 52.184.189.1
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_mobile
@@ -102,6 +104,7 @@ uat-deploy:
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
     API_UTILITY_PAYMENT: 104.209.212.179
+    API_PAYMENT_ONLINE: 52.184.189.1
     API_PAYMENTS_TOPUP: tenpo.uat.multicajadigital.cloud
     AUTH_URL: https://uattenpo2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo_uat
@@ -134,6 +137,7 @@ prod-deploy:
     PAYMENTS_IP: 172.11.0.73
     PAYMENTSKYC_IP: 0.0.0.0
     CARDS_IP: 172.11.0.71
+    API_PAYMENT_ONLINE: 52.184.189.1
     API_PREPAID: "10.80.1.5:31400"
     API_UTILITY_PAYMENT: "10.80.1.5:31400"
     API_PAYMENTS_TOPUP: "10.80.1.5:31400"
