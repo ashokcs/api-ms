@@ -124,7 +124,7 @@ prod-deploy:
   variables:
     RESOURCE_GROUP_NAME: tenpo_prod_resource_group
     AZURE_TENANT_ID: $AZURE_TENANT_ID_PROD
-    SERVICE_NAME: tenpo-api-management
+    SERVICE_NAME: tenpo-prod-api-management
     AZURE_ACCOUNT_NAME: $AZURE_ACCOUNT_NAME_PROD
     AZURE_ACCOUNT_PASSWORD: $AZURE_ACCOUNT_PASSWORD_PROD
     USERS_IP: 172.11.0.36
