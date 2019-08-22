@@ -617,7 +617,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/GeneratedCode"
+            type: string
         "201":
           description: Created
         "400":
@@ -797,10 +797,3 @@ paths:
         type: string
         format: uuid
     title: CounterParty
-  GeneratedCode:
-    type: object
-    properties:
-      generatedCode:
-        type: string
-      remainingTime:
-        type: number
