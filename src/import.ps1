@@ -95,7 +95,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApi
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUtilityPaymentsIp" -Name "urlUtilityPaymentsIp" -Value $utilityPaymentsIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsTopUpIp" -Name "urlPaymentsTopUpIp" -Value $paymentsTopUpIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlpaymentOnlineIp" -Name "urlpaymentOnlineIp" -Value $paymentOnlineIp
-$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlVerifierIp" -Name "urlVerifierIp" -Value $verifierIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlVerifier" -Name "urlVerifier" -Value $verifierIp":8080"
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
