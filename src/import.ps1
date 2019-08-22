@@ -17,6 +17,7 @@ $apiPrepaidIp = $env:API_PREPAID
 $utilityPaymentsIp = $env:API_UTILITY_PAYMENT
 $paymentsTopUpIp = $env:API_PAYMENTS_TOPUP
 $paymentOnlineIp = $env:API_PAYMENT_ONLINE
+$verifierIp = $env:VERIFIER_IP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -94,6 +95,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlApi
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUtilityPaymentsIp" -Name "urlUtilityPaymentsIp" -Value $utilityPaymentsIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsTopUpIp" -Name "urlPaymentsTopUpIp" -Value $paymentsTopUpIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlpaymentOnlineIp" -Name "urlpaymentOnlineIp" -Value $paymentOnlineIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlVerifierIp" -Name "urlVerifierIp" -Value $verifierIp
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
@@ -140,7 +142,8 @@ New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaym
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
+#Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/verifier_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "cards-api" -OperationId "getCardDetailByUserIdUsingGET" -PolicyFilePath "$pwd/src/private/cards_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -PolicyFilePath "$pwd/src/tenantpolicy.xml"
 

@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: Accounts + Transactions API
+  title: Accounts + Transactions + Verifier API
 host: 52.167.62.186:8080
 basePath: /v1/account-management
 schemes:
@@ -558,10 +558,11 @@ paths:
           description: 403 response
         '404':
           description: 404 response
+# Verifier endpoints
   "/accounts/{userId}/on-site/generate-code":
     post:
       tags:
-        - transaction-cash-in-api-controller
+        - transaction-cash-out-api-controller
       summary: generate-code
       operationId: generateCodeUsingPOST
       produces:
@@ -760,3 +761,10 @@ definitions:
         type: string
         format: uuid
     title: CounterParty
+  GeneratedCode:
+    type: object
+    properties:
+      generatedCode:
+        type: string
+      remainingTime:
+        type: number
