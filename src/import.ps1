@@ -124,8 +124,8 @@ Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -pa
 Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscription -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 
-Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
-Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
+#Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
+#Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
 
 $null = Import-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -SpecificationFormat "Swagger" -SpecificationPath "$pwd/bin/public/v1/appconfig/swagger.json" -Path "/public/v1/app"
 Set-AzApiManagementApi -ApiId "appconfig" -Context $ApiMgmtContext -Protocols @('https') -ServiceUrl "http://localhost:8080" -Name "AppConfig - Tenpo public API"
