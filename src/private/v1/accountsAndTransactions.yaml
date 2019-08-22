@@ -558,7 +558,6 @@ paths:
           description: 403 response
         '404':
           description: 404 response
-# Verifier endpoints
   "/accounts/{userId}/on-site/generate-code":
     post:
       tags:
@@ -593,7 +592,44 @@ paths:
         "404":
           description: Not Found
       deprecated: false
-definitions:
+# Verifier endpoints
+  "/accounts/{userId}/on-site/new-generate-code":
+    post:
+      tags:
+        - transaction-cash-out-api-controller
+      summary: generate-code
+      operationId: newGenerateCodeUsingPOST
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/GeneratedCode"
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+      definitions:
   MyAccountsResponse:
     type: object
     properties:
