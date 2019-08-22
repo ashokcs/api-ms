@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: Accounts + Transactions + Verifier API
+  title: Accounts + Transactions API
 host: 52.167.62.186:8080
 basePath: /v1/account-management
 schemes:
@@ -617,9 +617,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
-        "201":
-          description: Created
+            $ref: "#/definitions/GeneratedCodeDto"
         "400":
           description: Bad Request
         "401":
@@ -629,7 +627,7 @@ paths:
         "404":
           description: Not Found
       deprecated: false
-      definitions:
+definitions:
   MyAccountsResponse:
     type: object
     properties:
