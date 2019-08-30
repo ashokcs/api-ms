@@ -142,7 +142,7 @@ New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaym
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
-Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/verifier_policy.xml"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "cards-api" -OperationId "getCardDetailByUserIdUsingGET" -PolicyFilePath "$pwd/src/private/cards_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -PolicyFilePath "$pwd/src/tenantpolicy.xml"
 
