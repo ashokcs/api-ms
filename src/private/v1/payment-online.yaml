@@ -1,0 +1,132 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Payment-Online - Tenpo public API - Payment-Online
+basePath: /v1/payment-online
+schemes:
+- http
+paths:
+  /cashout_online:
+    post:
+      tags:
+      - payment-online
+      summary: 'Permite realizar CashOut Online (TEF)'
+      operationId: processCashOutDefered
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - in: header
+          name: x-mine-user-id
+          type: string
+          required: true
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/CashOutDTO"
+      responses:
+        200:
+          description: successful operation
+          schema:
+            items:
+              $ref: "#/definitions/CashOutDTO"
+  /utilities/bank:
+    get:
+      tags:
+      - payment-online-utilities
+      summary: 'Listado de bancos con sus codigos'
+      operationId: listOfBank
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BankDto"
+  /utilities/account_type:
+     get:
+      tags:
+      - payment-online-utilities
+      summary: 'Listado tipos de cuenta'
+      operationId: findAll
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/AccountTypeDto"
+definitions:
+  CashOutDTO:
+    type: object
+    properties:
+      amount:
+        description: Monto que se ha depositado
+        $ref: '#/definitions/AmountDto'
+      account_run:
+        description: Rut del dueño de la cuenta
+        type: string
+      account_number:
+        description: Numero de cuenta a donde va a transferir
+        type: string
+      account_type:
+        type: string
+        enum:
+        - 'Cuenta corriente'
+        - 'Cuenta vista'
+        - 'Cuenta ahorro'
+        - 'Cuenta rut'
+      sbif_code:
+        description: Identificador Sbif del banco
+        type: integer 
+      account_name:
+        description: Nombre Dueño Cta
+        type: string
+      account_email:
+        description: Email a quien informar cuando se complete transferencia
+        type: string
+  AmountDto:
+    type: object
+    properties:
+      currency_code:
+        type: string
+        description: Codigo del tipo de moneda del depósito
+      value:
+        type: number
+        description: Monto del depósito
+    title: AmountDto
+    description: Clase u objeto que representa el monto en el proceso de CashIn
+  BankDto:
+    type: object
+    properties:
+      id:
+        type: string
+        description: UUID Banco
+      name:
+        type: string
+        description: Nombre Banco
+      sbif_code:
+        type: integer
+        description: Codigo Sbif del Banco
+      created:
+        type: string
+        example: "2019-06-14T12:48:24.039-04:00"
+      updated:
+        type: string
+        example: "2019-06-14T12:48:24.039-04:00"
+  AccountTypeDto:
+    type: object
+    properties:
+      id:
+        type: string
+        description: UUID Banco
+      name:
+        type: string
+        description: Nombre Banco
+      created:
+        type: string
+        example: "2019-06-14T12:48:24.039-04:00"
+      updated:
+        type: string
+        example: "2019-06-14T12:48:24.039-04:00"
