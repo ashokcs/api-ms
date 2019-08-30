@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <json-to-xml apply="always" consider-accept-header="false" />
+        <set-backend-service base-url="http://{{urlVerifier}}/v1/account-management" />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
