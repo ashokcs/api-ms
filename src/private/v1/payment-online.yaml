@@ -45,7 +45,7 @@ paths:
             items:
               $ref: "#/definitions/BankDto"
   /utilities/account_type:
-     get:
+    get:
       tags:
       - payment-online-utilities
       summary: 'Listado tipos de cuenta'
@@ -57,6 +57,17 @@ paths:
             type: array
             items:
               $ref: "#/definitions/AccountTypeDto"
+  /utilities/tenpo/bank_account/principal:
+    get:
+      tags:
+      - payment-online-utilities
+      summary: 'Obtiene la cuenta principal de tenpo'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            items:
+              $ref: "#/definitions/TenpoBankAccountDto"
 definitions:
   CashOutDTO:
     type: object
@@ -97,6 +108,7 @@ definitions:
         description: Monto del depósito
     title: AmountDto
     description: Clase u objeto que representa el monto en el proceso de CashIn
+ 
   BankDto:
     type: object
     properties:
@@ -109,12 +121,7 @@ definitions:
       sbif_code:
         type: integer
         description: Codigo Sbif del Banco
-      created:
-        type: string
-        example: "2019-06-14T12:48:24.039-04:00"
-      updated:
-        type: string
-        example: "2019-06-14T12:48:24.039-04:00"
+  
   AccountTypeDto:
     type: object
     properties:
@@ -124,9 +131,31 @@ definitions:
       name:
         type: string
         description: Nombre Banco
-      created:
+  
+  TenpoBankAccountDto:
+    type: object
+    properties:
+      id:
         type: string
-        example: "2019-06-14T12:48:24.039-04:00"
-      updated:
+        description: UUID Banco
+      name:
         type: string
-        example: "2019-06-14T12:48:24.039-04:00"
+        description: Nombre Cuenta
+      bank_name:
+        type: string
+        description: Nombre Banco
+      account_type:
+        type: string
+        description: Tipo de Cuenta
+      account_number:
+        type: string
+        description: Numero de cuenta
+      rut:
+        type: string
+        description: Rut
+      email:
+        type: string
+        description: Correo electronico
+      state:
+        type: string
+        description: Estado
