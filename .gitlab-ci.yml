@@ -102,7 +102,7 @@ uat-deploy:
     CARDS_IP: 172.11.0.140
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
-    API_UTILITY_PAYMENT: 104.209.212.179
+    API_UTILITY_PAYMENT: tenpo.uat.multicajadigital.cloud
     API_PAYMENT_ONLINE: 172.11.0.145
     API_PAYMENTS_TOPUP: tenpo.uat.multicajadigital.cloud
     AUTH_URL: https://uattenpo2.b2clogin.com/
