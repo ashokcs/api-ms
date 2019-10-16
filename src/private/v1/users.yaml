@@ -156,7 +156,7 @@ paths:
         "404":
           description: Not Found
       deprecated: false
-  /me/activate-card':
+  /me/activate-card:
     patch:
       tags:
         - upgrade-user-controller
