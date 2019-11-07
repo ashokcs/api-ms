@@ -68,7 +68,6 @@ dev-deploy:
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.dev.multicajadigital.cloud
     API_UTILITY_PAYMENT: 104.209.159.135
-    # API_UTILITY_PAYMENT: "20.40.1.4:31400"
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
     AUTH_URL: https://tenpodev2.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_mobile
@@ -103,7 +102,7 @@ uat-deploy:
     CARDS_IP: 172.11.0.140
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
-    API_UTILITY_PAYMENT: tenpo.uat.multicajadigital.cloud
+    API_UTILITY_PAYMENT: 172.11.0.129
     API_PAYMENT_ONLINE: 172.11.0.145
     API_PAYMENTS_TOPUP: tenpo.uat.multicajadigital.cloud
     AUTH_URL: https://uattenpo2.b2clogin.com/
@@ -143,7 +142,7 @@ prod-deploy:
     VERIFIER_IP: 172.11.0.106
     API_PAYMENT_ONLINE: 172.11.0.109
     API_PREPAID: "10.80.1.5:31400"
-    API_UTILITY_PAYMENT: "10.80.1.5:31400"
+    API_UTILITY_PAYMENT: 172.11.0.144
     API_PAYMENTS_TOPUP: "10.80.1.5:31400"
     AUTH_URL: https://tenpoapp.b2clogin.com/
     USER_FLOW_NAME: B2C_1_ROPC_tenpo
