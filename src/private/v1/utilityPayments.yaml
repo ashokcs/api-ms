@@ -63,6 +63,22 @@ paths:
             type: array
             items:
               $ref: "#/definitions/UtilityBillResponse"
+  /bills/{id}:
+    get: 
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          minimum: 1
+          description: The bill ID
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/UtilityBillResponse"
   /transactions:
     post:
       produces:
@@ -77,22 +93,22 @@ paths:
           description: successful operation
           schema:
             $ref: "#/definitions/TransactionResponse"
-  /transactions/{id}:
-    get: 
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: id
-          required: true
-          type: string
-          minimum: 1
-          description: The transaction ID
-      responses:
-        200:
-          description: successful operation
-          schema:
-            $ref: "#/definitions/TransactionResponse"
+  # /transactions/{id}:
+  #   get: 
+  #     produces:
+  #       - application/json
+  #     parameters:
+  #       - in: path
+  #         name: id
+  #         required: true
+  #         type: string
+  #         minimum: 1
+  #         description: The transaction ID
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         schema:
+  #           $ref: "#/definitions/TransactionResponse"
   /favorites:
     get:
       parameters:
