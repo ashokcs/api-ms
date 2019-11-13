@@ -352,7 +352,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/v1/onboarding/send-email-verification-code':
+  '/send-email-verification-code':
     post:
       tags:
         - mobile-on-boarding-controller
