@@ -352,6 +352,37 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/v1/onboarding/send-email-verification-code':
+    post:
+      tags:
+        - mobile-on-boarding-controller
+      summary: forgotSendEmailVerificationCode
+      operationId: forgotSendEmailVerificationCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: forgotPass
+          description: forgotPass
+          required: true
+          schema:
+            $ref: '#/definitions/ForgotPassRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   ValidateDeviceRequest:
     type: object
