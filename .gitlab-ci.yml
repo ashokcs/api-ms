@@ -36,6 +36,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/validateUsers.yaml -l swagger -o bin/public/v1/validateUsers
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/utilityPayments.yaml -l swagger -o bin/private/v1/utilityPayments
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-online.yaml -l swagger -o bin/private/v1/paymentOnline
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users-eecc.yaml -l swagger -o bin/public/v1/users-eecc
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az

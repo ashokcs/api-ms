@@ -1,0 +1,128 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: UsersEECC - Tenpo public API - UsersEECC
+host: 40.70.68.63:8080
+basePath: /v1/users-eecc
+schemes:
+  - http
+paths:
+  '/register':
+    post:
+      tags:
+        - user-eecc-controller
+      summary: create
+      operationId: createUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: userEECCDTO
+          description: userEECCDTO
+          required: true
+          schema:
+            $ref: '#/definitions/UserEECCDTO'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserEECCResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    '/user/{userId}':
+      get:
+        tags:
+          - user-eecc-controller
+        summary: checkUser
+        operationId: checkUserUsingGET
+        produces:
+          - '*/*'
+        parameters:
+          - name: numberDocument
+            in: query
+            description: numberDocument
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: userId
+            required: true
+            type: string
+            format: uuid
+          - name: yearDocument
+            in: query
+            description: yearDocument
+            required: true
+            type: string
+        responses:
+          '200':
+            description: OK
+            schema:
+              $ref: '#/definitions/UserEECCEntity'
+          '401':
+            description: Unauthorized
+          '403':
+            description: Forbidden
+          '404':
+            description: Not Found
+        deprecated: false
+definitions:
+  UserEECCDTO:
+    type: object
+    properties:
+      dateSended:
+        type: string
+        format: date-time
+      id:
+        type: string
+        format: uuid
+      numberDocument:
+        type: string
+      urlBlob:
+        type: string
+      userId:
+        type: string
+        format: uuid
+      yearDocument:
+        type: string
+    title: UserEECCDTO
+  UserEECCEntity:
+    type: object
+    properties:
+      dateSended:
+        type: string
+        format: date-time
+      id:
+        type: string
+        format: uuid
+      numberDocument:
+        type: string
+      urlBlob:
+        type: string
+      userId:
+        type: string
+        format: uuid
+      yearDocument:
+        type: string
+    title: UserEECCEntity
+  UserEECCResponse:
+    type: object
+    properties:
+      userEECC:
+        $ref: '#/definitions/UserEECCDTO'
+    title: UserEECCResponse
+  View:
+    type: object
+    properties:
+      contentType:
+        type: string
+    title: View
