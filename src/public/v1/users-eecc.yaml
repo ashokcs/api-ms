@@ -7,12 +7,12 @@ basePath: /v1/users-eecc
 schemes:
   - http
 paths:
-  '/register':
+  '/':
     post:
       tags:
         - user-eecc-controller
-      summary: create
-      operationId: createUsingPOST_1
+      summary: createRegister
+      operationId: createRegisterUsingPOST
       consumes:
         - application/json
       produces:
@@ -38,7 +38,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-    '/user/{userId}':
+    '/{userId}':
       get:
         tags:
           - user-eecc-controller
