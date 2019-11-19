@@ -123,6 +123,7 @@ Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -pa
 Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscription -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -path "/v1/users-eecc" -sufix "/public" -apiId "users-eecc-public-api" -serviceBase "http://$usersIp`:8080"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
