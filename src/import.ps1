@@ -113,7 +113,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -pa
 Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/private" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "http://$utilityPaymentsIp"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 
-Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "https://$paymentsTopUpIp"
+Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "launch" -ProductId tenpoapi -path "/v1/launch" -sufix "/public" -apiId "launch-public-api" -serviceBase "http://$launchIp`:8080"
