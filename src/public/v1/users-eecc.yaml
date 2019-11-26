@@ -11,8 +11,8 @@ paths:
     post:
       tags:
         - user-eecc-controller
-      summary: createRegister
-      operationId: createRegisterUsingPOST
+      summary: create
+      operationId: createUsingPOST_1
       consumes:
         - application/json
       produces:
