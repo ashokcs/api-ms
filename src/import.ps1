@@ -18,6 +18,7 @@ $utilityPaymentsIp = $env:API_UTILITY_PAYMENT
 $paymentsTopUpIp = $env:API_PAYMENTS_TOPUP
 $paymentOnlineIp = $env:API_PAYMENT_ONLINE
 $verifierIp = $env:VERIFIER_IP
+$tenpoPrelaunchApiIp = $env:TENPO_PRELAUNCH_API_IP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -96,6 +97,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUti
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsTopUpIp" -Name "urlPaymentsTopUpIp" -Value $paymentsTopUpIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlVerifier" -Name "urlVerifier" -Value $verifierIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlpaymentOnlineIp" -Name "urlpaymentOnlineIp" -Value $paymentOnlineIp
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTenpoPrelaunchApiIp" -Name "urlTenpoPrelaunchApiIp" -Value $tenpoPrelaunchApiIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "authUrl" -Name "authUrl" -Value $authUrl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFlowName" -Name "userFlowName" -Value $userFlowName
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "clientId" -Name "clientId" -Value $clientId
@@ -124,6 +126,7 @@ Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscr
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -path "/v1/users-eecc" -sufix "/public" -apiId "users-eecc-public-api" -serviceBase "http://$usersIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "/public" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
