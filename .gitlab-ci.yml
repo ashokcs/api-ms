@@ -36,6 +36,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/validateUsers.yaml -l swagger -o bin/public/v1/validateUsers
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/utilityPayments.yaml -l swagger -o bin/private/v1/utilityPayments
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-online.yaml -l swagger -o bin/private/v1/paymentOnline
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/prelaunch.yaml -l swagger -o bin/public/v1/prelaunch
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users-eecc.yaml -l swagger -o bin/public/v1/users-eecc
 .config-deploy:
   stage: deploy
@@ -77,6 +78,7 @@ dev-deploy:
     AZURE_B2C_TENANT_ID: cae09fee-473e-48e2-99dc-3b7bf4a97411
     USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c3
     PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c4
+    TENPO_PRELAUNCH_API_IP: 52.232.240.119 
 uat-deploy:
   extends: .config-deploy
   only:
@@ -113,6 +115,7 @@ uat-deploy:
     AZURE_B2C_TENANT_ID: c3fdc983-c30f-4c4e-b7e9-29502a5a7ee5
     USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c5
     PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c6
+    TENPO_PRELAUNCH_API_IP: 172.11.0.155
 
 prod-deploy:
   extends: .config-deploy
@@ -152,3 +155,4 @@ prod-deploy:
     AZURE_B2C_TENANT_ID: 30db1526-4fa2-4f4a-ae85-6d1e64e29171
     USER_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c6
     PAYMENT_SUBSCRIPTION_KEY: 80450f7d0b6d481382113073f67822c7
+    TENPO_PRELAUNCH_API_IP: 172.11.0.219

@@ -1,0 +1,181 @@
+swagger: "2.0"
+info: 
+  title: Prelaunch
+  version: 1.0.0
+host: api.prod.tenpo.cl
+basePath: /v1/prelaunch
+schemes:
+  - https
+paths:
+  /user:
+    post:
+      tags:
+        - User
+      summary: Graba el teléfono y nombre del usuario
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid parameters"
+          schema:
+            $ref: '#/definitions/ApiResponse' 
+
+  /users/rank:
+    get:
+      tags:
+        - User
+      summary: Lista los 10 primeros usuarios con su puntaje ordenanos de mayor a menor
+      responses:
+        200:
+          description:  successful operation
+          schema:
+            $ref: '#/definitions/RankingResponse'
+  
+  /user/rank:
+    get:
+      tags:
+        - User
+      summary: Trae la información de un usuario para ser mostrada en el home del sitio
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/RankUserResponse'
+        404:
+          description: 'not found'
+          schema:
+            $ref: '#/definitions/ApiResponse' 
+
+  /user/referred:
+    post:
+      tags:
+        - User
+      summary: Asigna puntaje al usuario que refirio por medio de su código
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid parameter"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /user/checksms:
+    post:
+      tags:
+        - User
+      summary: Realiza la carga de puntos por validación del sms
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid parameter"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+  
+  /user/resendsms:
+    get:
+      tags:
+        - User
+      summary: Envia nuevamente el sms para validacion de la data del usuario
+      responses:
+        200:
+          description:  successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: "invalid parameter"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /user/influencer:
+    post:
+      tags:
+        - User
+      summary: Permite la carga del código de influencer y la suma de 300 puntos por codigo
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "invalid parameter"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+  /user/detailpoint:
+    get:
+      tags:
+        - User
+      summary: Envia el detalle de puntos conseguido por el usuario
+      responses:
+        200:
+          description:  successful operation
+          schema:
+            $ref: '#/definitions/ListPointDetails'
+        400:
+          description: "invalid parameter"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+
+definitions:
+
+    RankingResponse:
+      type: object
+      properties:
+        ranking:
+          type: array
+          items: 
+            $ref: '#/definitions/RankUserResponse'
+
+    RankUserResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        points:
+          type: integer
+        position:
+          type: number
+
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+    UserForm:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+
+    PointsForm:
+      type: object
+      properties:
+        code:
+          type: string
+
+    CodeInfluencer:
+      type: object
+      properties:
+        code:
+          type: string
+
+    DetailPoint:
+      type: object
+      properties:
+        tipo:
+          type: string
+        detalle:
+          type: string
+        puntosGanados:
+          type: string
+
+    ListPointDetails:
+      type: array
+      items:
+        $ref: '#/definitions/DetailPoint'
