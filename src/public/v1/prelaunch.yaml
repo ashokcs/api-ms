@@ -47,6 +47,13 @@ paths:
           description: "invalid parameters"
           schema:
             $ref: '#/definitions/ApiResponse' 
+    put:
+      tags:
+        - User
+      summary: Graba el teléfono y nombre del usuario
+      responses:
+        200:
+          description: "successful operation"
 
   /user/me:
     get:
