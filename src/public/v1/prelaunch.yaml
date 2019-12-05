@@ -7,6 +7,34 @@ basePath: /v1/prelaunch
 schemes:
   - https
 paths:
+  /oauth2/authorize/google:
+    get:
+      tags:
+        - Oauth2
+      responses:
+        200:
+          description:  successful operation
+  /oauth2/authorize/facebook:
+    get:
+      tags:
+        - Oauth2
+      responses:
+        200:
+          description:  successful operation
+  /oauth2/callback/google:
+    get:
+      tags:
+        - Oauth2
+      responses:
+        200:
+          description:  successful operation
+  /oauth2/callback/facebook:
+    get:
+      tags:
+        - Oauth2
+      responses:
+        200:
+          description:  successful operation
   /user:
     post:
       tags:
@@ -20,6 +48,14 @@ paths:
           schema:
             $ref: '#/definitions/ApiResponse' 
 
+  /user/me:
+    get:
+      tags:
+        - Oauth2
+      responses:
+        200:
+          description:  successful operation
+
   /users/rank:
     get:
       tags:
@@ -32,7 +68,7 @@ paths:
             $ref: '#/definitions/RankingResponse'
   
   /user/rank:
-    get:
+    post:
       tags:
         - User
       summary: Trae la información de un usuario para ser mostrada en el home del sitio
