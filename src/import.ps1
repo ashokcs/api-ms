@@ -126,7 +126,7 @@ Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscr
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -path "/v1/users-eecc" -sufix "/public" -apiId "users-eecc-public-api" -serviceBase "http://$usersIp`:8080"
-Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "/public" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
+Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
@@ -137,6 +137,7 @@ $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "appconfig" -P
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "payments-public-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "webhook-user-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "launch-public-api" -PolicyFilePath "$pwd/src/public/launch_policy.xml"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "tenpo-prelaunch-api" -PolicyFilePath "$pwd/src/public/prelaunch_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
