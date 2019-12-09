@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   version: 1.0.0
-  title: Payment-Online - Tenpo public API - Payment-Online
+  title: Payment-Online - Tenpo private API - Payment-Online
 basePath: /v1/payment-online
 schemes:
 - http
