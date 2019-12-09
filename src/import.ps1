@@ -28,6 +28,7 @@ $tenantName = $env:AZURE_TENANT_NAME
 
 $userSubscriptionKey = $env:USER_SUBSCRIPTION_KEY
 $PaymentSubscriptionKey = $env:PAYMENT_SUBSCRIPTION_KEY
+$PaymentOnlineSubscriptionKey = $env:PAYMENT_ONLINE_SUBSCRIPTION_KEY
 
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
 $null = Connect-AzAccount -Credential $psCred -Tenant $tenantId -ServicePrincipal
@@ -124,9 +125,9 @@ Import-Api -context $ApiMgmtContext -msName "onboarding"-ProductId tenpoapi  -pa
 #Import-Api -context $ApiMgmtContext -msName "validateUsers" -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "payments" -ProductId tenpoapiSubscription -path "/v1/integration/payment/cl/on-site" -sufix "/public" -apiId "payments-public-api" -serviceBase "http://$paymentsIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiSubscription -path "/v1/webhook-user-management/" -sufix "/public" -apiId "webhook-user-api" -serviceBase "http://$usersIp`:8080"
-Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -path "/v1/users-eecc" -sufix "/public" -apiId "users-eecc-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
+Import-Api -context $ApiMgmtContext -msName "paymentOnline" -ProductId tenpoapiSubscription -path "/v1/webhook-payment-management" -sufix "/public" -apiId "webhook-payment-online-api" -serviceBase "http://$paymentOnlineIp`:8080"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
@@ -138,13 +139,16 @@ $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "payments-publ
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "webhook-user-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "launch-public-api" -PolicyFilePath "$pwd/src/public/launch_policy.xml"
 $null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "tenpo-prelaunch-api" -PolicyFilePath "$pwd/src/public/prelaunch_policy.xml"
+$null = Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "webhook-payment-online-api" -PolicyFilePath "$pwd/src/public/error_policy.xml"
 Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId unlimited -ApiId "appconfig"
 Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId "appconfig"
 
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123458"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentOnlinePublic" -SubscriptionId "123458" -Scope "/apis/webhook-payment-online-api"  -PrimaryKey $PaymentOnlineSubscriptionKey -SecondaryKey "e10a9fba63ec53d4a4395b48d22f50f6" -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/verifier_policy.xml"

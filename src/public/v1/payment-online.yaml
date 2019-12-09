@@ -1,0 +1,100 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Payment-Online - Tenpo public API - Payment-Online
+basePath: /v1/webhook-payment-management
+  - http
+paths:
+  '/users/{userId}/pending-cashin':
+    put:
+      tags:
+        - payment-pending-webhook-controller
+      summary: PendingCashin
+      operationId: PendingCashin
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: CashInTicketDTO
+          description: CashInTicketDTO
+          required: true
+          schema:
+            $ref: '#/definitions/CashInTicketDTO'
+      responses:
+        200:
+          description: OK
+        201:
+          description: Created
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+  '/users/{userId}/duplicated-cashin':
+    put:
+      tags:
+        - payment-pending-webhook-controller
+      summary: DuplicatedCashin
+      operationId: DuplicatedCashin
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: DuplicateCashInDTO
+          description: DuplicateCashInDTO
+          required: true
+          schema:
+            $ref: '#/definitions/DuplicateCashInDTO'
+      responses:
+        200:
+          description: OK
+        201:
+          description: Created
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+definitions:
+  CashInTicketDTO:
+    type: object
+    properties:
+        payment_transaction_id:
+          description: Id Transaccion Payment
+          type: string
+          format: uuid
+        transaction_id:
+          description: Id Transaccion api-prepaid
+          type: string
+          format: uuid
+        numaut:
+          description: Numero de Autorizacion
+          type: string
+          format: uuid
+        response:
+          description: Fue insertado por SAT Si,No
+          type: string
+  DuplicateCashInDTO:
+    type: object
+    properties:
+        payment_transaction_id:
+          description: Id Transaccion Payment
+          type: string
+          format: uuid
+        response:
+          description: Es una transaccion duplicada Si,No
+          type: string
