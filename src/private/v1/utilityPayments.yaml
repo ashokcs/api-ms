@@ -12,6 +12,13 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:
+  /welcome:
+    post:
+      responses:
+        200:
+          description: successful operation
+        201:
+          description: successful operation
   /categories:
     get:
       produces:
