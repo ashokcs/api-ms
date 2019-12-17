@@ -169,6 +169,36 @@ paths:
           description: resource not found
         500:
           description: internal server error
+
+  /user:
+    get:
+      tags:
+        - User
+      summary: Obtiene un usuario de recargas (Solo para fines de experiencia de usuario)
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "user found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundUser'
+        404:
+          description: "user not found"
+    put:
+      tags:
+        - User
+      summary: Registra un usuario de recargas (solo para fines de experiencia de usuario)
+      security:
+        - bearerAuth: []
+      responses:
+        201:
+          description: "user created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboundUser'
         
   /user/favourite:
     put:
@@ -404,6 +434,22 @@ components:
         updated_at:
           type: string
           description: Fecha de actualización de la transacción
+          example: "2019-04-24T10:58:26.140605-04:00"
+
+    InboundUser:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de registro de usuario entrante
+          example: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+        user_id:
+          type: string
+          description: ID de usuario.
+          example: "1845e261-7cbc-4a9e-8cc7-31f21573c468"
+        created_at:
+          type: string
+          description: Fecha de creación
           example: "2019-04-24T10:58:26.140605-04:00"
 
     Favourite:
