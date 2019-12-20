@@ -1,15 +1,15 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
   description: Api Documentation
   version: '1.0'
   title: Transaction History MS
-host: localhost:8081
+host: 52.225.220.194:8080
 basePath: /v1/transactions-history
 tags:
   - name: transaction-history-controller
     description: Transaction History Controller
 paths:
-  "/v1/transactions-history/{userId}/transactions":
+  '/{userId}/transactions':
     get:
       tags:
         - transaction-history-controller
@@ -44,7 +44,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/TransactionHistoryDto"
+              "$ref": '#/definitions/TransactionHistoryDto'
         '401':
           description: Unauthorized
         '403':
