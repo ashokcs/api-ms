@@ -1,0 +1,104 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Transaction History MS
+host: 52.225.220.194:8080
+basePath: /v1/transactions-history
+tags:
+  - name: transaction-history-controller
+    description: Transaction History Controller
+paths:
+  '/{userId}/transactions':
+    get:
+      tags:
+        - transaction-history-controller
+      summary: list
+      operationId: listUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          in: query
+          description: page
+          required: false
+          type: integer
+          default: 0
+          format: int32
+        - name: size
+          in: query
+          description: size
+          required: false
+          type: integer
+          default: 100
+          format: int32
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": '#/definitions/TransactionHistoryDto'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  TransactionHistoryDto:
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      cardId:
+        type: string
+        format: uuid
+      createdAt:
+        type: string
+        format: date-time
+      description:
+        type: string
+      originId:
+        type: integer
+        format: int32
+      originTransactionId:
+        type: string
+        format: uuid
+      primaryCurrencyCode:
+        type: string
+      primaryCurrencyValue:
+        type: number
+        format: float
+      referenceId:
+        type: string
+        format: uuid
+      secondaryCurrencyCode:
+        type: string
+      secondaryCurrencyValue:
+        type: number
+        format: float
+      stateId:
+        type: integer
+        format: int32
+      transactionId:
+        type: string
+        format: uuid
+      typeId:
+        type: integer
+        format: int32
+      updatedAt:
+        type: string
+        format: date-time
+      userId:
+        type: string
+        format: uuid
+    title: TransactionHistoryDto

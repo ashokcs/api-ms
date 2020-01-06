@@ -19,6 +19,7 @@ $paymentsTopUpIp = $env:API_PAYMENTS_TOPUP
 $paymentOnlineIp = $env:API_PAYMENT_ONLINE
 $verifierIp = $env:VERIFIER_IP
 $tenpoPrelaunchApiIp = $env:TENPO_PRELAUNCH_API_IP
+$transactionsHistoryIp = $env:TRANSACTION_HISTORY_IP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -104,6 +105,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "userFl
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "clientId" -Name "clientId" -Value $clientId
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantId" -Name "tenantId" -Value $b2cTenantId
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantName" -Name "tenantName" -Value $tenantName
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactionsHistory" -Name "urlTransactionsHistory" -Value $transactionsHistoryIp":8080"
 
 Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
@@ -115,6 +117,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "users" -sufix "/private" -pa
 Import-Secure-Api -context $ApiMgmtContext -msName "cards" -sufix "/private" -path "/v1/cards-management" -apiId "cards-api" -serviceBase "http://$cardsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/private" -path "/v1/utility-payments" -apiId "utility-payments-api" -serviceBase "http://$utilityPaymentsIp"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "transactionsHistory" -sufix "/private" -path "/v1/transactions-history" -apiId "transactions-history" -serviceBase "http://$transactionsHistoryIp`:8080"
 
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
