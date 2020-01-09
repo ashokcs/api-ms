@@ -17,8 +17,6 @@ paths:
       responses:
         200:
           description: successful operation
-        201:
-          description: successful operation
   /categories:
     get:
       produces:
@@ -168,6 +166,17 @@ paths:
           description: resource not found
         500:
           description: internal server error
+  /options:
+    get:
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+    put:
+      responses:
+        200:
+          description: successful operation
 definitions:
   Category:
     type: object
