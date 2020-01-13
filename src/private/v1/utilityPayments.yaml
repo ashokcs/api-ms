@@ -177,6 +177,16 @@ paths:
       responses:
         200:
           description: successful operation
+  /suggestions:
+    get:
+      responses:
+        200:
+          description: successful operation
+  /home:
+    get:
+      responses:
+        200:
+          description: successful operation
 definitions:
   Category:
     type: object
