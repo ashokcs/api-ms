@@ -182,6 +182,17 @@ paths:
       responses:
         200:
           description: successful operation
+  /suggestions/{id}:
+    delete:
+      parameters: 
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id de la cuenta favorita
+      responses:
+        200:
+          description: successful operation
   /home:
     get:
       responses:
