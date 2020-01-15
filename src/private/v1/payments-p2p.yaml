@@ -29,9 +29,6 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            type: object
-            "$ref": '#/definitions/P2pPaymentResponseDto'
         '400':
           description: Bad Request
         '401':
@@ -58,9 +55,6 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            type: object
-            "$ref": '#/definitions/P2pPaymentResponseDto'
         '400':
           description: Bad Request
         '401':
