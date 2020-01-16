@@ -203,6 +203,16 @@ paths:
       responses:
         200:
           description: successful operation
+  /health/nats:
+    get:
+      responses:
+        200:
+          description: successful operation
+  /health/multicaja:
+    get:
+      responses:
+        200:
+          description: successful operation
 definitions:
   Category:
     type: object
