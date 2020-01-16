@@ -18,7 +18,7 @@ swagger-validation:
     paths:
       - bin/
   before_script:
-    - wget http://central.maven.org/maven2/io/swagger/swagger-codegen-cli/${CLI_VERSION}/swagger-codegen-cli-${CLI_VERSION}.jar -O /swagger-codegen-cli.jar
+    - wget https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/${CLI_VERSION}/swagger-codegen-cli-${CLI_VERSION}.jar -O /swagger-codegen-cli.jar
   script:
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/accountsAndTransactions.yaml -l swagger -o bin/private/v1/accountsAndTransactions
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/devices.yaml -l swagger -o bin/private/v1/devices
