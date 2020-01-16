@@ -40,7 +40,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/users-eecc.yaml -l swagger -o bin/public/v1/users-eecc
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/payment-online.yaml -l swagger -o bin/public/v1/paymentOnline
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/transactionHistory.yaml -l swagger -o bin/private/v1/transactionsHistory
-    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payments-p2p.yaml -l swagger -o bin/private/v1/paymentsP2p
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/paymentsP2p.yaml -l swagger -o bin/private/v1/paymentsP2p
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
