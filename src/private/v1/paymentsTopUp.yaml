@@ -170,6 +170,95 @@ paths:
         500:
           description: internal server error
 
+  /transaction/cart:
+    get:
+      tags:
+        - Transaction
+      summary: Obtiene (e inicializa de ser necesario) una transacción en modo carro de compras (UNCONFIRMED)
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartTransaction'
+    put:
+      tags:
+        - Transaction
+      summary: Agrega items al carro
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartTopUp'
+        400:
+          description: invalid parameters
+        500:
+          description: internal server error
+    post:
+      tags:
+        - Transaction
+      summary: Confirma transacción de carro de compras para su procesamiento
+      security:
+        - bearerAuth: []
+      responses:
+        201:
+          description: successful operation
+
+  /transaction/cart/{topupId}:
+    get:
+      tags:
+        - Transaction
+      summary: Obtiene un item de recarga desde la transacción en modo carro de compras
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: topupId
+          required: true
+          description: Id del item de recarga
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartTopUp'
+    delete:
+      tags:
+        - Transaction
+      summary: Elimina un item de recarga
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: topupId
+          required: true
+          description: Id del item de recarga
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+
   /user:
     get:
       tags:
@@ -488,6 +577,16 @@ components:
           description: Fecha de actualización de la transacción
           example: "2019-04-24T10:58:26.140605-04:00"
 
+    CartTopUp:
+      type: object
+      properties:
+        topup:
+          $ref: '#/components/schemas/TopUp'
+        validation:
+          type: string
+          enum:
+            ["PENDING", "SUCCEEDED", "REJECTED"] 
+
     InboundUser:
       type: object
       properties:
@@ -589,6 +688,40 @@ components:
           description: Lista de productos a recargar
           items:
             $ref: '#/components/schemas/TopUp'
+
+    CartTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la transacción
+          example: "51d95fc6-58e9-4bb0-a622-031cf08edc9c"
+        user_id:
+          type: string
+          description: ID del usuario
+          example: "51d95fc7-58e8-4cb0-d622-031cf08ed34f"
+        order:
+          type: string
+          description: Número de orden de la transacción
+          example: "T20190620144252014"
+        status:
+          type: string
+          enum: ["UNCONFIRMED", "PENDING", "PROCESSING", "SUCCEEDED", "UNFINISHED", "FAILED"]
+          description: Estado de la transacción
+          example: "PENDING"
+        created_at:
+          type: string
+          description: Fecha de creación
+          example: "2019-04-24T10:58:26.140605-04:00"
+        updated_at:
+          type: string
+          description: Fecha de actualización
+          example: "2019-04-24T10:58:26.140605-04:00"
+        topups:
+          type: array
+          description: Lista de productos a recargar
+          items:
+            $ref: '#/components/schemas/CartTopUp'
 
     ErrorResponse:
       type: object
