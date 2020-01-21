@@ -17,6 +17,13 @@ paths:
       responses:
         200:
           description: successful operation
+  /welcome/tos:
+    post:
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: resource not found
   /categories:
     get:
       produces:
