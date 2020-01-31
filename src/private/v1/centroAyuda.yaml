@@ -1,0 +1,30 @@
+swagger: "2.0"
+info:
+  title: Centro de ayuda
+  version: 1.0.0
+host: api.prod.tenpo.cl
+basePath: /v1/cda
+schemes:
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:
+  /categories:
+    get:
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successful operation
+  /tickets:
+    post:
+      produces:
+        - application/json
+      responses:
+        201:
+          description: successful operation
+        500:
+          description: server error
