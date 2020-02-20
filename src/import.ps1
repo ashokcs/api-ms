@@ -21,6 +21,7 @@ $verifierIp = $env:VERIFIER_IP
 $tenpoPrelaunchApiIp = $env:TENPO_PRELAUNCH_API_IP
 $transactionsHistoryIp = $env:TRANSACTION_HISTORY_IP
 $paymentsP2pIp = $env:PAYMENT_P2P_IP
+$centroAyudaIp = $env:API_CENTRO_AYUDA
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -30,6 +31,7 @@ $tenantName = $env:AZURE_TENANT_NAME
 
 $userSubscriptionKey = $env:USER_SUBSCRIPTION_KEY
 $PaymentSubscriptionKey = $env:PAYMENT_SUBSCRIPTION_KEY
+$PaymentSubscriptionKeyAlt = $env:PAYMENT_SUBSCRIPTION_KEY_ALT
 $PaymentOnlineSubscriptionKey = $env:PAYMENT_ONLINE_SUBSCRIPTION_KEY
 
 $psCred = New-Object System.Management.Automation.PSCredential($azureAccountName, $azurePassword)
@@ -108,6 +110,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenant
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "tenantName" -Name "tenantName" -Value $tenantName
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactionsHistory" -Name "urlTransactionsHistory" -Value $transactionsHistoryIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsP2p" -Name "urlPaymentsP2p" -Value $paymentsP2pIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCentroAyudaIp" -Name "urlCentroAyudaIp" -Value $centroAyudaIp
 
 Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
@@ -121,6 +124,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "utilityPayments" -sufix "/pr
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentOnline" -sufix "/private" -path "/v1/payment-online" -apiId "payment-online" -serviceBase "http://$paymentOnlineIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "transactionsHistory" -sufix "/private" -path "/v1/transactions-history" -apiId "transactions-history" -serviceBase "http://$transactionsHistoryIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentsP2p" -sufix "/private" -path "/v1/p2p-management" -apiId "payments-p2p" -serviceBase "http://$paymentsP2pIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "centroAyuda" -sufix "/private" -path "/v1/cda" -apiId "centro-ayuda-api" -serviceBase "http://$centroAyudaIp"
 
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
@@ -152,7 +156,7 @@ Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -Ap
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123458"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a763c" -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey $PaymentSubscriptionKeyAlt -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentOnlinePublic" -SubscriptionId "123458" -Scope "/apis/webhook-payment-online-api"  -PrimaryKey $PaymentOnlineSubscriptionKey -SecondaryKey "e10a9fba63ec53d4a4395b48d22f50f6" -State "Active"
 
