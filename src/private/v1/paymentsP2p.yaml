@@ -60,8 +60,7 @@ paths:
         '401':
           description: Unauthorized
         '404':
-          description: Not Found        
-  
+          description: Not Found          
   /charge:
     post:
       summary: Create P2P charge payment request
@@ -177,6 +176,54 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  /history:
+    get:
+      summary: P2P history
+      operationId: listHistoryUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found 
+  /history/{id}:
+    get:
+      summary: P2P history detail
+      operationId: listHistoryUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Contact Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found 
 definitions:
   P2pPaymentRequestDto:
     type: object
