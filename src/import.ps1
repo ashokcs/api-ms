@@ -135,6 +135,7 @@ Import-Api -context $ApiMgmtContext -msName "validateUsers" -ProductId tenpoapiS
 Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -path "/v1/users-eecc" -sufix "/public" -apiId "users-eecc-public-api" -serviceBase "http://$usersIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
 Import-Api -context $ApiMgmtContext -msName "paymentOnline" -ProductId tenpoapiSubscription -path "/v1/webhook-payment-management" -sufix "/public" -apiId "webhook-payment-online-api" -serviceBase "http://$paymentOnlineIp`:8080"
+Import-Api -context $ApiMgmtContext -msName "devices" -ProductId tenpoapi -path "/v1/device-management" -sufix "/public" -apiId "devices-public-api" -serviceBase "http://$usersIp`:8080"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api

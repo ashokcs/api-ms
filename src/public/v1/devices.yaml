@@ -1,0 +1,71 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Devices API Public
+host: 40.70.68.63:8080
+basePath: /v1/device-management
+schemes:
+  - http
+paths:
+  /devices/init-params:
+    get:
+      tags:
+        - device-controller
+      summary: getInitParams
+      operationId: getInitParamsUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/InitAppDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false         
+definitions:
+  Device:
+    type: object
+    properties:
+      notificationId:
+        type: string
+      deviceType:
+        type: string
+        enum:
+          - IOS
+          - ANDROID
+  ResponseStatus:
+    type: object
+    properties:
+      code:
+        type: string
+        description: The HTTP code
+      message:
+        type: string
+        description: A description message
+  InitAppDTO:
+    type: object
+    properties:
+      clientId:
+        type: string
+      minVersion:
+        type: string
+      tenantId:
+        type: string
+      tenantName:
+        type: string
+      url:
+        type: string
+      userFlowName:
+        type: string
+    title: InitAppDTO
+  View:
+    type: object
+    properties:
+      contentType:
+        type: string
+    title: View
