@@ -200,7 +200,7 @@ paths:
   /history/{id}:
     get:
       summary: P2P history detail
-      operationId: listHistoryUsingGET
+      operationId: listHistoryDetailUsingGET
       produces:
         - application/json
       parameters:
