@@ -571,11 +571,11 @@ components:
         created_at:
           type: string
           description: Fecha de creación de la transacción
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         updated_at:
           type: string
           description: Fecha de actualización de la transacción
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
 
     CartTopUp:
       type: object
@@ -601,7 +601,7 @@ components:
         created_at:
           type: string
           description: Fecha de creación
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
 
     Favourite:
       type: object
@@ -633,11 +633,11 @@ components:
         created_at:
           type: string
           description: Fecha de creación
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         updated_at:
           type: string
           description: Fecha de actualización
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
 
     TransactionRequest:
       type: object
@@ -678,11 +678,11 @@ components:
         created_at:
           type: string
           description: Fecha de creación de la transacción
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         updated_at:
           type: string
           description: Fecha de actualización de la transacción
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         topups:
           type: array
           description: Lista de productos a recargar
@@ -712,11 +712,11 @@ components:
         created_at:
           type: string
           description: Fecha de creación
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         updated_at:
           type: string
           description: Fecha de actualización
-          example: "2019-04-24T10:58:26.140605-04:00"
+          # example: "2019-04-24T10:58:26.140605-04:00"
         topups:
           type: array
           description: Lista de productos a recargar
