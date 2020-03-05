@@ -251,6 +251,36 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found 
+  /contacts/filters:
+    post:
+      tags:
+        - contacts
+      deprecated: false
+      summary: Filter contacts with tenpo
+      description: Returns the phones registered in Tenpo given a phones list.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: "#/definitions/ContactFilterRequest"
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/P2pPaymentResponseDto"
+        '401':
+          description: Unauthorized  
 definitions:
   P2pPaymentRequestDto:
     type: object
