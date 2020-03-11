@@ -1,0 +1,294 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Tenpo private P2P API
+basePath: /v1/p2p-management
+schemes:
+- http
+
+paths:
+  /payment:
+    post:
+      summary: create p2p payment request
+      operationId: p2pRequestUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization
+        required: true
+        type: string
+      - in: body
+        name: validateCashInDto
+        required: true
+        schema:
+          $ref: '#/definitions/P2pPaymentRequestDto'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  /payment/{id}:
+    get:
+      summary: P2P payment detail
+      operationId: listUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: Payment Request Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found          
+  /charge:
+    post:
+      summary: Create P2P charge payment request
+      operationId: p2pChargeRequestUsingPOST
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization
+        required: true
+        type: string
+      - in: body
+        name: validateCashInDto
+        required: true
+        schema:
+          $ref: '#/definitions/P2pPaymentRequestDto'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+  /charge/{id}/pay:
+    put:
+      summary: Pays P2P charge payment request
+      operationId: payP2pChargeRequestUsingPUT
+      produces:
+      - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Payment Request Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK 
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /charge/{id}/reject:
+    put:
+      summary: Rejects P2P payment
+      operationId: rejectP2pChargeRequestUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Payment Request Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /charge/{id}/cancel:
+    put:
+      summary: Cancel P2P charge payment request
+      operationId: cancelP2pChargeRequestUsingPUT
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Payment Request Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /charge/{id}/remind:
+    put:
+      summary: Remind P2P charge payment request
+      operationId: remindP2pChargeRequestUsingPUT
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Payment Request Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+  /history:
+    get:
+      summary: P2P history
+      operationId: listHistoryUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found 
+  /history/{id}:
+    get:
+      summary: P2P history detail
+      operationId: listHistoryDetailUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Contact Id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found 
+definitions:
+  P2pPaymentRequestDto:
+    type: object
+    properties:
+      destinationPhone:
+        type: string
+        example: '+56912345678'
+      amount:
+        type: number
+        example: 500
+      description:
+        type: string
+        example: Descripcion del pago    
+  P2pPaymentResponseDto:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      requesterId:
+        type: string
+        format: uuid
+      destinationId:
+        type: string
+        format: uuid
+      amount:
+        type: number
+        example: 500
+      description:
+        type: string
+        example: Descripcion del pago
+      status:
+        type: string
+        enum: [PENDING, PAID, FAILED, CANCELLED, REJECTED, EXPIRED] 
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  
