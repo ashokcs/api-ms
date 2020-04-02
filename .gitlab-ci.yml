@@ -131,6 +131,7 @@ uat-deploy:
     TRANSACTION_HISTORY_IP: 172.11.0.130
     PAYMENT_P2P_IP: 172.11.0.164
     API_CENTRO_AYUDA: 172.11.0.8
+
 prod-deploy:
   extends: .config-deploy
   only:
@@ -175,3 +176,9 @@ prod-deploy:
     TRANSACTION_HISTORY_IP: 172.11.0.21
     PAYMENT_P2P_IP: 172.11.0.44
     API_CENTRO_AYUDA: 172.11.0.40
+
+prod-deploy-secondary:
+  extends: prod-deploy
+  variables:
+    RESOURCE_GROUP_NAME: tenpo_prod_resource_group
+    SERVICE_NAME: tenpo-prod-api-management-secondary
