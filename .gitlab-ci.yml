@@ -43,6 +43,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/paymentsP2p.yaml -l swagger -o bin/private/v1/paymentsP2p
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/centroAyuda.yaml -l swagger -o bin/private/v1/centroAyuda
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/devices.yaml -l swagger -o bin/public/v1/devices
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-loyalty.yaml -l swagger -o bin/private/v1/paymentLoyalty
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
@@ -72,6 +73,7 @@ dev-deploy:
     NOTIFICATION_IP: 52.179.169.65
     PAYMENTS_IP: 52.179.131.53
     PAYMENTSKYC_IP: 52.147.169.246
+    PAYMENT_LOYALTY_IP: 52.185.70.254
     CARDS_IP: 40.79.18.220
     API_PREPAID: api.dev.multicajadigital.cloud
     API_UTILITY_PAYMENT: 104.209.159.135
@@ -112,6 +114,7 @@ uat-deploy:
     NOTIFICATION_IP: 172.11.0.137
     PAYMENTS_IP: 172.11.0.138
     PAYMENTSKYC_IP: 0.0.0.0
+    PAYMENT_LOYALTY_IP: 0.0.0.0
     CARDS_IP: 172.11.0.140
     API_PREPAID: api.uat.multicajadigital.cloud
     #API_PREPAID: "20.50.1.4:31400"
@@ -157,6 +160,7 @@ prod-deploy:
     NOTIFICATION_IP: 172.11.0.13
     PAYMENTS_IP: 172.11.0.27
     PAYMENTSKYC_IP: 0.0.0.0
+    PAYMENT_LOYALTY_IP: 0.0.0.0
     CARDS_IP: 172.11.0.22
     VERIFIER_IP: 172.11.0.39
     API_PAYMENT_ONLINE: 172.11.0.30
