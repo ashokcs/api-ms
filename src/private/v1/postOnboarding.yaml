@@ -1,0 +1,190 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Post OnBoarding API
+host: 40.70.68.63:8080
+basePath: /v1/post-onboarding
+schemes:
+  - http
+paths:
+  "/users/{id}/confirm-device":
+    post:
+      tags:
+        - post-onboarding-controller
+      summary: confirmDevice
+      operationId: confirmDeviceUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            "$ref": "#/definitions/ConfirmDeviceRequest"
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/OnBoardingResponse"
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  "/users/{id}/send-verification-code":
+    post:
+      tags:
+        - post-onboarding-controller
+      summary: sendPhoneVerificationCode
+      operationId: sendPhoneVerificationCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            "$ref": "#/definitions/UserPhoneRequest"
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/OnBoardingResponse"
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  ConfirmDeviceRequest:
+    type: object
+    properties:
+      code:
+        type: string
+    title: ConfirmDeviceRequest
+  OnBoardingResponse:
+    type: object
+    properties:
+      user:
+        "$ref": "#/definitions/UserDTO"
+    title: OnBoardingResponse
+  UserDTO:
+    type: object
+    properties:
+      address:
+        type: string
+      agreeTermsConditions:
+        type: boolean
+      attemptVerificationCode:
+        type: integer
+        format: int32
+      cardActive:
+        type: boolean
+      communeName:
+        type: string
+      countryCode:
+        type: integer
+        format: int32
+      countryName:
+        type: string
+      createdAt:
+        "$ref": "#/definitions/Timestamp"
+      dateOfBirth:
+        "$ref": "#/definitions/Timestamp"
+      documentNumber:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: string
+        format: uuid
+      idTenpoPayPal:
+        type: integer
+        format: int32
+      identityValidation:
+        type: string
+      isPhoneVerified:
+        type: boolean
+      lastName:
+        type: string
+      level:
+        type: string
+        enum:
+          - LEVEL_1
+          - LEVEL_2
+      nationality:
+        type: string
+      phone:
+        type: string
+      plan:
+        type: string
+        enum:
+          - FREE
+          - PREMIUM
+      profession:
+        type: string
+      regionCode:
+        type: integer
+        format: int32
+      regionName:
+        type: string
+      state:
+        type: string
+        enum:
+          - PENDING
+          - VALIDATED
+          - UNCONFIRMED
+          - CONFIRMED
+          - ACTIVE
+          - BLOCKED
+          - BLACKLIST
+          - LIMITED
+          - CLOSED
+          - EMAIL_VALIDATED
+          - PP_PENDING
+          - PP_EQUIFAX_VALIDATED
+          - PP_DOCUMENT_VALIDATED
+          - PP_PROFESSION_NATIONALITY
+          - PP_LOGIN_VALIDATED
+          - PP_ACTIVE
+      tefValidated:
+        type: boolean
+      tributaryIdentifier:
+        type: string
+      updatedAt:
+        "$ref": "#/definitions/Timestamp"
+    title: UserDTO
+  UserPhoneRequest:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+    title: UserPhoneRequest
