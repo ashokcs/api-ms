@@ -44,6 +44,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/centroAyuda.yaml -l swagger -o bin/private/v1/centroAyuda
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/devices.yaml -l swagger -o bin/public/v1/devices
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-loyalty.yaml -l swagger -o bin/private/v1/paymentLoyalty
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/postOnboarding.yaml -l swagger -o bin/private/v1/postOnboarding
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
