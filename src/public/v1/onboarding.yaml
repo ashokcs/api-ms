@@ -414,6 +414,269 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  '/paypal/verify-document':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: verifyDocument
+      operationId: verifyDocumentUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: documentRequest
+          description: documentRequest
+          required: true
+          schema:
+            '$ref': '#/definitions/VerifyDocumentRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/verify-email/{email}':
+    get:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: verifyEmail
+      operationId: verifyEmailUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: email
+          in: path
+          description: email
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/UserTenpoPayPalDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/failures-logins':
+    get:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: getFailuresLogins
+      operationId: getFailuresLoginsUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/TenpoPayPalFailuresLoginsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/login':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: loginOnTenpoPaypal
+      operationId: loginOnTenpoPaypalUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: loginPayPalRequest
+          description: loginPayPalRequest
+          required: true
+          schema:
+            '$ref': '#/definitions/LoginPayPalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/nationality-profession':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: updateNationalityProfession
+      operationId: updateNationalityProfessionUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: nationalityProfessionRequest
+          description: nationalityProfessionRequest
+          required: true
+          schema:
+            '$ref': '#/definitions/NationalityProfessionRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/password-recovery/send-email':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: passwordRecoverSendMail
+      operationId: passwordRecoverSendMailUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/password-recovery/update-password':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: passwordRecoverSaveNewPassword
+      operationId: passwordRecoverSaveNewPasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            '$ref': '#/definitions/PasswordRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/paypal/{id}/password-recovery/verify-code':
+    post:
+      tags:
+        - mobile-on-boarding-pay-pal-controller
+      summary: passwordRecoverVerifyCode
+      operationId: passwordRecoverVerifyCodeUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            '$ref': '#/definitions/VerificationCodeRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            '$ref': '#/definitions/OnBoardingResponse'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
 definitions:
   ValidateDeviceRequest:
     type: object
@@ -566,4 +829,90 @@ definitions:
       verificationCode:
         type: string
     title: VerificationCodeRequest
-
+  VerifyDocumentRequest:
+    type: object
+    properties:
+      n_serie:
+        type: string
+      nserie:
+        type: string
+      paypal_id:
+        type: string
+    title: VerifyDocumentRequest
+  TenpoPayPalFailuresLoginsResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      idTenpoPayPal:
+        type: integer
+        format: int32
+      numberFailuresLogin:
+        type: integer
+        format: int32
+      tributaryIdentifier:
+        type: string
+    title: TenpoPayPalFailuresLoginsResponse
+  LoginPayPalRequest:
+    type: object
+    properties:
+      password:
+        type: string
+      rut:
+        type: string
+    title: LoginPayPalRequest
+  UserTenpoPayPalDTO:
+    type: object
+    properties:
+      address:
+        type: string
+      address_number:
+        type: string
+      address_reference:
+        type: string
+      birth_date:
+        type: string
+      ci_verification_status:
+        type: integer
+        format: int32
+      commune:
+        type: string
+      commune_id:
+        type: integer
+        format: int32
+      create_date:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+        format: int32
+      lastname:
+        type: string
+      login_last_date:
+        type: string
+      mobile:
+        type: string
+      mother_lastname:
+        type: string
+      name:
+        type: string
+      number_failures_login:
+        type: integer
+        format: int32
+      region:
+        type: string
+      region_id:
+        type: integer
+        format: int32
+      rut:
+        type: string
+      sex:
+        type: string
+      status_registration:
+        type: integer
+        format: int32
+      update_date:
+        type: string
+    title: UserTenpoPayPalDTO

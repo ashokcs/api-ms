@@ -128,6 +128,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "transactionsHistory" -sufix 
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentsP2p" -sufix "/private" -path "/v1/p2p-management" -apiId "payments-p2p" -serviceBase "http://$paymentsP2pIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "centroAyuda" -sufix "/private" -path "/v1/cda" -apiId "centro-ayuda-api" -serviceBase "http://$centroAyudaIp"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentLoyalty" -sufix "/private" -path "/v1/payment-loyalty" -apiId "payment-loyalty" -serviceBase "http://$paymentLoyaltyIp`:8080"
+Import-Secure-Api -context $ApiMgmtContext -msName "postOnboarding" -sufix "/private" -path "/v1/post-onboarding" -apiId "post-onboarding-api" -serviceBase "http://$usersIp`:8080"
 
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
