@@ -14,13 +14,13 @@
 	<inbound>
 		<base />
 		<validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
-			<openid-config url="{{authUrl}}{{tenantId}}/v2.0/.well-known/openid-configuration?p={{userFlowName}}" />
+			<openid-config url="{{authUrl}}{{tenantId}}/v2.0/.well-known/openid-configuration?p={{userFlowNameWebpay}}" />
 			<audiences>
-				<audience>{{clientId}}</audience>
+				<audience>{{clientIdWebPay}}</audience>
 			</audiences>
 			<required-claims>
                 <claim name="tfp" match="all">
-                    <value>{{userFlowName}}</value>
+                    <value>{{userFlowNameWebpay}}</value>
                 </claim>
             </required-claims>
 		</validate-jwt>
@@ -33,14 +33,10 @@
 					  ignore-error="true">
 			<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>
 			<set-method>GET</set-method>
-			<set-header name="user_token" exists-action="override">
-				<value>@(context.Request.Headers.GetValueOrDefault("Authorization"))</value>
-			</set-header>
 		</send-request>
 		<!-- Set x-mine-user-id header to request -->
 		<choose>
 			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 200)">
-
 				<set-header name="x-mine-user-id" exists-action="override">
 					<value>@{
 						var body = ((IResponse)context.Variables["userResponse"]).Body.As&lt;JObject&gt;();
@@ -48,12 +44,12 @@
 						string userId = (string) JObject.Parse(user.ToString())["id"];
 						return userId;
 						}</value>
-				</set-header>
+				</set-header>  
 			</when>
 			<when condition="@(((IResponse)context.Variables[&quot;userResponse&quot;]).StatusCode == 401)">
 				<return-response>
 					<set-status code="401" reason="Unauthorized" />
-					<set-body>@{return new JObject(new JProperty("code","000001"),new JProperty("message", "Error token invalido")).ToString();}</set-body>
+					<set-body>@{return new JObject(new JProperty("code","1000"),new JProperty("message", "Error token invalido")).ToString();}</set-body>
 				</return-response>
 		</when>
 		</choose>

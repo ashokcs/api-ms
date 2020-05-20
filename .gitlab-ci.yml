@@ -45,12 +45,16 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/devices.yaml -l swagger -o bin/public/v1/devices
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-loyalty.yaml -l swagger -o bin/private/v1/paymentLoyalty
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/postOnboarding.yaml -l swagger -o bin/private/v1/postOnboarding
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/customer-authentication.yaml -l swagger -o bin/public/v1/customerAuthentication
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/customer-authentication.yaml -l swagger -o bin/private/v1/customerAuthentication
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/login.yaml -l swagger -o bin/public/v1/login
+
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
   script:
     - pwsh src/import.ps1
-
+    - pwsh src/webpay.ps1
 dev-deploy:
   extends: .config-deploy
   only:
@@ -181,6 +185,14 @@ prod-deploy:
     TRANSACTION_HISTORY_IP: 172.11.0.21
     PAYMENT_P2P_IP: 172.11.0.44
     API_CENTRO_AYUDA: 172.11.0.40
+    CUSTOMER_AUT_IP: 172.11.0.46
+    API_LOGIN_IP: 172.11.0.47
+    WEBPAY_USER_FLOW_NAME: B2C_1_webpay_uat
+    WEBPAY_CLIENT_ID: a1093b97-25b5-493a-9eb7-752b5dcf5d2d
+    CUSTOMER_AUT_SUBSCRIPTION_PRIMARY_KEY: 09a1256da5141f63e9a509a6375fc42b
+    CUSTOMER_AUT_SUBSCRIPTION_SECONDARY_KEY: 5e69d81423ed36657bbb7a9c94c9ebf6
+    LOGIN_SUBSCRIPTION_PRIMARY_KEY: 11b9ca265ad44c6849cdc577fe5ca6ee
+    LOGIN_SUBSCRIPTION_SECONDARY_KEY: 04008ba61b4735edeb8d8b28ffa68a99
 
 prod-deploy-secondary:
   extends: prod-deploy

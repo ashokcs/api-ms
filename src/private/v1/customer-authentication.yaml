@@ -1,0 +1,421 @@
+swagger: "2.0"
+info:
+  description: |
+    APIs de autenticación de clientes de Tenpo
+    
+    # Códigos de error
+    * **1000:** (HTTP 401) Token Invalido
+    * **1100:** (HTTP 404) No se encontró un desafío asociado al `external_id`
+    * **1150:** (HTTP 404) El cliente no existe o está bloqueado
+    * **1151:** (HTTP 404) Clave bloqueada
+    * **1152:** (HTTP 404) Dispositivo bloqueado
+    * **1200:** (HTTP 422) El desafío expiró
+    * **1201:** (HTTP 422) El desafío ya fue cancelado
+    * **1202:** (HTTP 422) El desafío no se puede crear porque tiene una respuesta final que fue exitoso o fallido
+    * **1400:** (HTTP 422) No se proporcionó ni RUT ni Email
+    * **1410:** (HTTP 404) Credenciales inválidas  
+    * **1411:** (HTTP 404) El PAN no corresponde al cliente
+    * **1500:** (HTTP 422) El cliente no soporta ese método de 2fa
+    
+    # Data de prueba
+    * El usuario de prueba con `rut` = `14569484` o `email` = `"falla@falla.cl"` siempre retornará "404/1410 - Credenciales inválidas" en `/auth`
+    * El usuario de prueba con `rut` = `14569485` o `email` = `"bloqueado@bloqueado.cl"` siempre retornará "404/1150 - el cliente no existe o está bloqueado"
+    * Los `rut` distintos de `14569484` y `14569484`, así como los correos distintos de `"falla@falla.cl"` y `"bloqueado@bloqueado.cl"` retornarán 201 - Usuario autenticado en `/auth`
+    * El `challenge_response` = 123456 siempre retornará "AUTH_EXITOSA" en `/2fa`. Otros valores darán "AUTH_FALLIDA".
+
+    
+    # Ejemplos de autenticación 2fa
+    
+    ## Happy Path
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea desafío) [201] // challenge_type = OTP_SMS
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+    ## Cliente no recibió SMS
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea) [201] // challenge_type = OTP_SMS
+    * Cliente pide nuevamente el SMS a los 31 segundos
+    * POST (crea) [201] // challenge_type = OTP_SMS, envía nuevo SMS sin invalidar el anterior
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+    ## Error de timeout en crea desafío
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea) [timeout] // challenge_type = OTP_SMS
+    * POST (crea) [201] // repite challenge_type = OTP_SMS, retorna respuesta original si mensaje anterior fue procesado
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+  version: "1.0.0"
+  title: "Tenpo Customer Authentication Private"
+host: "api.tenpo.cl"
+basePath: "/v1/customer-authentication"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /2fa:
+    post:
+      tags:
+      - "auth"
+      summary: "Crea un desafío"
+      description: |
+        Instruye al sistema a crear un desafío para el cliente a través de algún dispositivo. El dispositivo se controla con el `challenge_type`.
+        
+        Los `challenge_type` OTP_GENERATOR, OTP_PUSH, OTP_EMAIL y OTP_SMS envían un código númerico de 6 digitos al cliente para que éste se autentique.
+        * OTP_GENERATOR genera un código de 6 dígitos en la App
+        * OTP_SMS envía un código de 6 dígitos por mensaje de texto
+        * OTP_MAIL envía un código de 6 dígitos por mensaje de texto
+        * OTP_PUSH envía un código de 6 dígitos por notificación push
+        
+        Se puede generar tantos desafíos como se quiera con el mismo external_id, mientras el usuario no se haya autenticado, haya abortado, o haya pasado el tiempo máximo de expiración (variable de configuración).
+        
+        ## Reintentos con mismo external_id y distinto challenge_type
+        Si se reintenta la llamada con el mismo `external_id` y un nuevo `challenge_type`, y cuando `challenge_type` = OTP_GENERATOR, OTP_PUSH, OTP_MAIL u OTP_SMS, se genera/envía un nuevo OTP y no se invalidan los OTP anteriores.
+        
+        ## Reintentos con mismo external_id y mismo challenge_type
+        Si se reintenta la llamada con el mismo `external_id` y mismo  `challenge_type`, y cuando `challenge_type` = OTP_GENERATOR, OTP_PUSH, OTP_MAIL u OTP_SMS, ocurre una de dos cosas:
+        * Si han pasado menos de 30 segundos desde la última llamada, se retorna la última respuesta y no se genera un nuevo OTP. No se invalidan los OTP anteriores.
+        * Si han pasado 30 segundos o más, se genera/envía un nuevo OTP. No se invalidan los OTP anteriores.
+        
+        # Códigos de error
+        * 1000: Token Invalido.
+        * 1150: El cliente no existe o está bloqueado
+        * 1152: Dispositivo bloqueado
+        * 1200: Ya se generó un desafío con ese `external_id` y ha expirado.
+        * 1201: Ya se generó un desafío con ese `external_id` y fue cancelado.
+        * 1500: El cliente no soporta ese método de 2fa.
+      operationId: "2fa-create"
+      parameters:
+      -   name: authorization
+          in: header
+          type: string
+          required: true
+      - in: "body"
+        name: "body"
+        description: "Desafío para el cliente"
+        required: true
+        schema:
+          $ref: "#/definitions/challenge_new"
+      responses:
+        201:
+          description: "Desafío listo"
+        401:
+          description: "Token Invalido"
+        422:
+          description: "Error de validación de parámetros"
+          schema:
+            $ref: "#/definitions/error_new"
+          examples: 
+            "application/json": { "code": 1200, "message": "El desafío expiró" }
+    put:
+      tags:
+      - "auth"
+      summary: "Valida un desafío"
+      description: |
+        Valida un desafío generado previamente con POST, cuando challenge_type = OTP_GENERATOR, OTP_PUSH, OTP_MAIL u OTP_SMS.
+        
+        # Códigos de error
+        * 1000: Token invalido
+        * 1150: El cliente no existe o está bloqueado. (Para este método, cuando se reintenta 4 o más veces el ingreso de un OTP de forma errada, sea cual sea su challenge_type)
+        * 1152: Dispositivo bloqueado
+        * 1100: No se encontró el `external_id`. Llame primero a `POST`
+        * 1200: Ya se recibió un desafío con ese `external_id`, y no se puede validar porque ha expirado
+        * 1201: Ya se recibió un desafío con ese `external_id`, y no se puede validar porque fue cancelado
+      operationId: "2fa-validate"
+      parameters:
+      - name: authorization
+        in: header
+        type: string
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Resultado del desafío, ingresado por el cliente"
+        required: true
+        schema:
+          $ref: "#/definitions/challenge_response_new"
+      responses:
+        201:
+          description: "Autenticación exitosa"
+          schema:
+            $ref: "#/definitions/challenge_outcome_new"
+        401:
+          description: "Token Invalido"
+        400:
+          description: "Autenticación fallida"
+          schema:
+            $ref: "#/definitions/challenge_outcome_new"
+          examples: 
+            "application/json": { "external_id": "a23ada1b-2acd-4dd7-9806-b41b4ac772b2", "result": "AUTH_FALLIDA" }
+        422:
+          description: "Error de validación"
+          schema:
+            $ref: "#/definitions/error_new"
+          examples: 
+            "application/json": { "code": 1201, "message": "El desafío ya tuvo un desenlace" }
+    delete:
+      tags:
+      - "auth"
+      summary: "Aborta un desafío"
+      description: |
+        Aborta un desafío generado previamente con POST
+        
+        Este método es idempotente y soporta reintentos.
+        
+        # Códigos de error
+        * 1000: Token invalido
+        * 1100: No se encontró el `external_id`. Llame primero a `POST`
+        * 1200: Ya se recibió un desafío con ese `external_id`, y no se puede abortar porque ha expirado (si se hubiera recibido este request dentro del tiempo de vida del desafío, se habría retornado una copia de la respuesta original)
+        * 1202: Ya se recibió un desafío con ese `external_id`, y no se puede abortar porque fue exitoso o fallido (`AUTH_EXITOSA` o `AUTH_FALLIDA`)
+      operationId: "2fa-abort"
+      parameters:
+      - name: authorization
+        in: header
+        type: string
+        required: true
+      - in: "body"
+        name: "body"
+        description: "ID del desafío abortado"
+        required: true
+        schema:
+          $ref: "#/definitions/challenge_response_new"
+      responses:
+        201:
+          description: "OK - Desafío abortado"
+          schema:
+            $ref: "#/definitions/challenge_outcome_new"
+          examples: 
+            "application/json": { "external_id": "a23ada1b-2acd-4dd7-9806-b41b4ac772b2", "result": "CANCELADO" }
+        401:
+          description: "Token Invalido"
+        404:
+          description: "Desafío no encontrado"
+          schema:
+            $ref: "#/definitions/error_new"
+  /2fa/challenge_types:
+    get:
+      tags:
+      - "auth"
+      summary: "Lista los mpetodos de autenticación 2fa"
+      description: |
+       Retorna los `challenge_type` soportados por este cliente, los que pueden ser uno o más de: OTP_GENERATOR|OTP_PUSH|OTP_SMS|OTP_MAIL|APP 
+        Si la lista viene vacia debe mostrar un mensaje de error al cliente  
+    
+        # Códigos de error
+        * 1000: Token invalido
+        * 1150: El cliente no existe o está bloqueado
+      operationId: "2fa-list"
+      parameters:
+      - name: authorization
+        in: header
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Lista adjunta"
+          schema:
+            description: "OTP_GENERATOR|OTP_PUSH|OTP_SMS|OTP_MAIL|APP"
+            type: array
+            items:
+              type: string
+        401:
+          description: "Token Invalido"
+        422:
+          description: "Error de validación de parámetros"
+          schema:
+            $ref: "#/definitions/error_new"
+          examples: 
+            "application/json": { "code": 1150, "message": "El cliente no existe o está bloqueado" }
+  /callback-2fa:
+    post:
+      tags:
+      - "auth"
+      summary: "Notifica de una autenticación en APP"
+      description:
+        Callback que es invocado cuando el cliente completa una autenticación 2fa de tipo challenge_type = APP.  Este método debe ser implementado por quien invoca a `POST /2fa` con `challenge_type` = APP|AUTO.
+        
+        Toda respuesta de este método será ingorada.
+      operationId: "2fa-callback"
+      parameters:
+      - name: authorization
+        in: header
+        type: string
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Resultado del challenge"
+        required: true
+        schema:
+          $ref: "#/definitions/challenge_outcome_new"
+      responses:
+        201:
+          description: "Acknowledge."
+definitions:
+  credentials_new:
+    type: "object"
+    required:
+      - pan
+      - clave
+    description: Permite autenticar un cliente con la tupla  [Pan, Rut, clave] o [Pan, Email, clave]
+    properties:
+      pan:
+        type: "string"
+        description: "el PAN truncado de la tarjeta"
+        example: "517608******1234"
+      rut:
+        type: "number"
+        format: "int64"
+        description: "El Rut sin dígito verificador"
+        example: 14569484
+      email:
+        type: "string"
+        description: "El email del cliente"
+        example: "yo@minombre.cl"
+      clave:
+        type: "string"
+        description: "La contraseña"
+        example: "1234"
+  amount_and_currency_new:
+    type: "object"
+    description: "Monto en una moneda específica"
+    required:
+      - currency_code
+      - value
+    properties:
+      currency_code:
+        type: "integer"
+        description: Código ISO 4217 (numeric) de la moneda
+        example: 152
+      value:
+        type: "string"
+        description: "Monto en formato decimal"
+        example: "1000.00"
+  user_summary:
+    type: "object"
+    required:
+      - token
+    description: |
+      Resumen del cliente que se retorna ante una autenticación exitosa
+    properties:
+      token_type:
+        type: "string"
+        description: "Tipo de token "
+        example: "Bearer"
+      expires_in:
+        type: "number"
+        format: "double"
+        description: "Tiempo de expiracion del token"
+        example: 14569484
+      access_token:
+        type: "string"
+        description: "Token JWT"
+  transaction_context:
+    type: "object"
+    required:
+      - tx_type
+      - tx_amount
+      - tx_merchant
+      - tx_country_code
+    description: "Transacción que será autorizada si es que se completa exitosamente la autenticación. El monto corresponde al que expone el comercio"
+    properties:
+      tx_type:
+        type: "string"
+        description: "Tipo de transacción que será autorizada. Se mostrará al usuario si challenge_type = APP|AUTO."
+        enum: [COMPRA, GIRO, TEF, P2P, OTRO]
+        example: "COMPRA"
+      tx_amount:
+        $ref: "#/definitions/amount_and_currency_new"
+      tx_merchant:
+        type: "string"
+        description: "Nombre del comercio o terminal informado por la red. Se mostrará al usuario si challenge_type = APP|AUTO."
+        example: "UBER *PENDING NDRL"
+      tx_country_code:
+        type: "integer"
+        description: "Código ISO 3266-1 (numeric) del país"
+        example: 152
+      tx_place_name:
+        type: "string"
+        description: "Nombre del lugar donde ocurrió el movimiento (máx. 26 caracteres). Se mostrará al usuario si challenge_type = APP|AUTO."
+        example: "Santiago"
+        maxLength: 26
+      tx_other:
+        type: "string"
+        description: "Cualquier otra información de relevancia que venga con la transacción. Quedará registrado en el log."
+        example: "REFRIGERADOR LG 3342"
+  challenge_new:
+    type: "object"
+    required:
+      - external_id
+      - challenge_type
+    properties:
+      external_id:
+        type: "string"
+        description: "Identificador único de la sesión de autenticación, generado por quien llama"
+        example: "a23ada1b-2acd-4dd7-9806-b41b4ac772b2"
+      challenge_type:
+        type: "string"
+        # Alernativas
+        # OTP_GENERATOR: El usuario se logea en la App y ésta genera un OTP
+        #      OTP_PUSH: El celular recibe una notificación push con un OTP
+        #       OTP_SMS: El celular recibe un SMS con un OTP
+        #      OTP_MAIL: El cliente recibe un email con un OTP
+        #           APP: El celular recibe una notificación push que abre el app en una pantalla para autorizar la transacción
+        #          AUTO: El sistema decide cómo autenticar
+        description: "OTP_GENERATOR|OTP_PUSH|OTP_SMS|OTP_MAIL|APP|AUTO"
+        example: "OTP-APP"
+      transaction_context:
+        $ref: "#/definitions/transaction_context"
+      callback_uri:
+        type: "string"
+        description: "URL del webservice que se debe invocar cuando challenge_type = APP|AUTO."
+        example: "http://10.128.223.1/2fa-callback"
+  challenge_response_new:
+    type: "object"
+    required:
+      - external_id
+      - response
+    properties:
+      external_id:
+        type: "string"
+        description: "Identificador único de la sesión de autenticación, generado por quien solició el 2fa"
+        example: "a23ada1b-2acd-4dd7-9806-b41b4ac772b2"
+      response:
+        type: "string"
+        description: "Respuesta al desafío ingresada por el usuario"
+        example: "123456"
+  challenge_outcome_new:
+    type: "object"
+    required:
+      - external_id
+      - result
+    properties:
+      external_id:
+        type: "string"
+        description: "Identificador único de la sesión de autenticación, generado por quien solició el 2fa"
+        example: "a23ada1b-2acd-4dd7-9806-b41b4ac772b2"
+      result:
+        type: "string"
+        description: "Resultado de la autenticación 2fa"
+        enum: [AUTH_EXITOSA, AUTH_FALLIDA, CANCELADO]
+        example: "AUTH_EXITOSA"
+      user_summary:
+        $ref: "#/definitions/user_summary"
+  error_new:
+    type: object
+    description: Error que devuelve la api ante un `HTTP 422` **(Response)**
+    required:
+      - code
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: Código que representa el error. No será igual al código HTTP.
+        example: 1400
+      message:
+        type: string
+        description: Descripción corta del error
+        example: No se proporcionó ni RUT ni Email"

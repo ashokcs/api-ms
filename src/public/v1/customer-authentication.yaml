@@ -1,0 +1,156 @@
+swagger: "2.0"
+info:
+  description: |
+    APIs de autenticación de clientes de Tenpo
+    
+    # Códigos de error
+    * **1000:** (HTTP 401) Token Invalido
+    * **1100:** (HTTP 404) No se encontró un desafío asociado al `external_id`
+    * **1150:** (HTTP 404) El cliente no existe o está bloqueado
+    * **1151:** (HTTP 404) Clave bloqueada
+    * **1152:** (HTTP 404) Dispositivo bloqueado
+    * **1200:** (HTTP 422) El desafío expiró
+    * **1201:** (HTTP 422) El desafío ya fue cancelado
+    * **1202:** (HTTP 422) El desafío no se puede crear porque tiene una respuesta final que fue exitoso o fallido
+    * **1400:** (HTTP 422) No se proporcionó ni RUT ni Email
+    * **1410:** (HTTP 404) Credenciales inválidas  
+    * **1411:** (HTTP 404) El PAN no corresponde al cliente
+    * **1500:** (HTTP 422) El cliente no soporta ese método de 2fa
+    
+    # Data de prueba
+    * El usuario de prueba con `rut` = `14569484` o `email` = `"falla@falla.cl"` siempre retornará "404/1410 - Credenciales inválidas" en `/auth`
+    * El usuario de prueba con `rut` = `14569485` o `email` = `"bloqueado@bloqueado.cl"` siempre retornará "404/1150 - el cliente no existe o está bloqueado"
+    * Los `rut` distintos de `14569484` y `14569484`, así como los correos distintos de `"falla@falla.cl"` y `"bloqueado@bloqueado.cl"` retornarán 201 - Usuario autenticado en `/auth`
+    * El `challenge_response` = 123456 siempre retornará "AUTH_EXITOSA" en `/2fa`. Otros valores darán "AUTH_FALLIDA".
+
+    
+    # Ejemplos de autenticación 2fa
+    
+    ## Happy Path
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea desafío) [201] // challenge_type = OTP_SMS
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+    ## Cliente no recibió SMS
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea) [201] // challenge_type = OTP_SMS
+    * Cliente pide nuevamente el SMS a los 31 segundos
+    * POST (crea) [201] // challenge_type = OTP_SMS, envía nuevo SMS sin invalidar el anterior
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+    ## Error de timeout en crea desafío
+    * GET (lista challenge types) [200] // retorna OTP_SMS
+    * POST (crea) [timeout] // challenge_type = OTP_SMS
+    * POST (crea) [201] // repite challenge_type = OTP_SMS, retorna respuesta original si mensaje anterior fue procesado
+    * Cliente ingresa OTP
+    * PUT (valida desafío) [201]
+    
+  version: "1.0.0"
+  title: "Tenpo Customer Authentication Public"
+host: "api.tenpo.cl"
+basePath: "/v1/customer-authentication"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /login:
+    post:
+      tags:
+      - "auth"
+      summary: "Autentica a un cliente con sus credenciales básicas"
+      description: |
+        Permite que un cliente de Tenpo se autentique con su **RUT** o su **Email**. Valida que la tarjeta corresponda al cliente.
+        
+        # Códigos de error
+        * 1150: El cliente no existe o está bloqueado
+        * 1151: Clave Bloqueada 
+        * 1400: No se proporcionó ni RUT ni Email
+        * 1410: Credenciales inválidas
+        * 1411: El PAN no corresponde al cliente
+      operationId: "login"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Tupla `[Pan, RUT, Clave]` o `[Pan, Email, Clave]`"
+        required: true
+        schema:
+          $ref: "#/definitions/credentials_new"
+      responses:
+        201:
+          description: "Usuario autenticado"
+          schema:
+            $ref: "#/definitions/user_summary"
+        404:
+          description: "Credenciales inválidas"
+          examples: 
+            "application/json": { "code": 1410, "message": "Credenciales inválidas" }
+        422:
+          description: "Error de validación"
+          schema:
+            $ref: "#/definitions/error_new"
+          examples: 
+            "application/json": { "code": 1400, "message": "No se proporcionó ni RUT ni Email" }
+definitions:
+  credentials_new:
+    type: "object"
+    required:
+      - pan
+      - clave
+    description: Permite autenticar un cliente con la tupla  [Pan, Rut, clave] o [Pan, Email, clave]
+    properties:
+      pan:
+        type: "string"
+        description: "el PAN truncado de la tarjeta"
+        example: "517608******1234"
+      rut:
+        type: "number"
+        format: "int64"
+        description: "El Rut sin dígito verificador"
+        example: 14569484
+      email:
+        type: "string"
+        description: "El email del cliente"
+        example: "yo@minombre.cl"
+      clave:
+        type: "string"
+        description: "La contraseña"
+        example: "1234"
+  user_summary:
+    type: "object"
+    required:
+      - token
+    description: |
+      Resumen del cliente que se retorna ante una autenticación exitosa
+    properties:
+      token_type:
+        type: "string"
+        description: "Tipo de token "
+        example: "Bearer"
+      expires_in:
+        type: "number"
+        format: "double"
+        description: "Tiempo de expiracion del token"
+        example: 14569484
+      access_token:
+        type: "string"
+        description: "Token JWT"
+  error_new:
+    type: object
+    description: Error que devuelve la api ante un `HTTP 422` **(Response)**
+    required:
+      - code
+    properties:
+      code:
+        type: integer
+        format: int32
+        description: Código que representa el error. No será igual al código HTTP.
+        example: 1400
+      message:
+        type: string
+        description: Descripción corta del error
+        example: No se proporcionó ni RUT ni Email"
