@@ -10,7 +10,7 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0
 host: 40.89.250.208:8080
-basePath: "/"
+basePath: /v1/payment-paypal
 tags:
   - name: account-controller
     description: Account Controller
