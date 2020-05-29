@@ -4,8 +4,6 @@ info:
   title: Api Documentation
 host: 40.89.250.208:8080
 basePath: /v1/payment-paypal
-schemes:
-  - https
 paths:
   /v1/accounts:
     get:
