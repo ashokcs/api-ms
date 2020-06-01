@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: Api Documentation
+  title: Payments Paypal Documentation
 host: 40.89.250.208:8080
 basePath: /v1/payment-paypal
 schemes:
