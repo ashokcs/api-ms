@@ -43,8 +43,8 @@ paths:
     get:
       tags:
         - account-controller
-      summary: getRetiroAccountByClientId
-      operationId: getRetiroAccountByClientIdUsingGET
+      summary: getRetiroAccount
+      operationId: getRetiroAccountUsingGET
       produces:
         - application/json
       parameters:
