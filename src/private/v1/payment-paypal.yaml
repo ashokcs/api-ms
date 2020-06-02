@@ -39,6 +39,37 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /v1/accounts/by-user:
+    get:
+      tags:
+        - account-controller
+      summary: getRetiroAccountByClientId
+      operationId: getRetiroAccountByClientIdUsingGET
+      produces:
+        - application/json
+      parameters:
+        - name: x-mine-user-id
+          in: header
+          description: x-mine-user-id
+          required: true
+          type: string
+        - name: operation_type
+          in: query
+          description: operation_type
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   /v1/accounts/by:
     get:
       tags:
