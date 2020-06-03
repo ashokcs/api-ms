@@ -143,6 +143,7 @@ uat-deploy:
     TRANSACTION_HISTORY_IP: 172.11.0.130
     PAYMENT_P2P_IP: 172.11.0.164
     API_CENTRO_AYUDA: 172.11.0.8
+    PAYMENT_PAYPAL_IP: 172.11.1.43
 
 prod-deploy:
   extends: .config-deploy
