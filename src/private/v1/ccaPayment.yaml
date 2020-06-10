@@ -1,0 +1,214 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: CCA-Payment - Tenpo private API - CCA-Payment
+basePath: /v1/cca-payment
+schemes:
+  - http
+paths:
+  /:
+    get:
+      tags:
+        - cca-payment
+      summary: "Obtiene la versión del API"
+      operationId: version
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+  /cash-out:
+    post:
+      tags:
+        - cca-payment
+      summary: "Permite realizar Cash-Out"
+      operationId: cashOut
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: idempotency-key
+          type: string
+          required: true
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/CashOutEvent"
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/CashOutEvent"
+  /transaction/{id}:
+    get:
+      tags:
+        - cca-payment
+      summary: "Permite obtener una transaccion de la BD local"
+      operationId: getTransaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          type: string
+          required: true
+          name: id
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Transaction"
+definitions:
+  AmountAndCurrency:
+    type: object
+    properties:
+      currency_code:
+        type: integer
+        description: Código del tipo de moneda del depósito
+      value:
+        type: number
+        description: Monto del depósito
+    title: AmountAndCurrency
+    description: Clase u objeto que representa el monto en el proceso de CashOut
+  CashOutEvent:
+    type: object
+    properties:
+      account_email:
+        description: Email a quien informar cuando se complete transferencia
+        type: string
+      account_name:
+        description: Nombre Dueño Cta
+        type: string
+      account_number:
+        description: Numero de cuenta a donde va a transferir
+        type: string
+      account_run:
+        description: Rut del dueño de la cuenta
+        type: string
+      account_type:
+        type: string
+      amount:
+        $ref: "#/definitions/AmountAndCurrency"
+      sbif_code:
+        description: Identificador Sbif del banco
+        type: integer
+      transaction_date:
+        type: string
+      transaction_id:
+        type: string
+    title: CashOutEvent
+  Transaction:
+    type: object
+    title: Transaction
+    properties:
+      amount: 
+        type: number    
+      created: 
+        type: string
+        format: date-time
+      currency: 
+        type: integer
+        format: int32
+      destination_account_name: 
+        type: string
+      destination_account_number: 
+        type: string
+      destination_account_run: 
+        type: string
+      destination_account_type: 
+        type: string
+        format: uuid
+      destination_sbif_code: 
+        type: integer
+        format: int32
+      email: 
+        type: string
+      external_id: 
+        type: string
+      id: 
+        type: string
+        format: uuid
+      origin_account_name: 
+        type: string
+      origin_account_number: 
+        type: string
+      origin_account_run: 
+        type: string
+      origin_account_type: 
+        type: string
+        format: uuid
+      origin_sbif_code: 
+        type: integer
+        format: int32
+      prepaid_transaction_id: 
+        type: string
+        format: uuid
+      status: 
+        type: string
+      transaction_code: 
+        type: string
+      type: 
+        type: string
+      updated: 
+        type: string
+        format: date-time
+      user_id: 
+        type: string
+        format: uuid
+
+  TransactionRequest: 
+    type: object
+    properties: 
+      amount: 
+        type: string
+      currency_code: 
+        type: string
+      debug_string: 
+        type: string
+      destination_account: 
+        type: string
+      destination_bank: 
+        type: string
+      hsm_response: 
+        type: string
+      id: 
+        type: string
+        format: uuid
+      iso_header: 
+        type: string
+      operation_number: 
+        type: string
+      origin_account: 
+        type: string
+      origin_bank: 
+        type: string
+      recipient_name: 
+        type: string
+      recipient_rut: 
+        type: string
+      reference: 
+        type: string
+      sender_name: 
+        type: string
+      sender_rut: 
+        type: string
+      timestamp_cca: 
+        type: string
+      trace_number: 
+        type: string
+      transaction_code: 
+        type: string
+      transaction_local_date: 
+        type: string
+      transaction_local_time: 
+        type: string
+      transaction_submission_sequence: 
+        type: string
+    title: TransactionRequest

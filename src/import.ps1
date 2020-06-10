@@ -23,6 +23,7 @@ $transactionsHistoryIp = $env:TRANSACTION_HISTORY_IP
 $paymentsP2pIp = $env:PAYMENT_P2P_IP
 $centroAyudaIp = $env:API_CENTRO_AYUDA
 $paymentLoyaltyIp = $env:PAYMENT_LOYALTY_IP
+$ccaPaymentApiIp = $env:CCA_PAYMENT_API_IP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -129,7 +130,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "paymentsP2p" -sufix "/privat
 Import-Secure-Api -context $ApiMgmtContext -msName "centroAyuda" -sufix "/private" -path "/v1/cda" -apiId "centro-ayuda-api" -serviceBase "http://$centroAyudaIp"
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentLoyalty" -sufix "/private" -path "/v1/payment-loyalty" -apiId "payment-loyalty" -serviceBase "http://$paymentLoyaltyIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "postOnboarding" -sufix "/private" -path "/v1/post-onboarding" -apiId "post-onboarding-api" -serviceBase "http://$usersIp`:8080"
-
+Import-Secure-Api -context $ApiMgmtContext -msName "ccaPayment" -sufix "/private" -path "/v1/cca-payment" -apiId "cca-payment-api" -serviceBase "http://$ccaPaymentApiIp"
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
@@ -161,6 +162,8 @@ Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -Ap
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123458"
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123459"
+
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey $PaymentSubscriptionKeyAlt -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentOnlinePublic" -SubscriptionId "123458" -Scope "/apis/webhook-payment-online-api"  -PrimaryKey $PaymentOnlineSubscriptionKey -SecondaryKey "e10a9fba63ec53d4a4395b48d22f50f6" -State "Active"
