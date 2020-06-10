@@ -162,7 +162,6 @@ Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -Ap
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123458"
-Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123459"
 
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey $PaymentSubscriptionKeyAlt -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
