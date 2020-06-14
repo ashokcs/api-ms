@@ -5,6 +5,7 @@ $azurePassword = ConvertTo-SecureString $env:AZURE_ACCOUNT_PASSWORD -AsPlainText
 $tenantId = $env:AZURE_TENANT_ID
 
 $usersIp = $env:USERS_IP
+$usersInternalIp = $env:USERS_INTERNAL_IP
 $launchIp = $env:LAUNCH_IP
 $accountsIp = $env:ACCOUNT_IP
 $identityproviderIp = $env:IDENTITPROVIDER_IP
@@ -92,6 +93,7 @@ New-AzApiManagementProduct -Context $ApiMgmtContext -ProductId tenpoapiSubscript
 #Set-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId -0123456789 -PrimaryKey "80450f7d0b6d481382113073f67822c1" -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a761c" -State "Active"
 
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsers" -Name "urlUsers" -Value $usersIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlUsersInternal" -Name "urlUsersInternal" -Value $usersInternalIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlAccounts" -Name "urlAccounts" -Value $accountsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTransactions" -Name "urlTransactions" -Value $transactionsIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlIdentityProvider" -Name "urlIdentityProvider" -Value $identityproviderIp":8080"

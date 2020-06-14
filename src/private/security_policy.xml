@@ -31,7 +31,8 @@
 					  response-variable-name="userResponse"
 					  timeout="20"
 					  ignore-error="true">
-			<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>
+			<!--<set-url>@($"http://{{urlUsers}}/v1/user-management/identity-provider/AZURE_AD/me?userProviderId={(string)context.Variables["userAzureId"]}")</set-url>-->
+			<set-url>@($"http://{{urlUsersInternal}}/v2/users/identity-provider?providerId={(string)context.Variables["userAzureId"]}&amp;providerName=AZURE_AD")</set-url>
 			<set-method>GET</set-method>
 			<set-header name="user_token" exists-action="override">
 				<value>@(context.Request.Headers.GetValueOrDefault("Authorization"))</value>
