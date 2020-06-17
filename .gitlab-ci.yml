@@ -49,7 +49,7 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/customer-authentication.yaml -l swagger -o bin/private/v1/customerAuthentication
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/login.yaml -l swagger -o bin/public/v1/login
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/ccaPayment.yaml -l swagger -o bin/private/v1/ccaPayment
-
+    - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-paypal.yaml -l swagger -o bin/private/v1/paymentPaypal
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
@@ -82,6 +82,7 @@ dev-deploy:
     PAYMENTSKYC_IP: 52.147.169.246
     PAYMENT_LOYALTY_IP: 52.185.70.254
     CARDS_IP: 40.79.18.220
+    PAYMENT_PAYPAL_IP: 40.89.250.208
     API_PREPAID: api.dev.multicajadigital.cloud
     API_UTILITY_PAYMENT: 104.209.159.135
     API_PAYMENTS_TOPUP: tenpo.dev.multicajadigital.cloud
@@ -142,6 +143,7 @@ uat-deploy:
     TRANSACTION_HISTORY_IP: 172.11.0.130
     PAYMENT_P2P_IP: 172.11.0.164
     API_CENTRO_AYUDA: 172.11.0.8
+    PAYMENT_PAYPAL_IP: 172.11.1.43
 
 prod-deploy:
   extends: .config-deploy
@@ -198,6 +200,7 @@ prod-deploy:
     LOGIN_SUBSCRIPTION_PRIMARY_KEY: $LOGIN_SUBSCRIPTION_PRIMARY_KEY
     LOGIN_SUBSCRIPTION_SECONDARY_KEY: $LOGIN_SUBSCRIPTION_SECONDARY_KEY
     CCA_PAYMENT_API_IP: 172.11.0.52
+    PAYMENT_PAYPAL_IP: 172.11.0.55
 
 prod-deploy-secondary:
   extends: prod-deploy

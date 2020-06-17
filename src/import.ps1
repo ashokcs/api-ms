@@ -25,6 +25,7 @@ $paymentsP2pIp = $env:PAYMENT_P2P_IP
 $centroAyudaIp = $env:API_CENTRO_AYUDA
 $paymentLoyaltyIp = $env:PAYMENT_LOYALTY_IP
 $ccaPaymentApiIp = $env:CCA_PAYMENT_API_IP
+$paymentPaypal = $env:PAYMENT_PAYPAL_IP
 
 $b2cTenantId = $env:AZURE_B2C_TENANT_ID
 $authUrl = $env:AUTH_URL
@@ -116,6 +117,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlTra
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentsP2p" -Name "urlPaymentsP2p" -Value $paymentsP2pIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCentroAyudaIp" -Name "urlCentroAyudaIp" -Value $centroAyudaIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentLoyalty" -Name "urlPaymentLoyalty" -Value $paymentLoyaltyIp":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentPaypal" -Name "urlPaymentPaypal" -Value $paymentPaypal":8080"
 
 Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
@@ -133,6 +135,7 @@ Import-Secure-Api -context $ApiMgmtContext -msName "centroAyuda" -sufix "/privat
 Import-Secure-Api -context $ApiMgmtContext -msName "paymentLoyalty" -sufix "/private" -path "/v1/payment-loyalty" -apiId "payment-loyalty" -serviceBase "http://$paymentLoyaltyIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "postOnboarding" -sufix "/private" -path "/v1/post-onboarding" -apiId "post-onboarding-api" -serviceBase "http://$usersIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "ccaPayment" -sufix "/private" -path "/v1/cca-payment" -apiId "cca-payment-api" -serviceBase "http://$ccaPaymentApiIp"
+Import-Secure-Api -context $ApiMgmtContext -msName "paymentPaypal" -sufix "/private" -path "/v1/payment-paypal" -apiId "payment-paypal" -serviceBase "http://$paymentPaypal`:8080"
 Import-Secure-Api-OpenApi -context $ApiMgmtContext -msName "paymentsTopUp" -prefix "/private" -path "/v1/topup" -apiId "payments-topup-api" -serviceBase "http://$paymentsTopUpIp"
 
 Import-Api -context $ApiMgmtContext -msName "users" -ProductId tenpoapi -path "/v1/user-management" -sufix "/public" -apiId "users-public-api" -serviceBase "http://$usersIp`:8080"
