@@ -50,6 +50,8 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/login.yaml -l swagger -o bin/public/v1/login
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/ccaPayment.yaml -l swagger -o bin/private/v1/ccaPayment
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-paypal.yaml -l swagger -o bin/private/v1/paymentPaypal
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/ivr.yaml -l swagger -o bin/public/v1/ivr
+
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
