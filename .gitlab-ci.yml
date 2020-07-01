@@ -146,6 +146,20 @@ uat-deploy:
     PAYMENT_P2P_IP: 172.11.0.164
     API_CENTRO_AYUDA: 172.11.0.8
     PAYMENT_PAYPAL_IP: 172.11.1.43
+    IVR_IP: 172.11.1.108
+    IVR_SUBSCRIPTION_PRIMARY_KEY: $IVR_SUBSCRIPTION_PRIMARY_KEY_UAT
+    IVR_SUBSCRIPTION_SECONDARY_KEY: $IVR_SUBSCRIPTION_SECONDARY_KEY_UAT
+uat-deploy-secondary:
+  extends: uat-deploy
+  only:
+    - /^release.*$/
+  artifacts:
+    paths:
+      - bin/
+  environment:
+    name: uat
+  variables:
+    SERVICE_NAME: tenpo-uat-api-management-secondary
 
 prod-deploy:
   extends: .config-deploy

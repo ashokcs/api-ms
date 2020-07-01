@@ -174,11 +174,12 @@ Add-AzApiManagementApiToProduct -Context $ApiMgmtContext -ProductId tenpoapi -Ap
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123456"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123457"
 Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123458"
+Remove-AzApiManagementSubscription -Context $ApiMgmtContext -SubscriptionId "123461"
 
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentPublic" -SubscriptionId "123456" -Scope "/apis/payments-public-api"  -PrimaryKey $PaymentSubscriptionKey -SecondaryKey $PaymentSubscriptionKeyAlt -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionUserPublic" -SubscriptionId "123457" -Scope "/apis/webhook-user-api"  -PrimaryKey $userSubscriptionKey -SecondaryKey "97d6112c3a8f48d5bf0266b7a09a764c" -State "Active"
 New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "subscriptionPaymentOnlinePublic" -SubscriptionId "123458" -Scope "/apis/webhook-payment-online-api"  -PrimaryKey $PaymentOnlineSubscriptionKey -SecondaryKey "e10a9fba63ec53d4a4395b48d22f50f6" -State "Active"
-New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "ivrPublic" -SubscriptionId "123462" -Scope "/apis/ivr-ms"  -PrimaryKey $ivrSubscriptionPrimaryKey -SecondaryKey $ivrSubscriptionSecondaryKey -State "Active"
+New-AzApiManagementSubscription -Context $ApiMgmtContext -Name "ivrPublic" -SubscriptionId "123461" -Scope "/apis/ivr-ms"  -PrimaryKey $ivrSubscriptionPrimaryKey -SecondaryKey $ivrSubscriptionSecondaryKey -State "Active"
 
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "listTransactionsUsingGET" -PolicyFilePath "$pwd/src/private/transaction_policy.xml"
 Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "accounts-api" -OperationId "generateCodeUsingPOST" -PolicyFilePath "$pwd/src/private/verifier_policy.xml"
