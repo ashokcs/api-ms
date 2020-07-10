@@ -127,6 +127,59 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /v1/accounts/unlink:
+    post:
+      tags:
+        - account-controller
+      summary: desvincular
+      operationId: desvincularUsingPOST
+      produces:
+        - application/json
+      parameters:
+        - name: paypal_email
+          in: query
+          description: paypal_email
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/accounts/balance/info:
+    post:
+      tags:
+        - account-controller
+      summary: balanceInfo
+      operationId: balanceInfoUsingPOST
+      produces:
+        - application/json
+      parameters:
+        - name: account_id
+          in: query
+          description: account_id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
   /v1/accounts/vinculation/cancel:
     get:
       tags:
@@ -194,6 +247,86 @@ paths:
           required: true
           schema:
             "$ref": "#/definitions/VinculationSetupDto"
+        - name: x-mine-user-id
+          in: header
+          description: x-mine-user-id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/transactions/simulation:
+    post:
+      tags:
+        - transaction-controller
+      summary: simulateTransaction
+      operationId: simulateTransactionUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: present
+          in: query
+          required: false
+          type: boolean
+        - in: body
+          name: transaction
+          description: transaction
+          required: true
+          schema:
+            "$ref": "#/definitions/Transaction"
+        - name: x-mine-user-id
+          in: header
+          description: x-mine-user-id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /v1/transactions/cashin:
+    post:
+      tags:
+        - transaction-controller
+      summary: cashin
+      operationId: cashinUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: present
+          in: query
+          required: false
+          type: boolean
+        - in: body
+          name: payPalRequestWithdrawal
+          description: payPalRequestWithdrawal
+          required: true
+          schema:
+            "$ref": "#/definitions/PayPalRequestWithdrawal"
         - name: x-mine-user-id
           in: header
           description: x-mine-user-id
@@ -454,6 +587,25 @@ definitions:
         type: string
         format: date-time
     title: Transaction
+  PayPalRequestWithdrawal:
+    type: object
+    properties:
+      access_token:
+        type: string
+      account_id:
+        type: integer,
+        format: int64
+      amount:
+        type: string
+      id_tenpo_paypal:
+        type: integer,
+        format: int64
+      tracking_id:
+        type: string
+      transaction_id:
+        type: integer
+        format: int64
+    title: PayPalRequestWithdrawal
   Tyc:
     type: object
     properties:
