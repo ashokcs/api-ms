@@ -1,0 +1,107 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: IVR-MS - Tenpo public API - IVR-MS
+host: 40.70.68.63:8080
+basePath: /v1/loginivr
+schemes:
+  - http
+paths:
+  '/validaterut':
+    post:
+      tags:
+        - ivr-controller
+      summary: validateRut
+      operationId: validateRutUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: ValidateRUTRequest
+          description: Validate RUT Request
+          required: true
+          schema:
+            $ref: '#/definitions/ValidateRUTRequest'
+      responses:
+        '201':
+          description: Login Success
+          schema:
+            $ref: '#/definitions/ResponseEntity'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ResponseEntity'
+        '401':
+          description: Not Found
+        '404':
+          description: Invalid Credentials
+        '500':
+          description: Internal Server Error
+  '/validatepass':
+    post:
+      tags:
+        - ivr-controller
+      summary: validatePassword
+      operationId: validatePasswordUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: ValidatePassword
+          description: Validate Login Request using Password
+          required: true
+          schema:
+            $ref: '#/definitions/ValidatePassword'
+      responses:
+        '201':
+          description: Login Success
+          schema:
+            $ref: '#/definitions/ResponseEntity'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ResponseEntity'
+        '401':
+          description: Not Found
+        '404':
+          description: Invalid Credentials
+        '500':
+          description: Internal Server Error
+definitions:
+  ValidateRUTRequest:
+    type: object
+    properties:
+      rut:
+        type: string
+        description: RUT number
+      call_id:
+        type: string
+        description: Call id from BO
+
+  ValidatePassword:
+    type: object
+    properties:
+      rut:
+        type: string
+        description: RUT number
+      call_id:
+        type: string
+        description: Call id from BO
+
+  ResponseEntity:
+    type: object
+    properties:
+      errorCode:
+        type: integer
+        format: int32
+        description: Error Code
+      status:
+        type: string
+        description: Status message.
+      statusMessage:
+        type: string
+        description: Unformatted Status message

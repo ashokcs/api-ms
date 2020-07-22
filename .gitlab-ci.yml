@@ -50,6 +50,8 @@ swagger-validation:
     - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/login.yaml -l swagger -o bin/public/v1/login
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/ccaPayment.yaml -l swagger -o bin/private/v1/ccaPayment
     - java -jar /swagger-codegen-cli.jar generate -i src/private/v1/payment-paypal.yaml -l swagger -o bin/private/v1/paymentPaypal
+    - java -jar /swagger-codegen-cli.jar generate -i src/public/v1/ivr.yaml -l swagger -o bin/public/v1/ivr
+
 .config-deploy:
   stage: deploy
   image: jaxkodex/powershell-az
@@ -144,6 +146,21 @@ uat-deploy:
     PAYMENT_P2P_IP: 172.11.0.164
     API_CENTRO_AYUDA: 172.11.0.8
     PAYMENT_PAYPAL_IP: 172.11.1.43
+    IVR_IP: 172.11.1.108
+    IVR_SUBSCRIPTION_PRIMARY_KEY: $IVR_SUBSCRIPTION_PRIMARY_KEY
+    IVR_SUBSCRIPTION_SECONDARY_KEY: $IVR_SUBSCRIPTION_SECONDARY_KEY
+    
+uat-deploy-secondary:
+  extends: uat-deploy
+  only:
+    - /^release.*$/
+  artifacts:
+    paths:
+      - bin/
+  environment:
+    name: uat
+  variables:
+    SERVICE_NAME: tenpo-uat-api-management-secondary
 
 prod-deploy:
   extends: .config-deploy
@@ -201,7 +218,9 @@ prod-deploy:
     LOGIN_SUBSCRIPTION_SECONDARY_KEY: $LOGIN_SUBSCRIPTION_SECONDARY_KEY
     CCA_PAYMENT_API_IP: 172.11.0.52
     PAYMENT_PAYPAL_IP: 172.11.0.55
-
+    IVR_IP: 172.11.0.56
+    IVR_SUBSCRIPTION_PRIMARY_KEY: $IVR_SUBSCRIPTION_PRIMARY_KEY
+    IVR_SUBSCRIPTION_SECONDARY_KEY: $IVR_SUBSCRIPTION_SECONDARY_KEY
 prod-deploy-secondary:
   extends: prod-deploy
   variables:
