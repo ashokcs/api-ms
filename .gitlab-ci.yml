@@ -149,6 +149,7 @@ uat-deploy:
     IVR_IP: 172.11.1.108
     IVR_SUBSCRIPTION_PRIMARY_KEY: $IVR_SUBSCRIPTION_PRIMARY_KEY
     IVR_SUBSCRIPTION_SECONDARY_KEY: $IVR_SUBSCRIPTION_SECONDARY_KEY
+    
 uat-deploy-secondary:
   extends: uat-deploy
   only:
