@@ -121,7 +121,7 @@ $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPay
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlCentroAyudaIp" -Name "urlCentroAyudaIp" -Value $centroAyudaIp
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentLoyalty" -Name "urlPaymentLoyalty" -Value $paymentLoyaltyIp":8080"
 $null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlPaymentPaypal" -Name "urlPaymentPaypal" -Value $paymentPaypal":8080"
-$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlIVR" -Name "urlIVR" -Value $ivrIP":8080"
+$null = New-AzApiManagementProperty -Context $ApiMgmtContext -PropertyId "urlIVR" -Name "urlIVR" -Value $ivrIP":80"
 
 Import-Secure-Api -context $ApiMgmtContext -msName "accountsAndTransactions" -sufix "/private" -path "/v1/account-management" -apiId "accounts-api" -serviceBase "http://$accountsIp`:8080"
 Import-Secure-Api -context $ApiMgmtContext -msName "devices" -sufix "/private" -path "/v1/device-management" -apiId "devices-api" -serviceBase "http://$usersIp`:8080"
@@ -153,7 +153,7 @@ Import-Api -context $ApiMgmtContext -msName "users-eecc"-ProductId tenpoapi  -pa
 Import-Api -context $ApiMgmtContext -msName "prelaunch" -ProductId tenpoapi -path "/v1/prelaunch" -sufix "" -apiId "tenpo-prelaunch-api" -serviceBase "http://$tenpoPrelaunchApiIp"
 Import-Api -context $ApiMgmtContext -msName "paymentOnline" -ProductId tenpoapiSubscription -path "/v1/webhook-payment-management" -sufix "/public" -apiId "webhook-payment-online-api" -serviceBase "http://$paymentOnlineIp`:8080"
 Import-Api -context $ApiMgmtContext -msName "devices" -ProductId tenpoapi -path "/v1/device-management" -sufix "/public" -apiId "devices-public-api" -serviceBase "http://$usersIp`:8080"
-Import-Api -context $ApiMgmtContext -msName "ivr" -ProductId tenpoapiSubscription -path "/v1/loginivr" -sufix "/public" -apiId "ivr-ms" -serviceBase "http://$ivrIP`:8080"
+Import-Api -context $ApiMgmtContext -msName "ivr" -ProductId tenpoapiSubscription -path "/v1/loginivr" -sufix "/public" -apiId "ivr-ms" -serviceBase "http://$ivrIP`:80"
 
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId payments-public-api
 #Remove-AzApiManagementApiFromProduct -Context $ApiMgmtContext -ProductId tenpoapi -ApiId webhook-user-api
